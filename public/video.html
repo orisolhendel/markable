@@ -6,23 +6,139 @@
 </head>
 <body>
 
-        <video autoplay="true" id="videoElement"></video>
+    <video autoplay="true" id="videoElement"></video>
 
-        <script>
-            const video = document.querySelector("#videoElement");
+    <script>
+        const video = document.querySelector("#videoElement");
 
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function (stream) {
-                    video.srcObject = stream;
-                })
-                    .catch(function (err0r) {
-                    console.log("Something went wrong!");
-                });
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                video.srcObject = stream;
+            })
+                .catch(function (err0r) {
+                console.log("Something went wrong!");
+            });
+        }
+    </script>
+
+    <br />
+    <button id="capture">Take a Selfie</button>
+    <canvas id="canvas" style="ndisplay: none;"></canvas>
+    <button id="sendPic">Analyze Your Selfie</button>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" />
+        <button type="submit" id="uploadButton">Upload</button>
+    </form>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('capture');
+        const sendPicButton = document.getElementById('sendPic');
+
+
+        captureButton.addEventListener('click', () => {
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            //imageData = canvas.toDataURL('image/JPEG');
+        });
+
+        sendPicButton.addEventListener('click', () => {
+            
+            const dataURL = canvas.toDataURL();
+            canvas.toBlob ( blob => {
+                
+                const formdata = new FormData();
+                formdata.append("image", blob);
+                // formdata.append("side_image", blob);
+                // formdata.append("return_maps", "");
+                // formdata.append("return_marks", "");
+                // formdata.append("roi_outline_color", "");
+                // formdata.append("return_side_results", "");
+
+                const file = new File( [ blob ], "mycanvas.jpg" );
+                const dT = new DataTransfer();
+                dT.items.add( file );
+                document.querySelector( "input" ).files = dT.files;
+
+                const requestOptions = {
+                    method: 'POST',
+                    body: formdata,
+                    redirect: 'follow',
+                    headers: {
+                        'ailabapi-api-key': '6d8tIg0QwOM3OAHTNNlU2eRdY9H8VtXzmcDFqUVmn14olPGJfixEsM1g07eyojWq'
+                    }
+                };
+
+                const requestOptionsForSaving = {
+                    method: 'POST',
+                    body: formdata,
+                    redirect: 'follow',
+                };
+
+                let res = "";
+
+                
+
+                fetch("https://www.ailabapi.com/api/portrait/analysis/skin-disease-detection", requestOptions)
+                    .then(response => response.text())
+                    .then(async (result) => {
+                        console.log(result);
+                        res = result;
+                    }).then(
+                        () => {
+                            document.getElementById('uploadButton').click();
+                        }
+                    ) 
+            
+            },"image/jpeg", 1);
+
+
+            
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file.');
+                return;
             }
-        </script>
 
-        <h1>test</h1>
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert(result);
+                // Do something with the result, e.g., display a success message
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle the error, e.g., display an error message
+            });
+        });
+
+    </script>
 
 
 </body>
