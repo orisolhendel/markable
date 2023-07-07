@@ -29,6 +29,7 @@
 
     <form id="uploadForm" enctype="multipart/form-data">
         <input type="file" name="file" id="fileInput" />
+        <input type="text" name="res" id="resInput" />
         <button type="submit" id="uploadButton">Upload</button>
     </form>
 
@@ -40,7 +41,6 @@
 
         captureButton.addEventListener('click', () => {
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            //imageData = canvas.toDataURL('image/JPEG');
         });
 
         sendPicButton.addEventListener('click', () => {
@@ -50,16 +50,11 @@
                 
                 const formdata = new FormData();
                 formdata.append("image", blob);
-                // formdata.append("side_image", blob);
-                // formdata.append("return_maps", "");
-                // formdata.append("return_marks", "");
-                // formdata.append("roi_outline_color", "");
-                // formdata.append("return_side_results", "");
 
                 const file = new File( [ blob ], "mycanvas.jpg" );
                 const dT = new DataTransfer();
                 dT.items.add( file );
-                document.querySelector( "input" ).files = dT.files;
+                document.getElementById( "fileInput" ).files = dT.files;
 
                 const requestOptions = {
                     method: 'POST',
@@ -76,15 +71,11 @@
                     redirect: 'follow',
                 };
 
-                let res = "";
-
-                
-
                 fetch("https://www.ailabapi.com/api/portrait/analysis/skin-disease-detection", requestOptions)
                     .then(response => response.text())
                     .then(async (result) => {
                         console.log(result);
-                        res = result;
+                        document.getElementById("resInput").value = result;
                     }).then(
                         () => {
                             document.getElementById('uploadButton').click();
@@ -97,23 +88,13 @@
             
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
         document.getElementById('uploadForm').addEventListener('submit', (e) => {
             e.preventDefault();
 
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
+
+            const res = document.getElementById('resInput').value;
 
             if (!file) {
                 alert('Please select a file.');
@@ -122,6 +103,7 @@
 
             const formData = new FormData();
             formData.append('file', file);
+            formData.append('res', res)
 
             fetch('/submit', {
                 method: 'POST',
@@ -138,8 +120,23 @@
             });
         });
 
+
+        // call to pro:
+        //============
+
+        // formdata.append("side_image", blob);
+        // formdata.append("return_maps", "");
+        // formdata.append("return_marks", "");
+        // formdata.append("roi_outline_color", "");
+        // formdata.append("return_side_results", "");
+
     </script>
 
 
 </body>
 </html>
+
+
+
+
+
