@@ -44,6 +44,22 @@ function uploadFiles(req, res) {
     res.json({ message: "Successfully uploaded files" });
 }
 
+// app.get('/show_db', function(req, res) {
+//     const client = new MongoClient(url, { useUnifiedTopology: true });
+//     client.connect(function(err) {
+//         console.log("Connected to server.");
+//         const db = client.db(dbName);
+//         db.collection("books")
+//             .find({})
+//             .toArray(function(err, result) { 
+//                 if (err) throw err; 
+//                 client.close();
+//                 console.log("Done reading db.");
+//                 res.send(JSON.stringify(result));
+//         });
+//     });
+// });
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
