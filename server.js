@@ -29,7 +29,7 @@ function uploadFiles(req, res) {
         }
         var dbo = db.db("markable");
         console.log (dbo);
-        const myobj = { time: Date.now(), file: req.files[0], result: req.body.res };
+        const myobj = { time: new Date (Date.now()), file: req.files[0], result: req.body.res };
         console.log (myobj);
         dbo.collection("selfies").insertOne(myobj, function(err, res) {
             if (err) {

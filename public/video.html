@@ -16,10 +16,17 @@
             background: rgba(117, 117, 117, 0.96);
             cursor: pointer;
             text-align: center;
-            
         }
 
         button:hover {
+            background-color:#a5dbac;
+        }
+
+        #sendPicFinal {
+            background-color: #712337;
+        }
+
+        #sendPicFinal:hover {
             background-color:#a5dbac;
         }
 
@@ -41,18 +48,30 @@
             background-color: #fdfaf6;
         }
 
+        .checkTd {
+            vertical-align: top;
+            cursor: pointer;
+            color: #777777;
+        }
+
         .abs {
             position: absolute;
         }
     </style>
 
     <script>
+
         const showCanvas = show => {
             document.getElementById ("canvasElement").style.display = show ? "" : "none";
             document.getElementById ("videoElement").style.display = show ? "none" : "";
             document.getElementById ("capture").style.display = show ? "none" : "";
             document.getElementById ("reCapture").style.display = show ? "" : "none";
             document.getElementById ("sendPic").style.display = show ? "" : "none";
+        }
+
+        const showCheckboxes = () => {
+            document.getElementById ("mediaDiv").style.display = "none";
+            document.getElementById ("checkDiv").style.display = "";
         }
     </script>
 </head>
@@ -64,7 +83,7 @@
         <div class="abs" style="top:20px; left: 400px;">
             <img src="https://static.wixstatic.com/media/4d8b82_dbda3a0e295c40fa97fcc72a1b7de372~mv2.png/v1/fill/w_548,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/markable%20logo.png" alt="markable logo.png" style="width:274px;height:72px;object-fit:cover" srcset="https://static.wixstatic.com/media/4d8b82_dbda3a0e295c40fa97fcc72a1b7de372~mv2.png/v1/fill/w_548,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/markable%20logo.png" fetchpriority="high">
         </div>
-        <div class="abs" style="top:40px; left: 810px;">
+        <div class="abs" style="top:40px; left: 810px; width:100%;">
             <div class="captionText" onclick="location.href = 'https://www.markable.life/about'">
                 About
             </div>
@@ -85,10 +104,57 @@
 
     <!-- video and canvas -->
     <div class="abs" style="top:115px; left: 760px; width:550px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
-        <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px;" ></video>
-        <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px;"></canvas>
-        <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
-        <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;">✓ &nbsp; Analyze My Selfie</button>
+        <div id="mediaDiv">
+            <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px;" ></video>
+            <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px;"></canvas>
+            <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
+            <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
+        </div>
+
+        <!-- checkbox div -->
+        <div id="checkDiv" class="abs" style="top:50px; left:0px; width: 100%; display: none;">
+            <div style='font-size: 30px; font-family: "suez one", serif; text-align: center; width: 100%; color:#777777'>
+                While We Analyze Your Biomarkers, <br />
+                Please Check All That Applies To You
+            </div>
+            <table class="abs" style='left: 30px; top:90px; font-size: 18px; font-family: "suez one", serif; width: 92%; vertical-align: top; '>
+                <tr>
+                    <td class="checkTd"><input id="ch1" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch1').click();">New onset heavy and/or longer flow</td>
+                    <td class="checkTd"><input  id="ch2" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch2').click();">Shorter menstrual cycles (up to 25 days)</td>
+                    <td class="checkTd"><input id="ch3" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch3').click();">New sore, swollen or lumpy breasts</td>
+                </tr>
+                <tr>
+                    <td class="checkTd"><input id="ch4" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch4').click();">New mid-sleep wakening</td>
+                    <td class="checkTd"><input  id="ch5" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch5').click();">New or markedly increased migrane headaches</td>
+                    <td class="checkTd"><input id="ch6" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch6').click();">Increased cramps</td>
+                </tr>
+                <tr>
+                    <td class="checkTd"><input id="ch7" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch7').click();">Onset of night sweats, in particular premenstraully</td>
+                    <td class="checkTd"><input  id="ch8" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch8').click();">New/increased premenstrual mood swings</td>
+                    <td class="checkTd"><input id="ch9" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch9').click();">Weight gain without changes in exercise or eating</td>
+                </tr>
+                <tr>
+                    <td class="checkTd"><input id="ch10" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch10').click();">Other</td>
+                    <td class="checkTd"><input  id="ch11" type="checkbox"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch11').click();">I don't have any symptoms</td>
+                    <td></td>
+                    <td ></td>
+                </tr>
+            </table>
+
+            <button class="abs" id="sendPicFinal" style="top:380px; left:200px;">Ready For My Results!</button>
+
+        </div>
     </div>
 
     <!-- left div -->
@@ -129,7 +195,7 @@
         const canvas = document.getElementById('canvasElement');
         const captureButton = document.getElementById('capture');
         const recaptureButton = document.getElementById('reCapture');
-        const sendPicButton = document.getElementById('sendPic');
+        const sendPicButton = document.getElementById('sendPicFinal');
 
 
         captureButton.addEventListener('click', () => {
