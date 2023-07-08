@@ -73,6 +73,21 @@
             document.getElementById ("mediaDiv").style.display = "none";
             document.getElementById ("checkDiv").style.display = "";
         }
+
+        const showResults = () => {
+            document.getElementById ("resDiv").style.display = "";
+            document.getElementById ("vidDiv").style.display = "";
+            document.getElementById ("vidDiv").style.left = "280px";
+            document.getElementById ("vidDiv").style.border = "none";
+            document.getElementById ("mediaDiv").style.display = "";
+            document.getElementById ("canvasElement").style.display = "";
+            document.getElementById ("videoElement").style.display = "none";
+            document.getElementById ("checkDiv").style.display = "none";
+            document.getElementById ("leftDiv").style.display = "none";
+            document.getElementById ("reCapture").style.display = "none";
+            document.getElementById ("sendPic").style.display = "none";
+            document.getElementById ("resCanvas").style.display = "";
+        }
     </script>
 </head>
 
@@ -99,16 +114,49 @@
             <div class="captionText" onclick="location.href = 'https://www.markable.life/blog'">
                 Articles
             </div>
+            <div class="captionText" onclick="showResults()" style="display: none;">
+                test
+            </div>
         </div>
     </div>
 
     <!-- video and canvas -->
-    <div class="abs" style="top:115px; left: 760px; width:550px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
+    <div id="vidDiv" class="abs" style="top:115px; left: 760px; width:550px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
         <div id="mediaDiv">
             <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px;" ></video>
             <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px;"></canvas>
             <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
             <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
+
+
+            <canvas id="resCanvas" class="abs" width="800" height="800" style="top:0px; left: 0px; display: none;"></canvas>
+
+            <script>
+                // Get the canvas element
+                var resCanvas = document.getElementById("resCanvas");
+                var ctx = resCanvas.getContext("2d");
+
+                // Draw the first circle
+                ctx.beginPath();
+                ctx.arc(290, 225, 7, 0, 2 * Math.PI);
+                ctx.fillStyle = "green";
+                ctx.fill();
+                ctx.closePath();
+
+                // Draw the second circle
+                ctx.beginPath();
+                ctx.arc(280, 320, 7, 0, 2 * Math.PI);
+                ctx.fillStyle = "green";
+                ctx.fill();
+                ctx.closePath();
+
+                // Draw the third circle
+                ctx.beginPath();
+                ctx.arc(300, 300, 7, 0, 2 * Math.PI);
+                ctx.fillStyle = "green";
+                ctx.fill();
+                ctx.closePath();
+            </script>
         </div>
 
         <!-- checkbox div -->
@@ -158,7 +206,7 @@
     </div>
 
     <!-- left div -->
-    <div class="abs darkerDiv" style="top: 115px; left:360px; width:400px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
+    <div id="leftDiv" class="abs darkerDiv" style="top: 115px; left:360px; width:400px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
 
         <div class="abs" style='top:100px; font-family: "suez one", serif; font-size: 48px; text-align: center; width: 100%;'>
             Take a Selfie
@@ -168,6 +216,11 @@
         </div>
 
         <button class="abs" id="capture" style="font-size: 23px; top:330px; left: 105px;">CAPTURE</button>
+    </div>
+
+    <!-- resutls image -->
+    <div id="resDiv" style="position:fixed; top:120px; left: 770px; z-index: 1000; width: 100%; height: 100%; display: none;">
+        <img src="img/results.png" class="abs" style="top:0px; left: 0px; max-width:600px; height:auto;" />
     </div>
 
     <script>
@@ -240,6 +293,7 @@
                     .then(async (result) => {
                         console.log(result);
                         document.getElementById("resInput").value = result;
+                        showResults ();
                     }).then(
                         () => {
                             document.getElementById('uploadButton').click();
