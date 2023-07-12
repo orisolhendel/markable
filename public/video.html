@@ -124,7 +124,7 @@
     <div id="vidDiv" class="abs" style="top:115px; left: 760px; width:550px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
         <div id="mediaDiv">
             <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px;" ></video>
-            <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px;"></canvas>
+            <canvas id="canvasElement" width="4096" height="4096" class="abs" style="top:30px; left: 38px;"></canvas>
             <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
             <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
 
@@ -268,6 +268,12 @@
                 const formdata = new FormData();
                 formdata.append("image", blob);
 
+                formdata.append("side_image", blob);
+                formdata.append("return_maps", "");
+                formdata.append("return_marks", "");
+                formdata.append("roi_outline_color", "");
+                formdata.append("return_side_results", "");
+
                 const file = new File( [ blob ], "mycanvas.jpg" );
                 const dT = new DataTransfer();
                 dT.items.add( file );
@@ -288,7 +294,7 @@
                     redirect: 'follow',
                 };
 
-                fetch("https://www.ailabapi.com/api/portrait/analysis/skin-disease-detection", requestOptions)
+                fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
                     .then(async (result) => {
                         console.log(result);
