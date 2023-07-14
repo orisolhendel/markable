@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        button {
+            font-family: "suez one", serif;
+            font-size: 18px;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            width: 200px;
+            height: 45px;
+            box-shadow: 1.41px 1.41px 5px #757575;
+            background: rgba(117, 117, 117, 0.96);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color:#a5dbac;
+        }
+
+        th {
+            text-align: center;
+            border: 1px solid gray;
+        }
+
+        td {
+            text-align: center;
+            border: 1px solid gray;
+        } 
+
+        .captionText {
+            font-family: helvetica-w01-light, helvetica-w02-light, sans-serif; 
+            font-size:16px;
+            padding: 10px;
+            color:#777777;
+            display: inline;
+            float: left;
+        }
+
+        .abs {
+            position: absolute;
+        }
+    </style>
+
+    <script>
+
+
+    </script>
+</head>
+
+<body>
+
+    <!-- top caption -->
+    <div class="abs" style="top:0px; left: 0px; width: 100%; height: 110px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 25px;">
+        <div class="abs" style="top:20px; left: 400px;">
+            <img src="https://static.wixstatic.com/media/4d8b82_dbda3a0e295c40fa97fcc72a1b7de372~mv2.png/v1/fill/w_548,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/markable%20logo.png" alt="markable logo.png" style="width:274px;height:72px;object-fit:cover" srcset="https://static.wixstatic.com/media/4d8b82_dbda3a0e295c40fa97fcc72a1b7de372~mv2.png/v1/fill/w_548,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/markable%20logo.png" fetchpriority="high">
+        </div>
+        <div class="abs" style="top:40px; left: 810px; width:100%;">
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/about'">
+                About
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/technology'">
+                Technology
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/faq'">
+                FAQ
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/blank-2'">
+                Treatment Options
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/blog'">
+                Articles
+            </div>
+            <div id="showdb" class="captionText" onclick="location.href = 'javascript:void (0)'">
+                Admin
+            </div>
+            <div class="captionText" onclick="showPic()" nstyle="display: none;">
+                test
+            </div>
+        </div>
+    </div>
+
+    <!-- picture div -->
+    <div id="picDiv" class="abs" style="top:300px; left: 300px; z-index: 100;">
+        <img id="selfieImg" style="width: 512px; height: 512px;" />
+    </div>
+
+    <!-- table div -->
+    <div id="tableDiv" class="abs captionText" style="top:120px; left: 400px; width: 100%;">
+        <table id="resTable" style="width:1000px; border: 1px solid gray;">
+            <tr>
+                <th>id</th>
+                <th>date-time</th>
+                <th>selfie</th>
+                <th style="width:500px;">results</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+
+        fetch('/show_db', {
+            method: 'GET'
+        })
+        .then(response => response.text())
+        .then(result => {
+            renderTable (result);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+        const renderTable = res => {
+            console.log(JSON.parse(res));
+            const innerRes = (JSON.parse(res).rows[0].results);
+            console.log (JSON.parse (innerRes))
+
+            const table = document.getElementById ("resTable");
+            let trs = "";
+
+            const rows = Array.from (JSON.parse(res).rows);
+
+            rows.forEach (row => {
+                trs += `
+                    <tr>
+                        <td>${row.id}</td>
+                        <td>${row.dt}</td>
+                        <td><a href="javascript:void(0);" onclick='showPic(${row.id})'">show picture</a></td>
+                        <td style="display:block; overflow:hidden; width:500px; height:40px; text-align:left;">${row.results}</td>
+                    </tr>
+                `;
+            })
+
+            table.innerHTML += trs;
+            //table.append(tr);
+        }
+
+        const showPic = id => {
+            fetch(`/show_pic?id=${id}`, {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                document.getElementById ("selfieImg").src = `./tmp/${result}`;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+
+    </script>
+
+
+</body>
+</html>
+
+
+
+
+

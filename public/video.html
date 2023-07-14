@@ -74,10 +74,10 @@
             document.getElementById ("checkDiv").style.display = "";
         }
 
-        const showResults = () => {
+        const showResults = (res) => {
             document.getElementById ("resDiv").style.display = "";
             document.getElementById ("vidDiv").style.display = "";
-            document.getElementById ("vidDiv").style.left = "280px";
+            document.getElementById ("vidDiv").style.left = "220px";
             document.getElementById ("vidDiv").style.border = "none";
             document.getElementById ("mediaDiv").style.display = "";
             document.getElementById ("canvasElement").style.display = "";
@@ -87,6 +87,27 @@
             document.getElementById ("reCapture").style.display = "none";
             document.getElementById ("sendPic").style.display = "none";
             document.getElementById ("resCanvas").style.display = "";
+
+            document.getElementById ("resCanvas").style.left = document.getElementById ("canvasElement").style.left;
+            document.getElementById ("resCanvas").style.top = document.getElementById ("canvasElement").style.top;
+
+            document.getElementById ("canvasElement").width = "512";
+            document.getElementById ("canvasElement").height = "512";
+
+            document.getElementById ("canvasElement").getContext('2d').drawImage(document.getElementById ("canvasElementToSend"), 0, 0, 512, 512);
+
+            const resJson = JSON.parse (res);
+            const resCanvas = document.getElementById("resCanvas");
+            const ctx = resCanvas.getContext("2d");
+
+            Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
+                
+                ctx.beginPath();
+                ctx.arc(element.left / 8, element.top / 8, 5, 0, 2 * Math.PI);
+                ctx.fillStyle = "green";
+                ctx.fill();
+                ctx.closePath();
+            });
         }
     </script>
 </head>
@@ -114,6 +135,9 @@
             <div class="captionText" onclick="location.href = 'https://www.markable.life/blog'">
                 Articles
             </div>
+            <div class="captionText" onclick="location.href = '/Admin.html'">
+                Admin
+            </div>
             <div class="captionText" onclick="showResults()" style="display: none;">
                 test
             </div>
@@ -122,42 +146,15 @@
 
     <!-- video and canvas -->
     <div id="vidDiv" class="abs" style="top:115px; left: 760px; width:550px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
+  
         <div id="mediaDiv">
             <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px;" ></video>
             <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px;"></canvas>
-            <!--canvas id="canvasElement" width="4096" height="4096" class="abs" style="top:30px; left: 38px;"></canvas-->
+            <canvas id="canvasElementToSend" width="4096" height="4096" style="visibility:hidden"></canvas>
             <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
             <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
 
-
-            <canvas id="resCanvas" class="abs" width="800" height="800" style="top:0px; left: 0px; display: none;"></canvas>
-
-            <script>
-                // Get the canvas element
-                var resCanvas = document.getElementById("resCanvas");
-                var ctx = resCanvas.getContext("2d");
-
-                // Draw the first circle
-                ctx.beginPath();
-                ctx.arc(290, 225, 7, 0, 2 * Math.PI);
-                ctx.fillStyle = "green";
-                ctx.fill();
-                ctx.closePath();
-
-                // Draw the second circle
-                ctx.beginPath();
-                ctx.arc(280, 320, 7, 0, 2 * Math.PI);
-                ctx.fillStyle = "green";
-                ctx.fill();
-                ctx.closePath();
-
-                // Draw the third circle
-                ctx.beginPath();
-                ctx.arc(300, 300, 7, 0, 2 * Math.PI);
-                ctx.fillStyle = "green";
-                ctx.fill();
-                ctx.closePath();
-            </script>
+            <canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas>
         </div>
 
         <!-- checkbox div -->
@@ -247,6 +244,7 @@
 
     <script>
         const canvas = document.getElementById('canvasElement');
+        const canvasToSend = document.getElementById('canvasElementToSend');
         const captureButton = document.getElementById('capture');
         const recaptureButton = document.getElementById('reCapture');
         const sendPicButton = document.getElementById('sendPicFinal');
@@ -255,6 +253,7 @@
         captureButton.addEventListener('click', () => {
             showCanvas (true);
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvasToSend.getContext('2d').drawImage(video, 0, 0, canvasToSend.width, canvasToSend.height);
         });
 
         recaptureButton.addEventListener('click', () => {
@@ -263,8 +262,8 @@
 
         sendPicButton.addEventListener('click', () => {
             
-            const dataURL = canvas.toDataURL();
-            canvas.toBlob ( blob => {
+            //const dataURL = canvasToSend.toDataURL();
+            canvasToSend.toBlob ( blob => {
                 
                 const formdata = new FormData();
                 formdata.append("image", blob);
@@ -285,7 +284,7 @@
                     body: formdata,
                     redirect: 'follow',
                     headers: {
-                        'ailabapi-api-key': '6d8tIg0QwOM3OAHTNNlU2eRdY9H8VtXzmcDFqUVmn14olPGJfixEsM1g07eyojWq'
+                        'ailabapi-api-key': 'qtZBrIKcR3q8NkusrpIbgiQZjzjySv4VBK6WLEQOTERJCUcMWif2tAmsX1DelDyn'
                     }
                 };
 
@@ -300,7 +299,7 @@
                     .then(async (result) => {
                         console.log(result);
                         document.getElementById("resInput").value = result;
-                        showResults ();
+                        showResults (result);
                     }).then(
                         () => {
                             document.getElementById('uploadButton').click();
@@ -337,23 +336,11 @@
             .then(response => response.text())
             .then(result => {
                 alert(result);
-                // Do something with the result, e.g., display a success message
             })
             .catch(error => {
                 console.error(error);
-                // Handle the error, e.g., display an error message
             });
         });
-
-
-        // call to pro:
-        //============
-
-        // formdata.append("side_image", blob);
-        // formdata.append("return_maps", "");
-        // formdata.append("return_marks", "");
-        // formdata.append("roi_outline_color", "");
-        // formdata.append("return_side_results", "");
 
     </script>
 
