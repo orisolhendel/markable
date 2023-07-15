@@ -103,7 +103,7 @@
             Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
                 
                 ctx.beginPath();
-                ctx.arc(element.left / 8, element.top / 8, 5, 0, 2 * Math.PI);
+                ctx.ellipse(element.left / 8, element.top / 8, element.width / 8, element.height / 8, 0, 2 * Math.PI, false);
                 ctx.fillStyle = "green";
                 ctx.fill();
                 ctx.closePath();
@@ -135,7 +135,7 @@
             <div class="captionText" onclick="location.href = 'https://www.markable.life/blog'">
                 Articles
             </div>
-            <div class="captionText" onclick="location.href = '/Admin.html'">
+            <div class="captionText" onclick="location.href = '/admin.html'">
                 Admin
             </div>
             <div class="captionText" onclick="showResults()" style="display: none;">
@@ -262,7 +262,6 @@
 
         sendPicButton.addEventListener('click', () => {
             
-            //const dataURL = canvasToSend.toDataURL();
             canvasToSend.toBlob ( blob => {
                 
                 const formdata = new FormData();

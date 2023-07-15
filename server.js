@@ -31,7 +31,7 @@ function uploadFiles(req, res) {
     client.connect();
 
     fs.readFile(req.files[0].path, 'hex', function(err, imgData) {
-        console.log('imgData',imgData);
+        if (err) console.log (err);
         imgData = '\\x' + imgData;
         client.query(`INSERT INTO Selfies (id, dt, selfie, results) values (DEFAULT, NOW(), ($1), '${req.body.res}')`,
                            [imgData],
@@ -71,6 +71,32 @@ app.get('/show_pic', function(req, res, next) {
 
     const { Client } = require('pg');
     const fs = require('fs');
+
+    // before goint to the db - see if our file is already in place:
+
+    let requestedFile = "";
+    fs.readdir(__dirname + '/public/tmp', function (err, files) {
+        
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        
+        files.forEach(function (file) {
+
+            console.log (file);
+            if (file.startsWith (`${req.query.id}_`)) {
+                console.log ("file already in dir");
+                fileExists = true;
+                requestedFile = file;
+                return;
+            }
+        });
+    });
+
+    if (requestedFile) {
+        req.send (requestedFile);
+        return;
+    }
 
     const client = new Client({
         connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
