@@ -45,11 +45,6 @@
             position: absolute;
         }
     </style>
-
-    <script>
-
-
-    </script>
 </head>
 
 <body>
@@ -83,8 +78,8 @@
 
     <!-- picture div -->
     <div id="picDiv" class="abs" style="z-index: 100; border: 1px solid gray; width:592px; height: 592px; background-color: #eeeeee; display: none;">
-        <img id="selfieImg" class="abs" style="width: 512px; height: 512px; top: 40px; left: 40px;" width="512" height="512"/>
-        <canvas id="resCanvas" class="abs" width="512" height="512"></canvas>
+        <img id="selfieImg" class="abs" style="width: 512px; height: 384px; top: 40px; left: 40px;" width="512" height="384"/>
+        <canvas id="resCanvas" class="abs" width="512" height="384"></canvas>
         <button id="toggleMarksBtn" class="abs" style="top:5px; left: 5px;;" onclick="toggleMarks(this)">Hide Marks</button>
         <div class="abs" style="top:6px; left: 557px; font-size: 27px; cursor: pointer; font-family: sans-serif;" onclick="hidePic()">X</div>
     </div>
@@ -92,11 +87,12 @@
     <!-- table div -->
     <div id="tableDiv" class="abs captionText" style="top:120px; left: 400px; width: 100%;">
         <img id="loadingImg" class="abs" style="width:36px; height: 36px; top:80px; left: 500px; display: none;" src="img/loading.gif" />
-        <table id="resTable" style="width:1000px; border: 1px solid gray;">
+        <table id="resTable" style="width:1200px; border: 1px solid gray;">
             <tr>
                 <th>id</th>
                 <th>date-time</th>
                 <th>selfie</th>
+                <th style="width:120px;">image dimentions</th>
                 <th style="width:500px;">results</th>
             </tr>
         </table>
@@ -130,8 +126,9 @@
                 trs += `
                     <tr>
                         <td>${row.id}</td>
-                        <td>${row.dt}</td>
-                        <td><a href="javascript:void(0);" onclick='showPic(${row.id}, this.parentElement, ${row.results})'>show picture</a></td>
+                        <td style="width:200px;">${row.dt}</td>
+                        <td><a href="javascript:void(0);" onclick='showPic(${row.id}, this.parentElement, ${row.results}, ${row.selfiesdim})'>show picture</a></td>
+                        <td style="width:150px;">${row.selfiesdim}</td>
                         <td style="display:block; overflow:hidden; width:500px; height:40px; text-align:left;">${row.results}</td>
                     </tr>
                 `;
@@ -140,7 +137,10 @@
             table.innerHTML += trs;
         }
 
-        const showPic = (id, container, res) => {
+        const showPic = (id, container, res, dim) => {
+
+            const widthFactor = dim.width / 512;
+            const heightFactor = dim.height / 384;
 
             // show loading sign:
             const loading = document.getElementById ("loadingImg");
@@ -178,7 +178,13 @@
                 Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
                     
                     ctx.beginPath();
-                    ctx.ellipse(element.left / 8, element.top / 8, element.width / 8, element.height / 8, 0, 2 * Math.PI, false);
+                    ctx.ellipse(element.left / widthFactor, 
+                                element.top / heightFactor, 
+                                element.width / widthFactor, 
+                                element.height / heightFactor, 
+                                0, 
+                                2 * Math.PI, 
+                                false);
                     ctx.fillStyle = "green";
                     ctx.fill();
                     ctx.closePath();

@@ -52,12 +52,15 @@
             vertical-align: top;
             cursor: pointer;
             color: #777777;
+            height: 90px;
         }
 
         .abs {
             position: absolute;
         }
     </style>
+
+    <script src="score.js"></script>
 
     <script>
 
@@ -75,6 +78,9 @@
         }
 
         const showResults = (res) => {
+
+            document.getElementById ("resDiv").innerHTML = calctScore (res, getCheckCount());
+
             document.getElementById ("resDiv").style.display = "";
             document.getElementById ("vidDiv").style.display = "";
             document.getElementById ("vidDiv").style.left = "220px";
@@ -86,28 +92,72 @@
             document.getElementById ("leftDiv").style.display = "none";
             document.getElementById ("reCapture").style.display = "none";
             document.getElementById ("sendPic").style.display = "none";
-            document.getElementById ("resCanvas").style.display = "";
 
-            document.getElementById ("resCanvas").style.left = document.getElementById ("canvasElement").style.left;
-            document.getElementById ("resCanvas").style.top = document.getElementById ("canvasElement").style.top;
+            //alert (calctScore (res, getCheckCount()));
+            //document.getElementById ("resCanvas").style.display = "";
 
-            document.getElementById ("canvasElement").width = "512";
-            document.getElementById ("canvasElement").height = "512";
+            //document.getElementById ("resCanvas").style.left = document.getElementById ("canvasElement").style.left;
+            //document.getElementById ("resCanvas").style.top = document.getElementById ("canvasElement").style.top;
 
-            document.getElementById ("canvasElement").getContext('2d').drawImage(document.getElementById ("canvasElementToSend"), 0, 0, 512, 512);
+            // document.getElementById ("canvasElement").width = "512";
+            // document.getElementById ("canvasElement").height = "512";
 
-            const resJson = JSON.parse (res);
-            const resCanvas = document.getElementById("resCanvas");
-            const ctx = resCanvas.getContext("2d");
+            //document.getElementById ("canvasElement").getContext('2d').drawImage(document.getElementById ("canvasElementToSend"), 0, 0, 512, 512);
 
-            Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
+            // const resJson = JSON.parse (res);
+            // const resCanvas = document.getElementById("resCanvas");
+            // const ctx = resCanvas.getContext("2d");
+
+            // Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
                 
-                ctx.beginPath();
-                ctx.ellipse(element.left / 8, element.top / 8, element.width / 8, element.height / 8, 0, 2 * Math.PI, false);
-                ctx.fillStyle = "green";
-                ctx.fill();
-                ctx.closePath();
+            //     ctx.beginPath();
+            //     ctx.ellipse(element.left / 8, element.top / 8, element.width / 8, element.height / 8, 0, 2 * Math.PI, false);
+            //     ctx.fillStyle = "green";
+            //     ctx.fill();
+            //     ctx.closePath();
+            // });
+        }
+
+        const generateDimJson = () => {
+            return `{"width" : ${canvasToSend.width}, "height" : ${canvasToSend.height}}`;
+        }
+
+        const clearNoSymp = (check) => {
+            if (check.checked) {
+                document.getElementById ("no_symp").checked = false;
+            }
+
+            toggleAnalyzeDisableness ();
+        }
+
+        const clearChecks = () => {
+            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            checks.forEach (check => {
+                if (check.id != 'no_symp') {
+                    check.checked = false;
+                }
             });
+
+            toggleAnalyzeDisableness ();
+        }
+
+        const toggleAnalyzeDisableness = () => {
+            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            const disdiv = document.getElementById ("disableAnalyze");
+            disdiv.style.display = checks.length ? "none" : "";
+        }
+
+        const getCheckCount = () => {
+            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            let count = 0;
+            checks.forEach (check => {
+                if (check.id === 'no_symp') {
+                    return 0;
+                } else {
+                    count++;
+                }
+            });
+            return count;
         }
     </script>
 </head>
@@ -138,7 +188,7 @@
             <div class="captionText" onclick="location.href = '/admin.html'">
                 Admin
             </div>
-            <div class="captionText" onclick="showResults()" style="display: none;">
+            <div class="captionText" onclick="alert(calctScore)" nstyle="display: none;">
                 test
             </div>
         </div>
@@ -154,7 +204,7 @@
             <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
             <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
 
-            <canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas>
+            <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
         </div>
 
         <!-- checkbox div -->
@@ -165,40 +215,42 @@
             </div>
             <table class="abs" style='left: 30px; top:90px; font-size: 18px; font-family: "suez one", serif; width: 92%; vertical-align: top; '>
                 <tr>
-                    <td class="checkTd"><input id="ch1" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch1" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch1').click();">New onset heavy and/or longer flow</td>
-                    <td class="checkTd"><input  id="ch2" type="checkbox"></td>
+                    <td class="checkTd"><input  id="ch2" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch2').click();">Shorter menstrual cycles (up to 25 days)</td>
-                    <td class="checkTd"><input id="ch3" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch3" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch3').click();">New sore, swollen or lumpy breasts</td>
                 </tr>
                 <tr>
-                    <td class="checkTd"><input id="ch4" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch4" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch4').click();">New mid-sleep wakening</td>
-                    <td class="checkTd"><input  id="ch5" type="checkbox"></td>
+                    <td class="checkTd"><input  id="ch5" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch5').click();">New or markedly increased migrane headaches</td>
-                    <td class="checkTd"><input id="ch6" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch6" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch6').click();">Increased cramps</td>
                 </tr>
                 <tr>
-                    <td class="checkTd"><input id="ch7" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch7" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch7').click();">Onset of night sweats, in particular premenstraully</td>
-                    <td class="checkTd"><input  id="ch8" type="checkbox"></td>
+                    <td class="checkTd"><input  id="ch8" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch8').click();">New/increased premenstrual mood swings</td>
-                    <td class="checkTd"><input id="ch9" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch9" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch9').click();">Weight gain without changes in exercise or eating</td>
                 </tr>
                 <tr>
-                    <td class="checkTd"><input id="ch10" type="checkbox"></td>
+                    <td class="checkTd"><input id="ch10" type="checkbox" onclick="clearNoSymp(this)"></td>
                     <td class="checkTd" onclick="document.getElementById('ch10').click();">Other</td>
-                    <td class="checkTd"><input  id="ch11" type="checkbox"></td>
-                    <td class="checkTd" onclick="document.getElementById('ch11').click();">I don't have any symptoms</td>
+                    <td class="checkTd"><input id="no_symp" type="checkbox" onclick="clearChecks()"></td>
+                    <td class="checkTd" onclick="document.getElementById('no_symp').click();">I don't have any symptoms</td>
                     <td></td>
                     <td ></td>
                 </tr>
             </table>
 
-            <button class="abs" id="sendPicFinal" style="top:380px; left:200px;">Ready For My Results!</button>
+            <button class="abs" id="sendPicFinal" style="top:480px; left:200px;">Ready For My Results!</button>
+            <div class="abs" id="disableAnalyze" style="top:460px; left: 180px; width: 240px; height: 80px; z-index: 100; background-color: rgba(255, 255, 255, 0.5);"></div>
+            <img id="loadingImg" class="abs" style="width:36px; height: 36px; top:435px; left: 280px; z-index: 20; display: none;" src="img/loading.gif" />
 
         </div>
     </div>
@@ -217,8 +269,8 @@
     </div>
 
     <!-- resutls image -->
-    <div id="resDiv" style="position:fixed; top:120px; left: 770px; z-index: 1000; width: 100%; height: 100%; display: none;">
-        <img src="img/results.png" class="abs" style="top:0px; left: 0px; max-width:600px; height:auto;" />
+    <div id="resDiv" style="position:fixed; top:120px; left: 770px; z-index: 1000; width: 100%; height: 100%; overflow: scroll; display: none;">
+        <!--img src="img/results.png" class="abs" style="top:0px; left: 0px; max-width:600px; height:auto;" /-->
     </div>
 
     <script>
@@ -227,10 +279,18 @@
         if (navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(function (stream) {
-                video.srcObject = stream;
+                    video.srcObject = stream;
+                    const vsettings = (stream.getVideoTracks()[0].getSettings());
+                    const vwidht = vsettings.width;
+                    const vheight = vsettings.height;
+                    const vratio = vwidht / vheight;
+
+                    canvasElement.height = Math.round (canvasElement.width / vratio);
+                    canvasToSend.height =  Math.round (canvasToSend.width / vratio);
             })
-                .catch(function (err0r) {
-                console.log("Something went wrong!");
+                .catch(function (error) {
+                    console.log("Something went wrong!");
+                    console.log(error);
             });
         }
     </script>
@@ -239,6 +299,8 @@
     <form id="uploadForm" enctype="multipart/form-data" style="display: none;">
         <input type="file" name="file" id="fileInput" />
         <input type="text" name="res" id="resInput" />
+        <input type="text" name="dim" id="dimInput" />
+        <input type="text" name="score" id="scoreInput" />
         <button type="submit" id="uploadButton">Upload</button>
     </form>
 
@@ -263,6 +325,9 @@
         sendPicButton.addEventListener('click', () => {
             
             canvasToSend.toBlob ( blob => {
+
+                document.getElementById("loadingImg").style.display = "";
+                document.getElementById("disableAnalyze").style.display = "";
                 
                 const formdata = new FormData();
                 formdata.append("image", blob);
@@ -283,7 +348,7 @@
                     body: formdata,
                     redirect: 'follow',
                     headers: {
-                        'ailabapi-api-key': 'qtZBrIKcR3q8NkusrpIbgiQZjzjySv4VBK6WLEQOTERJCUcMWif2tAmsX1DelDyn'
+                        'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
                     }
                 };
 
@@ -296,8 +361,9 @@
                 fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
                     .then(async (result) => {
-                        console.log(result);
+                        //console.log(result);
                         document.getElementById("resInput").value = result;
+                        document.getElementById("dimInput").value = generateDimJson();
                         showResults (result);
                     }).then(
                         () => {
@@ -318,15 +384,12 @@
             const file = fileInput.files[0];
 
             const res = document.getElementById('resInput').value;
-
-            if (!file) {
-                alert('Please select a file.');
-                return;
-            }
+            const dim = document.getElementById('dimInput').value;
 
             const formData = new FormData();
             formData.append('file', file);
             formData.append('res', res);
+            formData.append('dim', dim);
 
             fetch('/submit', {
                 method: 'POST',
@@ -334,6 +397,7 @@
             })
             .then(response => response.text())
             .then(result => {
+                document.getElementById("loadingImg").style.display = "none";
                 alert(result);
             })
             .catch(error => {
