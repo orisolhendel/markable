@@ -3,19 +3,23 @@ const app = express();
 const multer = require("multer");
 const port = process.env.PORT || 3000;
 
-
-const upload = multer({ dest: "uploads/" });
-
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/video.html');
+app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
+    res.render('pages/video');
 });
+
+app.get('/admin', function(req, res) {
+    res.render('pages/admin');
+});
+
+const upload = multer({ dest: "uploads/" });
 
 app.post("/submit", upload.array("file"), uploadFiles);
 
 function uploadFiles(req, res) {
-    
 
     const { Client } = require('pg');
     const fs = require('fs');
@@ -31,14 +35,32 @@ function uploadFiles(req, res) {
     client.connect();
 
     fs.readFile(req.files[0].path, 'hex', function(err, imgData) {
-        if (err) console.log (err);
+        if (err) {
+            console.log (err);
+        }
+
         imgData = '\\x' + imgData;
-        client.query(`INSERT INTO Selfies (id, dt, selfie, results, selfiesDim) values (DEFAULT, NOW(), ($1), '${req.body.res}', '${req.body.dim}')`,
+
+        const uid_arr = req.files[0].path.split ("/");
+        const uid = uid_arr[uid_arr.length - 1];
+        console.log (uid_arr);
+        console.log (uid);
+
+        client.query(`INSERT INTO Selfies (id, dt, selfie, results, selfiesDim, uid) values (DEFAULT, NOW(), ($1), '${req.body.res}', '${req.body.dim}', '${uid}')`,
                            [imgData],
                            function(err) {
-                                if (err) throw err;
+                                if (err) {
+                                    throw err;
+                                }
+
+                                fs.rename (req.files[0].path, `${__dirname}/public/tmp/${uid}.jpg`,  err => {
+                                    if (err) {
+                                        throw err
+                                    }
+                                    console.log(`moving: ${req.files[0].path} => ${__dirname}/public/tmp/${uid}.jpg`)
+                                  })
                                 client.end();
-        });
+                            });
       });
 }
 
@@ -57,9 +79,11 @@ app.get('/show_db', function(req, res, next) {
 
     client.connect();
 
-    client.query('SELECT id, dt, results, selfiesDim FROM Selfies ORDER BY dt DESC',
+    client.query('SELECT id, dt, results, selfiesDim, uid FROM Selfies ORDER BY dt DESC LIMIT 15',
                         function(err, readResult) {
-                            if (err) console.log (err);
+                            if (err) {
+                                console.log (err);
+                            }
                             res.send(JSON.stringify(readResult));
                             client.end();
     });
@@ -72,9 +96,8 @@ app.get('/show_pic', async function(req, res, next) {
     const { Client } = require('pg');
     const fs = require('fs');
 
-    // before goint to the db - see if our file is already in place:
+    // before going to the db - see if our file is already in place:
 
-    
     fs.readdir(__dirname + '/public/tmp', function (err, files) {
         
         if (err) {
@@ -84,8 +107,8 @@ app.get('/show_pic', async function(req, res, next) {
         for(let index = 0; index < files.length; index++){
 
             const file = files [index];
-            // TODO: use guid and not datatime for picture format
-            if (file.startsWith (`${req.query.id}_`)) {
+            // TODO: use guid and not datatime for picture format. the guid can come from the auto-generated upload above
+            if (file.startsWith (req.query.uid)) {
                 console.log ("file already in dir");
                 res.send (file); 
                 break;
@@ -103,13 +126,15 @@ app.get('/show_pic', async function(req, res, next) {
             
                 client.connect();
             
-                client.query(`SELECT selfie, dt, selfiesDim FROM Selfies WHERE id = ${req.query.id} `,
+                client.query(`SELECT selfie, dt, selfiesDim FROM Selfies WHERE uid = '${req.query.uid}' `,
                                     function(err, readResult) {
-                                        if (err) console.log (err);
+                                        if (err) {
+                                            console.log (err);
+                                        }
             
                                         let imgName = "";
                                         try {
-                                            imgName = req.query.id + "_" + readResult.rows[0].dt;
+                                            imgName = req.query.uid;
                                         } catch (e) {
                                             console.log (e);
                                         }

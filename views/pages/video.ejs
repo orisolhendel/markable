@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        button {
+            font-family: "suez one", serif;
+            font-size: 18px;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            width: 200px;
+            height: 45px;
+            box-shadow: 1.41px 1.41px 5px #757575;
+            background: rgba(117, 117, 117, 0.96);
+            cursor: pointer;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color:#a5dbac;
+        }
+
+        #sendPicFinal {
+            background-color: #712337;
+        }
+
+        #sendPicFinal:hover {
+            background-color:#a5dbac;
+        }
+
+        .darkerDiv {
+            background-color: #fdfaf6;
+        }
+
+        .captionText {
+            font-family: helvetica-w01-light, helvetica-w02-light, sans-serif; 
+            font-size:16px;
+            padding: 10px;
+            color:#777777;
+            cursor: pointer;
+            display: inline;
+            float: left;
+        }
+
+        .captionText:hover {
+            background-color: #fdfaf6;
+        }
+
+        .checkTd {
+            vertical-align: top;
+            cursor: pointer;
+            color: #777777;
+            height: 90px;
+        }
+
+        .abs {
+            position: absolute;
+        }
+    </style>
+
+    <script src="./scripts/score.js"></script>
+
+    <script>
+
+        const showCanvas = show => {
+            document.getElementById ("canvasElement").style.display = show ? "" : "none";
+            document.getElementById ("videoElement").style.display = show ? "none" : "";
+            document.getElementById ("capture").style.display = show ? "none" : "";
+            document.getElementById ("reCapture").style.display = show ? "" : "none";
+            document.getElementById ("sendPic").style.display = show ? "" : "none";
+        }
+
+        const showCheckboxes = () => {
+            document.getElementById ("mediaDiv").style.display = "none";
+            document.getElementById ("checkDiv").style.display = "";
+        }
+
+        const showResults = (res) => {
+
+            document.getElementById ("resDiv").innerHTML = calctScore (res, getCheckCount());
+
+            document.getElementById ("resDiv").style.display = "";
+            document.getElementById ("vidDiv").style.display = "";
+            document.getElementById ("vidDiv").style.left = "220px";
+            document.getElementById ("vidDiv").style.border = "none";
+            document.getElementById ("mediaDiv").style.display = "";
+            document.getElementById ("canvasElement").style.display = "";
+            document.getElementById ("videoElement").style.display = "none";
+            document.getElementById ("checkDiv").style.display = "none";
+            document.getElementById ("leftDiv").style.display = "none";
+            document.getElementById ("reCapture").style.display = "none";
+            document.getElementById ("sendPic").style.display = "none";
+
+            //alert (calctScore (res, getCheckCount()));
+            //document.getElementById ("resCanvas").style.display = "";
+
+            //document.getElementById ("resCanvas").style.left = document.getElementById ("canvasElement").style.left;
+            //document.getElementById ("resCanvas").style.top = document.getElementById ("canvasElement").style.top;
+
+            // document.getElementById ("canvasElement").width = "512";
+            // document.getElementById ("canvasElement").height = "512";
+
+            //document.getElementById ("canvasElement").getContext('2d').drawImage(document.getElementById ("canvasElementToSend"), 0, 0, 512, 512);
+
+            // const resJson = JSON.parse (res);
+            // const resCanvas = document.getElementById("resCanvas");
+            // const ctx = resCanvas.getContext("2d");
+
+            // Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
+                
+            //     ctx.beginPath();
+            //     ctx.ellipse(element.left / 8, element.top / 8, element.width / 8, element.height / 8, 0, 2 * Math.PI, false);
+            //     ctx.fillStyle = "green";
+            //     ctx.fill();
+            //     ctx.closePath();
+            // });
+        }
+
+        const generateDimJson = () => {
+            return `{"width" : ${canvasToSend.width}, "height" : ${canvasToSend.height}}`;
+        }
+
+        const clearNoSymp = (check) => {
+            if (check.checked) {
+                document.getElementById ("no_symp").checked = false;
+            }
+
+            toggleAnalyzeDisableness ();
+        }
+
+        const clearChecks = () => {
+            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            checks.forEach (check => {
+                if (check.id != 'no_symp') {
+                    check.checked = false;
+                }
+            });
+
+            toggleAnalyzeDisableness ();
+        }
+
+        const toggleAnalyzeDisableness = () => {
+            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            const disdiv = document.getElementById ("disableAnalyze");
+            disdiv.style.display = checks.length ? "none" : "";
+        }
+
+        const getCheckCount = () => {
+            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            let count = 0;
+            checks.forEach (check => {
+                if (check.id === 'no_symp') {
+                    return 0;
+                } else {
+                    count++;
+                }
+            });
+            return count;
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- top caption -->
+    <div class="abs" style="top:0px; left: 0px; width: 100%; height: 110px; box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 25px;">
+        <div class="abs" style="top:20px; left: 400px;">
+            <img src="https://static.wixstatic.com/media/4d8b82_dbda3a0e295c40fa97fcc72a1b7de372~mv2.png/v1/fill/w_548,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/markable%20logo.png" alt="markable logo.png" style="width:274px;height:72px;object-fit:cover" srcset="https://static.wixstatic.com/media/4d8b82_dbda3a0e295c40fa97fcc72a1b7de372~mv2.png/v1/fill/w_548,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/markable%20logo.png" fetchpriority="high">
+        </div>
+        <div class="abs" style="top:40px; left: 810px; width:100%;">
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/about'">
+                About
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/technology'">
+                Technology
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/faq'">
+                FAQ
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/blank-2'">
+                Treatment Options
+            </div>
+            <div class="captionText" onclick="location.href = 'https://www.markable.life/blog'">
+                Articles
+            </div>
+            <div class="captionText" onclick="location.href = '/admin'">
+                Admin
+            </div>
+            <div class="captionText" onclick="alert(calctScore)" nstyle="display: none;">
+                test
+            </div>
+        </div>
+    </div>
+
+    <!-- video and canvas -->
+    <div id="vidDiv" class="abs" style="top:115px; left: 760px; width:550px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
+  
+        <div id="mediaDiv">
+            <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px;" ></video>
+            <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px;"></canvas>
+            <canvas id="canvasElementToSend" width="4096" height="4096" style="visibility:hidden"></canvas>
+            <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
+            <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
+
+            <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
+        </div>
+
+        <!-- checkbox div -->
+        <div id="checkDiv" class="abs" style="top:50px; left:0px; width: 100%; display: none;">
+            <div style='font-size: 30px; font-family: "suez one", serif; text-align: center; width: 100%; color:#777777'>
+                While We Analyze Your Biomarkers, <br />
+                Please Check All That Applies To You
+            </div>
+            <table class="abs" style='left: 30px; top:90px; font-size: 18px; font-family: "suez one", serif; width: 92%; vertical-align: top; '>
+                <tr>
+                    <td class="checkTd"><input id="ch1" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch1').click();">New onset heavy and/or longer flow</td>
+                    <td class="checkTd"><input  id="ch2" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch2').click();">Shorter menstrual cycles (up to 25 days)</td>
+                    <td class="checkTd"><input id="ch3" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch3').click();">New sore, swollen or lumpy breasts</td>
+                </tr>
+                <tr>
+                    <td class="checkTd"><input id="ch4" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch4').click();">New mid-sleep wakening</td>
+                    <td class="checkTd"><input  id="ch5" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch5').click();">New or markedly increased migrane headaches</td>
+                    <td class="checkTd"><input id="ch6" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch6').click();">Increased cramps</td>
+                </tr>
+                <tr>
+                    <td class="checkTd"><input id="ch7" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch7').click();">Onset of night sweats, in particular premenstraully</td>
+                    <td class="checkTd"><input  id="ch8" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch8').click();">New/increased premenstrual mood swings</td>
+                    <td class="checkTd"><input id="ch9" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch9').click();">Weight gain without changes in exercise or eating</td>
+                </tr>
+                <tr>
+                    <td class="checkTd"><input id="ch10" type="checkbox" onclick="clearNoSymp(this)"></td>
+                    <td class="checkTd" onclick="document.getElementById('ch10').click();">Other</td>
+                    <td class="checkTd"><input id="no_symp" type="checkbox" onclick="clearChecks()"></td>
+                    <td class="checkTd" onclick="document.getElementById('no_symp').click();">I don't have any symptoms</td>
+                    <td></td>
+                    <td ></td>
+                </tr>
+            </table>
+
+            <button class="abs" id="sendPicFinal" style="top:480px; left:200px;">Ready For My Results!</button>
+            <div class="abs" id="disableAnalyze" style="top:460px; left: 180px; width: 240px; height: 80px; z-index: 100; background-color: rgba(255, 255, 255, 0.5);"></div>
+            <img id="loadingImg" class="abs" style="width:36px; height: 36px; top:435px; left: 280px; z-index: 20; display: none;" src="./img/loading.gif" />
+
+        </div>
+    </div>
+
+    <!-- left div -->
+    <div id="leftDiv" class="abs darkerDiv" style="top: 115px; left:360px; width:400px; height: 600px; border-radius: 10px; border:5px solid #fdfaf6;">
+
+        <div class="abs" style='top:100px; font-family: "suez one", serif; font-size: 48px; text-align: center; width: 100%;'>
+            Take a Selfie
+        </div>
+        <div class="abs"style='top:200px; font-family: "suez one", serif; font-size: 28px; text-align: center;'>
+            And get your biomarker analysis results instantly
+        </div>
+
+        <button class="abs" id="capture" style="font-size: 23px; top:330px; left: 105px;">CAPTURE</button>
+    </div>
+
+    <!-- resutls image -->
+    <div id="resDiv" style="position:fixed; top:120px; left: 770px; z-index: 1000; width: 100%; height: 100%; overflow: scroll; display: none;">
+        <!--img src="img/results.png" class="abs" style="top:0px; left: 0px; max-width:600px; height:auto;" /-->
+    </div>
+
+    <script>
+        const video = document.querySelector("#videoElement");
+
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                    const vsettings = (stream.getVideoTracks()[0].getSettings());
+                    const vwidht = vsettings.width;
+                    const vheight = vsettings.height;
+                    const vratio = vwidht / vheight;
+
+                    canvasElement.height = Math.round (canvasElement.width / vratio);
+                    canvasToSend.height =  Math.round (canvasToSend.width / vratio);
+            })
+                .catch(function (error) {
+                    console.log("Something went wrong!");
+                    console.log(error);
+            });
+        }
+    </script>
+
+
+    <form id="uploadForm" enctype="multipart/form-data" style="display: none;">
+        <input type="file" name="file" id="fileInput" />
+        <input type="text" name="res" id="resInput" />
+        <input type="text" name="dim" id="dimInput" />
+        <input type="text" name="score" id="scoreInput" />
+        <button type="submit" id="uploadButton">Upload</button>
+    </form>
+
+    <script>
+        const canvas = document.getElementById('canvasElement');
+        const canvasToSend = document.getElementById('canvasElementToSend');
+        const captureButton = document.getElementById('capture');
+        const recaptureButton = document.getElementById('reCapture');
+        const sendPicButton = document.getElementById('sendPicFinal');
+
+
+        captureButton.addEventListener('click', () => {
+            showCanvas (true);
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvasToSend.getContext('2d').drawImage(video, 0, 0, canvasToSend.width, canvasToSend.height);
+        });
+
+        recaptureButton.addEventListener('click', () => {
+            showCanvas (false);
+        });
+
+        sendPicButton.addEventListener('click', () => {
+            
+            canvasToSend.toBlob ( blob => {
+
+                document.getElementById("loadingImg").style.display = "";
+                document.getElementById("disableAnalyze").style.display = "";
+                
+                const formdata = new FormData();
+                formdata.append("image", blob);
+
+                formdata.append("side_image", blob);
+                formdata.append("return_maps", "");
+                formdata.append("return_marks", "");
+                formdata.append("roi_outline_color", "");
+                formdata.append("return_side_results", "");
+
+                const file = new File( [ blob ], "mycanvas.jpg" );
+                const dT = new DataTransfer();
+                dT.items.add( file );
+                document.getElementById( "fileInput" ).files = dT.files;
+
+                const requestOptions = {
+                    method: 'POST',
+                    body: formdata,
+                    redirect: 'follow',
+                    headers: {
+                        'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
+                    }
+                };
+
+                const requestOptionsForSaving = {
+                    method: 'POST',
+                    body: formdata,
+                    redirect: 'follow',
+                };
+
+                fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
+                    .then(response => response.text())
+                    .then(async (result) => {
+                        //console.log(result);
+                        document.getElementById("resInput").value = result;
+                        document.getElementById("dimInput").value = generateDimJson();
+                        showResults (result);
+                    }).then(
+                        () => {
+                            document.getElementById('uploadButton').click();
+                        }
+                    ) 
+            
+            },"image/jpeg", 1);
+
+
+            
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            const res = document.getElementById('resInput').value;
+            const dim = document.getElementById('dimInput').value;
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('res', res);
+            formData.append('dim', dim);
+
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById("loadingImg").style.display = "none";
+                alert(result);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        });
+
+    </script>
+
+
+</body>
+</html>
+
+
+
+
+
