@@ -76,7 +76,7 @@
 
     <script>
 
-        document.getElementById ("loadingImg").style.display = "";
+        $$("loadingImg").style.display = "";
 
         fetch('/show_db', {
             method: 'GET'
@@ -86,14 +86,14 @@
             renderTable (result);
         })
         .catch(error => {
-            document.getElementById ("loadingImg").style.display = "none";
+            $$("loadingImg").style.display = "none";
             console.error(error);
         });
 
         const renderTable = res => {
 
-            document.getElementById ("loadingImg").style.display = "none";
-            const table = document.getElementById ("resTable");
+            $$("loadingImg").style.display = "none";
+            const table = $$("resTable");
             let trs = "";
 
             const rows = Array.from (JSON.parse(res).rows);
@@ -120,7 +120,7 @@
             const heightFactor = dim.height / 384;
 
             // show loading sign:
-            const loading = document.getElementById ("loadingImg");
+            const loading = $$("loadingImg");
             loading.style.display = "";
             loading.style.left = (container.getBoundingClientRect().left - 285) + "px";
             loading.style.top = (container.getBoundingClientRect().top - 110) + "px";
@@ -132,8 +132,8 @@
             .then(response => response.text())
             .then(result => {
                 console.log(result);
-                const selfieImg = document.getElementById ("selfieImg");
-                const picDiv = document.getElementById ("picDiv");
+                const selfieImg = $$("selfieImg");
+                const picDiv = $$("picDiv");
                 selfieImg.src = `./tmp/${result}`;
 
                 picDiv.style.left = container.getBoundingClientRect().left + "px";
@@ -141,7 +141,7 @@
                 picDiv.style.display = "";
 
                 const resJson = res;
-                const resCanvas = document.getElementById("resCanvas");
+                const resCanvas = $$("resCanvas");
                 const ctx = resCanvas.getContext("2d");
 
                 ctx.clearRect(0, 0, resCanvas.width, resCanvas.height);
@@ -150,7 +150,7 @@
                 resCanvas.style.top = selfieImg.style.top;
 
                 resCanvas.style.display = "";
-                document.getElementById ("toggleMarksBtn").innerText = "Hide Marks";
+                $$("toggleMarksBtn").innerText = "Hide Marks";
 
                 Array.from (resJson.result.brown_spot.rectangle).forEach(element => {
                     
@@ -179,11 +179,11 @@
         }
 
         const hidePic = () => {
-            document.getElementById ("picDiv").style.display = "none";
+            $$("picDiv").style.display = "none";
         }
 
         const toggleMarks = button => {
-            const resCanvas = document.getElementById("resCanvas");
+            const resCanvas = $$("resCanvas");
             resCanvas.style.display = (resCanvas.style.display === "none") ? "" : "none";
             button.innerText = (resCanvas.style.display === "none") ? "Show Marks" : "Hide Marks";
         }

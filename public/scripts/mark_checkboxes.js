@@ -1,6 +1,6 @@
 
 const toggleAnimCb = outer => {
-    const cb = document.getElementById (outer.id.replace(/_outer/i, ""));
+    const cb = $$(outer.id.replace(/_outer/i, ""));
     cb.click();
     animateCb (outer, cb);
 }
@@ -8,7 +8,7 @@ const toggleAnimCb = outer => {
 const animateCb = (outer, cb) => {
     const direction = (cb.checked ? 1 : -1);
 
-    const inner = document.getElementById (outer.id.replace(/_outer/i, "_inner"));
+    const inner = $$(outer.id.replace(/_outer/i, "_inner"));
     const intLeft = parseInt (inner.style.left.replace (/px/i, ""));
     if (direction === 1 && intLeft >= 30) {
         outer.style.border = "4px solid #ff8888";
@@ -28,13 +28,13 @@ const animateCb = (outer, cb) => {
 }
 
 const mark_cb_get_cb_from_outer = outer => {
-    return document.getElementById (outer.id.replace(/_outer/i, ""));
+    return $$(outer.id.replace(/_outer/i, ""));
 }
 
 const mark_cb_get_inner_from_outer = outer => {
-    return document.getElementById (outer.id.replace(/_outer/i, "_inner"));
+    return $$(outer.id.replace(/_outer/i, "_inner"));
 }
 
 const mark_cb_get_outer_from_cb = cb => {
-    return document.getElementById (`${cb.id}_outer`);
+    return $$(`${cb.id}_outer`);
 }
