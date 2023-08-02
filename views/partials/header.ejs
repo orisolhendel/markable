@@ -1,15 +1,32 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora&family=Quattrocento&display=swap" rel="stylesheet">
+<style>
+/* latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkq18ndeYxZ0.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* latin */
+@font-face {
+  font-family: 'Quattrocento';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./fonts/OZpEg_xvsDZQL_LKIF7q4jP3w2j6XYvVuQ.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+    
 <style>
 button {
-            font-family: 'lora', serif;
+            font-family: 'Quattrocento';
             font-size: 18px;
             color: #ffffff;
             border: none;
             border-radius: 20px;
-            width: 200px;
-            height: 45px;
             box-shadow: 1.41px 1.41px 5px #757575;
             background: rgba(117, 117, 117, 0.96);
             cursor: pointer;
@@ -21,8 +38,8 @@ button:hover {
 }
 
 .captionText {
-            font-family: helvetica-w01-light, helvetica-w02-light, sans-serif; 
-            font-size:16px;
+            font-family: 'Lora'; 
+            font-size:18px;
             padding: 10px;
             color:#777777;
             cursor: pointer;
@@ -36,6 +53,10 @@ button:hover {
 
 .abs {
     position: absolute;
+}
+
+.fxd {
+    position: fixed;
 }
 
 .hand {
@@ -67,21 +88,21 @@ button:hover {
     <img src="../img/logo.png" width="300px" height="auto" style="cursor: pointer;" onclick="location.href = '/'">
 </div>
 
-<div class="abs" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 25px; width:100%; height: 58px; right: 0px; top:0px; background-color: #ffffff;">
+<div class="abs" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 25px; width:100%; height: 58px; right: 0px; top:0px; background-color: #ffffff; margin: 0%;">
     <div class="abs" style="right: 0px; top:18px;">
-        <div class="hideForMobile captionText" onclick="location.href = 'https://www.markable.life/about'" >
+        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'" >
             About
         </div>
-        <div class="hideForMobile captionText" onclick="location.href = 'https://www.markable.life/technology'">
+        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             Technology
         </div>
-        <div class="hideForMobile captionText" onclick="location.href = 'https://www.markable.life/faq'">
+        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             FAQ
         </div>
-        <div class="hideForMobile captionText" onclick="location.href = 'https://www.markable.life/blank-2'">
+        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             Treatment Options
         </div>
-        <div class="hideForMobile captionText" onclick="location.href = 'https://www.markable.life/blog'">
+        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             Articles
         </div>
         <div class="hideForMobile captionText" onclick="alert(calctScore)" style="display: none;">

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta content='width=device-width; initial-scale=0.75; maximum-scale=0.75; user-scalable=yes;' name='viewport' />
     <title></title>
     <style>
 
@@ -29,10 +29,17 @@
             height: 90px;
         }
 
+        @media only screen and (min-width: 1000px) { /* web only */
+            body.bgImage {
+                background-image: url('../img/bg.png');
+            }
+        }
+
         @media only screen and (max-width: 1000px) {
             img.clipLocationMobile {
-                left: 100px;
-                top:100px;
+                left: 5%;
+                width:93%;
+                top:90px;
             }
         }
 
@@ -40,18 +47,53 @@
             img.clipLocationWeb {
                 right: 100px;
                 top:200px;
+                width: 440px;
             }
         }
 
         @media only screen and (max-width: 1000px) {
             div.introTextLocationMobile {
-                top: 570px;
+                left:5%;
+                top: 62%;
             }
         }
 
         @media only screen and (min-width: 1000px) {
             div.introTextLocationWeb {
+                left: 100px; 
                 top: 170px;
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            button.buttonLayoutMobile {
+                bottom:1%;
+                left: 3%;
+                width:95%;
+                height: 5%
+            }
+        }
+
+        @media only screen and (min-width: 1000px) {
+            button.buttonLayoutWeb {
+                left: 100px; 
+                top: 670px;  
+                width:300px; 
+                height: 50px; 
+            }
+        }
+
+        @media only screen and (max-width: 1000px) {
+            div.mediaLocationMobile {
+                left: 5%;
+                top:90px;
+            }
+        }
+
+        @media only screen and (min-width: 1000px) {
+            div.mediaLocationWeb {
+                right: 160px; 
+                top:115px; 
             }
         }
     </style>
@@ -64,7 +106,8 @@
             $$("introDiv").style.display = "none";
             $$("vidDiv").style.display = "";
             $$("leftDiv").style.display = "";
-            document.body.style.backgroundImage = "";
+            document.body.classList.remove("bgImage");
+            console.log (document.body.style.backgroundImage);
         }
 
         const showCanvas = show => {
@@ -173,70 +216,58 @@
     </script>
 </head>
 
-<body style="background-image: url('../img/bg.png');">
+<body class="bgImage">
 
     <%- include('../partials/header'); %>
 
     <!-- indroduction: -->
     <div id="introDiv">
-        <div class="abs introTextLocationMobile introTextLocationWeb" style="left: 100px; font-family: 'lora' serif;">
-            <div nclass="abs" style="font-size: 36px; line-height: 48px; max-width: 600px;">
+        <div class="abs introTextLocationMobile introTextLocationWeb" style="font-family: 'Lora';">
+            <div style="font-size: 36px; line-height: 48px; max-width: 600px;">
                 Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle? 
             </div>
 
-            <div style="font-size: 21px;font-weight: 100; font-family: 'Quattrocento', serif; line-height: 33px; max-width: 600px;">
+            <div style="font-size: 32px;font-weight: 100; font-family: 'Quattrocento'; line-height: 33px; max-width: 600px;">
                 <br /><br />
                 Brain fog, extreme fatigue and even depression are just a few of
                 the many troubling symptoms of perimenopause
             </div>
 
-            <div style="font-size: 24px; font-weight: 900; font-family: 'Quattrocento', serif; line-height: 33px; max-width: 600px;">
+            <div style="font-size: 24px; font-weight: 900; font-family: 'Quattrocento'; line-height: 33px; max-width: 600px;">
                 <br /><br />
                 Take a selfie and instantly receive your perimenopause assessment.
+                <br /><br /><br /><br /><br /><br />
             </div>
         </div>
-        <img class="abs letsGetStarted clipLocationMobile clipLocationWeb" width="440px;" height="auto" src="../img/clip.gif"/>
-        <button id="letsGetStarted" class="abs" style="position: fixed; left: 100px; top: 620px;  width:300px; height: 50px; font-size: 34px; font-family: sans-serif;" onclick="getStarted()">Let's Get Started!</button>
+        <img class="abs letsGetStarted clipLocationMobile clipLocationWeb" height="auto" src="../img/clip.gif"/>
+        <button id="letsGetStarted" class="fxd buttonLayoutMobile buttonLayoutWeb" style="font-size: 32px;" onclick="getStarted()">Let's Get Started!</button>
     </div>
 
     <!-- video and canvas -->
-    <div id="vidDiv" class="abs" style="top:115px; left: 760px; width:550px; height: 600px; display: none;">
+    <div id="vidDiv" class="abs mediaLocationMobile mediaLocationWeb" style="width:550px; height: 600px; display: none;">
   
         <div id="mediaDiv">
             <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1);" ></video>
-            <canvas id="canvasElement" width="480" height="360" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
-            <canvas id="canvasElementToSend" width="4096" height="4096" style="visibility:hidden; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
+            <canvas id="canvasElement" width="480" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
+            <canvas id="canvasElementToSend" width="4096" style="visibility:hidden; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
             <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
             <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
 
-            <canvas  id="placeHolderCanvas"  width="480" height="360" class="abs" style="top:30px; left: 38px; z-index: 100;">
-            
-            </canvas>
+            <canvas  id="placeHolderCanvas"  width="480" class="abs" style="top:30px; left: 38px; z-index: 100;"></canvas>
 
-            <script>
-                   
-                const phCanvas = $$("placeHolderCanvas");
-                const phx = phCanvas.getContext("2d");
-
-                phx.beginPath();
-                phx.ellipse(240, 180, 200 , 230, 0, 2 * Math.PI, false);
-                phx.strokeStyle = "rgba(0,0,0,0.4)";
-                phx.lineWidth = 200
-                phx.stroke();
-                phx.closePath();
-
-            </script>
+            <div id="captureWrapper" class="abs" style="width:480px; height: 75px; background-color: rgba(0, 0, 0, 0.5);"></div>
+            <div id="capture" class="abs hand" style="width: 46px; height: 46px; background-color: #f4ebe5; border-radius: 50px; border: 8px double white; z-index: 400;"></div>
             <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
         </div>
     </div>
 
     <!-- checkbox div -->
     <div id="checkDiv" class="abs" style="top:165px; left:410px; width: 100%; border:5px solid #fdfaf6; border-radius: 10px; width:920px; height: 600px;; display: none;">
-        <div class="abs" style='top:30px; left:20px; font-size: 30px; font-family: "suez one", serif; text-align: center; width: 100%; color:#777777; border: 1px solid #ffffff;'>
+        <div class="abs" style='top:30px; left:20px; font-size: 30px; font-family: "Lora"; text-align: center; width: 100%; color:#777777; border: 1px solid #ffffff;'>
             While We Analyze Your Biomarkers, <br />
             Please Check All That Applies To You
         </div>
-        <table class="abs" style='left: 30px; top:120px; font-size: 18px; font-family: "suez one", serif; width: 92%; vertical-align: top; '>
+        <table class="abs" style='left: 30px; top:120px; font-size: 18px; font-family: "Quattrocento"; width: 92%; vertical-align: top; '>
             <tr>
                 <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp"}); %></td>
                 <td class="checkTd" onclick="$$('cb1_outer').click();">New onset heavy and/or longer flow</td>
@@ -278,19 +309,45 @@
     </div>
 
     <!-- left div -->
-    <div id="leftDiv" class="abs" style="top: 135px; left:360px; width:400px; height: 600px; border-radius: 10px; display:none;">
+    <div id="leftDiv" class="abs" style="top: 150px; left:100px; max-width:400px; display:none;">
 
-        <span style='font-family: "lora", serif; font-size: 32px; font-weight: 900; text-align: left; width: 100%;'>
+        <span style='font-family: "Lora"; font-size: 36px; font-weight: 900; text-align: left; width: 100%;'>
             Analyze Your Biomarkers
             <br /><br />
         </span>
-        <span style='font-family: "suez one", serif; font-size: 28px; text-align: left;'>
+        <span style='font-family: "Quattrocento"; font-size: 32px; text-align: left;'>
             Take a selfie and get your biomarker analysis results instantly 
             <br /><br />
             <a href="javascript:void(0)">Why test my biomarkers</a>
+            <br /><br />
         </span>
-
-        <button class="abs" id="capture" style="font-size: 23px; top:330px; left: 105px;">CAPTURE</button>
+        <div class="abs" style="    background-color: #f4ebe5; 
+                        width: 360px;
+                        height: 180px;;
+                        padding:10px;">
+            <div style="width:100%; height: 100%; border: 1px solid black;">
+                <div class="abs" style="left: 0px; top: 14px; font-family: 'Quattrocento'; font-size: 24px; font-weight: 900; padding-left: 0px;">
+                    &nbsp; &nbsp; Before You Take Your Picture
+                </div>
+                <div class="abs" style="left: 0px; top: 40px; font-family: 'Quattrocento'; font-size: 18px;">
+                    <img class="abs" style="left: 16px; top: 5px; left: 17px;" src="./img/vsign.png" width="30" height="auto" />
+                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Remove your glasses</div>
+                </div>
+                <div class="abs" style="left: 0px; top: 74px; font-family: 'Quattrocento'; font-size: 18px;">
+                    <img class="abs" style="left: 16px; top: 5px; left: 17px;;" src="./img/vsign.png" width="30" height="auto" />
+                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Remove your makeup</div>
+                </div>
+                <div class="abs" style="left: 0px; top: 108px; font-family: 'Quattrocento'; font-size: 18px;">
+                    <img class="abs" style="left: 16px; top: 5px; left: 17px;;" src="./img/vsign.png" width="30" height="auto" />
+                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Ensure proper lighting</div>
+                </div>
+                <div class="abs" style="left: 0px; top: 142px; font-family: 'Quattrocento'; font-size: 18px;">
+                    <img class="abs" style="left: 16px; top: 5px; left: 17px;;" src="./img/vsign.png" width="30" height="auto" />
+                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Face directly at camera</div>
+                </div>
+                
+            </div>
+        </div>
     </div>
 
     <!-- resutls image -->
@@ -312,6 +369,28 @@
 
                     canvasElement.height = Math.round (canvasElement.width / vratio);
                     canvasToSend.height =  Math.round (canvasToSend.width / vratio);
+
+                    // draw place holder
+                    const phCanvas = $$("placeHolderCanvas");
+                    const phx = phCanvas.getContext("2d");
+
+                    phCanvas.height =  Math.round (phCanvas.width / vratio);
+
+                    phx.beginPath();
+                    phx.ellipse(phCanvas.width / 2, 160, 290 , 320, 0, 2 * Math.PI, false);
+                    phx.strokeStyle = "rgba(0,0,0,0.4)";
+                    phx.lineWidth = 395;
+                    phx.stroke();
+                    phx.closePath();
+
+                    $$("captureWrapper").style.left = "38px";
+                    $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
+                    $$("capture").style.left = `${phCanvas.width / 2 - 23 + 34}px`
+                    $$("capture").style.top = `${phCanvas.height - 39}px`
+
+                    if (window.innerWidth < 1000) {
+                        $$("leftDiv").style.top = `${phCanvas.height + 180}px`;
+                    }
             })
                 .catch(function (error) {
                     console.log("Something went wrong!");
