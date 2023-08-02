@@ -247,9 +247,11 @@
     <div id="vidDiv" class="abs mediaLocationMobile mediaLocationWeb" style="width:550px; height: 600px; display: none;">
   
         <div id="mediaDiv">
-            <video autoplay="true" id="videoElement" width="480" height="auto" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1);" ></video>
+            <div id="videoWrapper" class="abs" style="left:38px; top: 30px; margin: 0px; padding: 0px;">
+                <video  id="videoElement" autoplay="true" loop="true" muted="true" playsinline="true" width="480" height="auto" style="background-color: #ffffff; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1);" ></video>
+            </div>
             <canvas id="canvasElement" width="480" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
-            <canvas id="canvasElementToSend" width="4096" style="visibility:hidden; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
+            <canvas id="canvasElementToSend" width="4096" style="display:none; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
             <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
             <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
 
@@ -465,6 +467,7 @@
                 fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
                     .then(async (result) => {
+                        console.log (result);
                         $$("resInput").value = result;
                         $$("dimInput").value = generateDimJson();
                         showResults (result);
