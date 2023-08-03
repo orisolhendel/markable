@@ -29,32 +29,28 @@
             height: 90px;
         }
 
-        @media only screen and (min-width: 1000px) { /* web only */
-            body.bgImage {
-                background-image: url('../img/bg.png');
-            }
-        }
-
         @media only screen and (max-width: 1000px) {
             img.clipLocationMobile {
-                left: 5%;
-                width:93%;
-                top:90px;
+                left: 10px;
+                top: 110px;
+                width: 400px; 
+                height: 400px;
             }
         }
 
         @media only screen and (min-width: 1000px) {
             img.clipLocationWeb {
                 right: 100px;
-                top:200px;
+                top: 200px;
                 width: 440px;
+                height: 440px;
             }
         }
 
         @media only screen and (max-width: 1000px) {
             div.introTextLocationMobile {
-                left:5%;
-                top: 62%;
+                left:10px;
+                top: 535px;
             }
         }
 
@@ -67,10 +63,10 @@
 
         @media only screen and (max-width: 1000px) {
             button.buttonLayoutMobile {
-                bottom:1%;
-                left: 3%;
+                bottom:10px;
+                left: 15px;
                 width:95%;
-                height: 5%
+                height: 50px
             }
         }
 
@@ -85,15 +81,15 @@
 
         @media only screen and (max-width: 1000px) {
             div.mediaLocationMobile {
-                left: 5%;
-                top:90px;
+                left: 10px;
+                top: 90px;
             }
         }
 
         @media only screen and (min-width: 1000px) {
             div.mediaLocationWeb {
                 right: 160px; 
-                top:115px; 
+                top: 115px; 
             }
         }
     </style>
@@ -106,7 +102,7 @@
             $$("introDiv").style.display = "none";
             $$("vidDiv").style.display = "";
             $$("leftDiv").style.display = "";
-            document.body.classList.remove("bgImage");
+            //document.body.classList.remove("bgImage");
             console.log (document.body.style.backgroundImage);
         }
 
@@ -239,8 +235,14 @@
                 <br /><br /><br /><br /><br /><br />
             </div>
         </div>
-        <img class="abs letsGetStarted clipLocationMobile clipLocationWeb" height="auto" src="../img/clip.gif"/>
-        <button id="letsGetStarted" class="fxd buttonLayoutMobile buttonLayoutWeb" style="font-size: 32px;" onclick="getStarted()">Let's Get Started!</button>
+        <img class="abs letsGetStarted clipLocationMobile clipLocationWeb" src="../img/clip.gif"/>
+
+
+        <!-- 2 fader divs: -->
+        <div class="fxd onlyForMobile" style="left: 0px; bottom: 0px; width: 100%; height: 65px; background-color: #ffffff;"></div>
+        <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
+                                background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
+        <button id="letsGetStarted" class="fxd buttonLayoutMobile buttonLayoutWeb" style="font-size: 32px; z-index: 100;" onclick="getStarted()">Let's Get Started!</button>
     </div>
 
     <!-- video and canvas -->
@@ -251,17 +253,83 @@
                 <video  id="videoElement" autoplay="true" loop="true" muted="true" playsinline="true" width="480" height="auto" style="background-color: #ffffff; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1);" ></video>
             </div>
             <canvas id="canvasElement" width="480" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
-            <canvas id="canvasElementToSend" width="4096" style="display:none; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
-            <button class="abs" id="reCapture" style="top:420px; left:60px; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
-            <button class="abs" id="sendPic" style="top:420px; left:300px; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
+            <canvas id="canvasElementToSend" width="960" style="display:none; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
 
             <canvas  id="placeHolderCanvas"  width="480" class="abs" style="top:30px; left: 38px; z-index: 100;"></canvas>
 
             <div id="captureWrapper" class="abs" style="width:480px; height: 75px; background-color: rgba(0, 0, 0, 0.5);"></div>
-            <div id="capture" class="abs hand" style="width: 46px; height: 46px; background-color: #f4ebe5; border-radius: 50px; border: 8px double white; z-index: 400;"></div>
+            <button id="capture" class="abs hand" style="width:120px; z-index: 400;">Take Selfie</button>
+            <button class="abs" id="reCapture" style="top:420px; left:60px; z-index: 400; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
+            <button class="abs" id="sendPic" style="top:420px; left:300px; z-index: 400; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
             <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
         </div>
     </div>
+
+    <script>
+
+        let vratio = 0;
+        let ellipseRatio = 0;
+        if (window.innerWidth > 1000) {
+            $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
+            $$("canvasElementToSend").height = $$("canvasElementToSend").width * 3 / 4;
+            vratio = 4 / 3;
+            ellipseRatio = 1;
+        } else {
+            $$("canvasElement").height = $$("canvasElement").width * 4 / 3;
+            $$("canvasElementToSend").height = $$("canvasElementToSend").width * 4 / 3;
+            vratio = 3 / 4;
+            ellipseRatio = 3 / 4.2;
+        }
+
+        const video = document.querySelector("#videoElement");
+
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+               .then(function (stream) {
+                    video.srcObject = stream;
+                    // const vsettings = (stream.getVideoTracks()[0].getSettings());
+                    // const vwidht = vsettings.width;
+                    // const vheight = vsettings.height;
+                    // const vratio = vwidht / vheight;
+
+                    //canvasElement.height = Math.round (canvasElement.width / vratio);
+                    //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
+
+                    // draw place holder
+                    const phCanvas = $$("placeHolderCanvas");
+                    const phx = phCanvas.getContext("2d");
+
+                    phCanvas.height =  Math.round (phCanvas.width / vratio);
+
+                    phx.beginPath();
+                    phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio , 320 / ellipseRatio, 0, 2 * Math.PI, false);
+                    phx.strokeStyle = "rgba(0,0,0,0.4)";
+                    phx.lineWidth = 395 / ellipseRatio;
+                    phx.stroke();
+                    phx.closePath();
+
+                    $$("captureWrapper").style.left = "38px";
+                    $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
+                    
+                    $$("capture").style.left = `${phCanvas.width / 2 - 20}px`
+                    $$("capture").style.top = `${phCanvas.height - 20}px`
+                    
+                    $$("reCapture").style.left = `${phCanvas.width / 2 - 150}px`
+                    $$("reCapture").style.top = `${phCanvas.height - 20}px`
+                    
+                    $$("sendPic").style.left = `${phCanvas.width / 2 + 50}px`
+                    $$("sendPic").style.top = `${phCanvas.height - 20}px`
+
+                    if (window.innerWidth < 1000) {
+                        $$("leftDiv").style.top = `${phCanvas.height + 180}px`;
+                    }
+           })
+               .catch(function (error) {
+                   console.log("Something went wrong!");
+                   console.log(error);
+           });
+        }
+    </script>
 
     <!-- checkbox div -->
     <div id="checkDiv" class="abs" style="top:165px; left:410px; width: 100%; border:5px solid #fdfaf6; border-radius: 10px; width:920px; height: 600px;; display: none;">
@@ -269,7 +337,7 @@
             While We Analyze Your Biomarkers, <br />
             Please Check All That Applies To You
         </div>
-        <table class="abs" style='left: 30px; top:120px; font-size: 18px; font-family: "Quattrocento"; width: 92%; vertical-align: top; '>
+        <table class="abs" style='left: 30px; top:120px; font-size: 18px; font-family: "Quattrocento"; width: 82; vertical-align: top; '>
             <tr>
                 <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp"}); %></td>
                 <td class="checkTd" onclick="$$('cb1_outer').click();">New onset heavy and/or longer flow</td>
@@ -311,7 +379,7 @@
     </div>
 
     <!-- left div -->
-    <div id="leftDiv" class="abs" style="top: 150px; left:100px; max-width:400px; display:none;">
+    <div id="leftDiv" class="abs" style="top: 150px; left:100px; max-width:400px; height: 700px; display:none;">
 
         <span style='font-family: "Lora"; font-size: 36px; font-weight: 900; text-align: left; width: 100%;'>
             Analyze Your Biomarkers
@@ -323,7 +391,7 @@
             <a href="javascript:void(0)">Why test my biomarkers</a>
             <br /><br />
         </span>
-        <div class="abs" style="    background-color: #f4ebe5; 
+        <div class="abs" style="background-color: #f4ebe5; 
                         width: 360px;
                         height: 180px;;
                         padding:10px;">
@@ -356,51 +424,6 @@
     <div id="resDiv" style="position:fixed; top:120px; left: 770px; z-index: 1000; width: 100%; height: 100%; overflow: scroll; display: none;">
         <!--img src="img/results.png" class="abs" style="top:0px; left: 0px; max-width:600px; height:auto;" /-->
     </div>
-
-    <script>
-        const video = document.querySelector("#videoElement");
-
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    video.srcObject = stream;
-                    const vsettings = (stream.getVideoTracks()[0].getSettings());
-                    const vwidht = vsettings.width;
-                    const vheight = vsettings.height;
-                    const vratio = vwidht / vheight;
-
-                    canvasElement.height = Math.round (canvasElement.width / vratio);
-                    canvasToSend.height =  Math.round (canvasToSend.width / vratio);
-
-                    // draw place holder
-                    const phCanvas = $$("placeHolderCanvas");
-                    const phx = phCanvas.getContext("2d");
-
-                    phCanvas.height =  Math.round (phCanvas.width / vratio);
-
-                    phx.beginPath();
-                    phx.ellipse(phCanvas.width / 2, 160, 290 , 320, 0, 2 * Math.PI, false);
-                    phx.strokeStyle = "rgba(0,0,0,0.4)";
-                    phx.lineWidth = 395;
-                    phx.stroke();
-                    phx.closePath();
-
-                    $$("captureWrapper").style.left = "38px";
-                    $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
-                    $$("capture").style.left = `${phCanvas.width / 2 - 23 + 34}px`
-                    $$("capture").style.top = `${phCanvas.height - 39}px`
-
-                    if (window.innerWidth < 1000) {
-                        $$("leftDiv").style.top = `${phCanvas.height + 180}px`;
-                    }
-            })
-                .catch(function (error) {
-                    console.log("Something went wrong!");
-                    console.log(error);
-            });
-        }
-    </script>
-
 
     <form id="uploadForm" enctype="multipart/form-data" style="display: none;">
         <input type="file" name="file" id="fileInput" />
