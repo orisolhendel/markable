@@ -67,8 +67,7 @@ const hamb_interval_to_x = hamb => {
         lower.style.top = `${lower.level}px`;
     }
 
-    console.log (menu.pos)
-    if (menu.pos >= -260) {
+    if (menu.pos >= -250) {
         menu.style.left = `${menu.pos}px`;
     }
 
@@ -76,7 +75,7 @@ const hamb_interval_to_x = hamb => {
     lower.style.transform = `rotate(${lower.degrees}deg)`;
 
     if (upper.degrees >= 45) {
-        menu.style.left = "-260px";
+        menu.style.left = "-250px";
         clearTimeout (hamb.interval);
         hamb.interval = -1;
         hamb.state = hamb_states.x;
@@ -121,4 +120,4 @@ const hamb_interval_to_initial = hamb => {
     }
 
     hamb.interval = window.setTimeout (() => hamb_interval_to_initial(hamb), 6);
-    }
+}

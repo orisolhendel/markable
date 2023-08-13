@@ -46,7 +46,8 @@ function uploadFiles(req, res) {
         console.log (uid_arr);
         console.log (uid);
 
-        client.query(`INSERT INTO Selfies (id, dt, selfie, results, selfiesDim, uid) values (DEFAULT, NOW(), ($1), '${req.body.res}', '${req.body.dim}', '${uid}')`,
+        client.query(`  INSERT INTO Selfies (id, dt, selfie, results, selfiesDim, score, uid) values 
+                        (DEFAULT, NOW(), ($1), '${req.body.res}', '${req.body.dim}', '${req.body.score}', '${uid}')`,
                            [imgData],
                            function(err) {
                                 if (err) {
@@ -79,7 +80,7 @@ app.get('/show_db', function(req, res, next) {
 
     client.connect();
 
-    client.query('SELECT id, dt, results, selfiesDim, uid FROM Selfies ORDER BY dt DESC LIMIT 15',
+    client.query('SELECT id, dt, results, selfiesDim, score, uid FROM Selfies ORDER BY dt DESC LIMIT 15',
                         function(err, readResult) {
                             if (err) {
                                 console.log (err);

@@ -1,95 +1,194 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="shortcut icon" href="./img/fab.ico">
     <meta content='width=device-width; initial-scale=0.75; maximum-scale=0.75; user-scalable=yes;' name='viewport' />
     <title></title>
     <style>
-
-        #sendPicFinal {
-            background-color: #712337;
-        }
-
-        #sendPicFinal:hover {
-            background-color:#a5dbac;
-        }
-
-        #letsGetStarted {
-            background-color: #861331;
-        }
-
-        #letsGetStarted:hover {
-            background-color:#a5dbac;
-        }
-
-        .checkTd {
-            vertical-align: top;
+        
+        .checkDivWrapper {
             cursor: pointer;
-            color: #777777;
-            width: 130px;
-            height: 90px;
+            color: #333333;
+            font-weight: 600;
+            word-wrap: break-word;  
+            padding-top: 11px;     
+            padding-bottom: 11px;     
+            padding-left: 8px;    
         }
 
-        @media only screen and (max-width: 1000px) {
-            img.clipLocationMobile {
-                left: 10px;
-                top: 110px;
-                width: 400px; 
-                height: 400px;
-            }
-        }
+        @media only screen and (max-width: 1000px) { /* mobile */
 
-        @media only screen and (min-width: 1000px) {
-            img.clipLocationWeb {
-                right: 100px;
-                top: 200px;
-                width: 440px;
-                height: 440px;
-            }
-        }
-
-        @media only screen and (max-width: 1000px) {
-            div.introTextLocationMobile {
+            div.introTextLayout {
                 left:10px;
-                top: 535px;
+                top: 595px;
             }
-        }
 
-        @media only screen and (min-width: 1000px) {
-            div.introTextLocationWeb {
-                left: 100px; 
-                top: 170px;
+            video.clipLayout {
+                right: -50px;
+                top: 0px;
+                width: 600px; 
+                height: 600px;
             }
-        }
 
-        @media only screen and (max-width: 1000px) {
-            button.buttonLayoutMobile {
-                bottom:10px;
-                left: 15px;
-                width:95%;
-                height: 50px
+            div.leftDivLayout {
+                left: 48px;
+                top:800px;
             }
-        }
 
-        @media only screen and (min-width: 1000px) {
-            button.buttonLayoutWeb {
-                left: 100px; 
-                top: 670px;  
-                width:300px; 
-                height: 50px; 
+            div.checkboxGridLayout {
+                left:10px;
+                top: 80px;
+                width: 460px;
+                height: 120%;
             }
-        }
 
-        @media only screen and (max-width: 1000px) {
-            div.mediaLocationMobile {
+            div.checkBoxWrapperLayout {
+                display: grid; 
+                grid-template-columns: 1fr; 
+                grid-gap: 14px;
+                left: 5px; 
+                top:80px; 
+            }
+
+            div.checkBoxCaptionLayout {
+                left: 10px;
+                top:0px;
+                font-size: 24px;
+            }
+
+            div.mediaLayout {
                 left: 10px;
                 top: 90px;
             }
+
+            div.mediaLayoutAfterRes {
+                left: 10px; 
+                top: 50px; 
+            }
+
+            div.resDivLayout {
+                left:20px;
+                top:725px;
+            }
+
+            div.leftOrBottomLayout { /* left side on web, bottom side on mobile */
+                width:100%
+            }
+
+            button.startButtonLayout {
+                bottom:10px;
+                left: 10px;
+                width:96%;
+                height: 50px
+            }
+
+            button.sendPicFinalLayout {
+                left: 20px;
+                bottom: 50px;
+                width: 95%;
+                height: 50px;
+            }
+
+            button.discoverTreatLayout {
+                left: 20px;
+                bottom: 50px;
+                width: 95%;
+                height: 50px;
+            }
+
+            img.loadingGifLayout {
+                position: fixed;
+                right: 250px;
+                bottom: 100px;
+            }
         }
 
-        @media only screen and (min-width: 1000px) {
-            div.mediaLocationWeb {
-                right: 160px; 
+        /* ===================================================================================================================================== */
+
+        @media only screen and (min-width: 1000px) { /* web */
+
+            div.introTextLayout {
+                left: 100px; 
+                top: 170px;
+            }
+
+            video.clipLayout {
+                right: 0px;
+                top: 100px;
+                width: 640px;
+                height: 640px;
+            }
+
+            div.leftDivLayout {
+                left: 100px;
+                top:150px;
+            }
+
+            div.checkboxGridLayout {
+                right: 400px; 
+                top: 80px;
+                width: 920px;
+                height: 100%;
+            }
+
+            div.checkBoxWrapperLayout {
+                display: grid; 
+                grid-template-columns: 1fr 1fr; 
+                grid-gap: 24px;
+                left: 5px; 
+                top:120px; 
+            }
+
+            div.checkBoxCaptionLayout {
+                left: 20px;
+                top:15px;
+                font-size: 30px;
+            }
+
+            div.mediaLayout {
+                right: 60px; 
                 top: 115px; 
+            }
+
+            div.mediaLayoutAfterRes {
+                right: 100px; 
+                top: 50px; 
+            }
+
+            div.resDivLayout {
+                left:30px;
+                top:80px;
+            }
+
+            div.leftOrBottomLayout { /* left side on web, bottom side on mobile */
+                width:55%
+            }
+
+            button.startButtonLayout {
+                left: 100px; 
+                bottom: 100px;  
+                width:300px; 
+                height: 50px; 
+            }
+
+            button.sendPicFinalLayout {
+                right:330px;
+                bottom:150px; 
+                width: 220px;
+                height: 40px;
+            }
+
+            button.discoverTreatLayout {
+                right:330px;
+                bottom:150px; 
+                width: 380px;
+                height: 40px;
+            }
+
+            img.loadingGifLayout {
+                position: absolute;
+                right: 20px;
+                bottom: 280px;
             }
         }
     </style>
@@ -102,7 +201,6 @@
             $$("introDiv").style.display = "none";
             $$("vidDiv").style.display = "";
             $$("leftDiv").style.display = "";
-            //document.body.classList.remove("bgImage");
             console.log (document.body.style.backgroundImage);
         }
 
@@ -122,17 +220,11 @@
         }
 
         const showResults = (res) => {
-            try {
-                $$("resDiv").innerHTML = calctScore (res, getCheckCount());
-            } catch (e) {
-                alert (e)
-                $$("resDiv").innerHTML = e;
-            }
+
+            $$("scoreInput").value = calcScore (res, getUserInfo());
 
             $$("resDiv").style.display = "";
             $$("vidDiv").style.display = "";
-            $$("vidDiv").style.left = "220px";
-            $$("vidDiv").style.border = "none";
             $$("mediaDiv").style.display = "";
             $$("canvasElement").style.display = "";
             $$("videoElement").style.display = "none";
@@ -140,8 +232,33 @@
             $$("leftDiv").style.display = "none";
             $$("reCapture").style.display = "none";
             $$("sendPic").style.display = "none";
+            $$("placeHolderCanvas").style.display = "none";
+            $$("captureWrapper").style.display = "none";
 
-            //alert (calctScore (res, getCheckCount()));
+            $$("vidDiv").classList.remove ("mediaLayout");
+            $$("vidDiv").classList.add ("mediaLayoutAfterRes");
+
+            if (window.innerWidth < 1000) { // TODO - CHANGE CLASS INSTEAD OF SCECIFIC STYLE
+                // $$("vidDiv").style.left = "10px";
+                // $$("vidDiv").style.top = "50px";
+                // $$("resDiv").style.left = "20px";
+                // $$("resDiv").style.top = "725px";
+            } else {
+                // $$("vidDiv").style.left = "";
+                // $$("vidDiv").style.right = "100px";
+                // $$("vidDiv").style.top = "50px";
+                // $$("resDiv").style.left = "30px";
+                // $$("resDiv").style.top = "50px";
+            }
+
+            const scoreJson = JSON.parse ($$("scoreInput").value);
+
+            console.log (scoreJson);
+
+            $$("scoreSpan").innerText = scoreJson.total_score_empiric
+            //$$("dateSpanRes").innerText = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(new Date());
+
+            //alert (calcScore (res, getCheckCount()));
             //$$("resCanvas").style.display = "";
 
             //$$("resCanvas").style.left = $$("canvasElement").style.left;
@@ -191,23 +308,31 @@
             toggleAnalyzeDisableness ();
         }
 
-        const getCheckCount = () => {
+        const getSymptomList = () => {
             const checks = document.querySelectorAll('input[type="checkbox"]:checked');
-            let count = 0;
+            let arr = [];
             checks.forEach (check => {
                 if (check.id === 'no_symp') {
-                    return 0;
+                    return [];
                 } else {
-                    count++;
+                    arr.push (check.id.replace ("cb", "symp"));
                 }
             });
-            return count;
+            return arr;
+        }
+
+        const getUserInfo = () => {
+            const info = {};
+            info.symptoms = getSymptomList ();
+            info.age = $$("age").value
+            info.other = ($$("__other").checked) ? $$("__other_text").value : "";
+            return info;
         }
 
         const toggleAnalyzeDisableness = () => {
             const checks = document.querySelectorAll('input[type="checkbox"]:checked');
             const disdiv = $$("disableAnalyze");
-            disdiv.style.display = checks.length ? "none" : "";
+            disdiv.style.display = checks.length && $$("age").value ? "none" : "";
         }
     </script>
 </head>
@@ -218,49 +343,54 @@
 
     <!-- indroduction: -->
     <div id="introDiv">
-        <div class="abs introTextLocationMobile introTextLocationWeb" style="font-family: 'Lora';">
-            <div style="font-size: 36px; line-height: 48px; max-width: 600px;">
+        <div class="abs introTextLayout" style="font-family: 'Lora';">
+            <div class="leftOrBottomLayout" style="font-size: 36px; line-height: 48px;;">
                 Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle? 
             </div>
 
-            <div style="font-size: 32px;font-weight: 100; font-family: 'Quattrocento'; line-height: 33px; max-width: 600px;">
+            <div class="leftOrBottomLayout" style="font-size: 32px;font-weight: 100; font-family: 'Quattrocento'; line-height: 33px;">
                 <br /><br />
                 Brain fog, extreme fatigue and even depression are just a few of
                 the many troubling symptoms of perimenopause
             </div>
 
-            <div style="font-size: 24px; font-weight: 900; font-family: 'Quattrocento'; line-height: 33px; max-width: 600px;">
+            <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 900; font-family: 'Quattrocento'; line-height: 33px;">
                 <br /><br />
                 Take a selfie and instantly receive your perimenopause assessment.
                 <br /><br /><br /><br /><br /><br />
             </div>
         </div>
-        <img class="abs letsGetStarted clipLocationMobile clipLocationWeb" src="../img/clip.gif"/>
+
+        <video class="abs clipLayout" width="50%" height="auto" autoplay="autoplay">
+            <source src="../img/clip.webm" type='video/webm; codecs="vp8, vorbis"'>
+        </video>
 
 
         <!-- 2 fader divs: -->
-        <div class="fxd onlyForMobile" style="left: 0px; bottom: 0px; width: 100%; height: 65px; background-color: #ffffff;"></div>
-        <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
+        <div id="faders">
+            <div class="fxd onlyForMobile" style="left: 0px; bottom: 0px; width: 100%; height: 65px; background-color: #ffffff;"></div>
+            <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
                                 background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
-        <button id="letsGetStarted" class="fxd buttonLayoutMobile buttonLayoutWeb" style="font-size: 32px; z-index: 100;" onclick="getStarted()">Let's Get Started!</button>
+        </div>
+        <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 32px; z-index: 100;" onclick="getStarted()">Let's Get Started!</button>
     </div>
 
     <!-- video and canvas -->
-    <div id="vidDiv" class="abs mediaLocationMobile mediaLocationWeb" style="width:550px; height: 600px; display: none;">
+    <div id="vidDiv" class="abs mediaLayout" style="width:550px; height: 600px; display: none;">
   
         <div id="mediaDiv">
-            <div id="videoWrapper" class="abs" style="left:38px; top: 30px; margin: 0px; padding: 0px;">
+            <div id="videoWrapper" class="abs" style="left:10px; top: 30px; margin: 0px; padding: 0px;">
                 <video  id="videoElement" autoplay="true" loop="true" muted="true" playsinline="true" width="480" height="auto" style="background-color: #ffffff; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1);" ></video>
             </div>
-            <canvas id="canvasElement" width="480" class="abs" style="top:30px; left: 38px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
+            <canvas id="canvasElement" width="480" class="abs" style="top:30px; left: 10px; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
             <canvas id="canvasElementToSend" width="960" style="display:none; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1)"></canvas>
 
-            <canvas  id="placeHolderCanvas"  width="480" class="abs" style="top:30px; left: 38px; z-index: 100;"></canvas>
+            <canvas  id="placeHolderCanvas"  width="480" class="abs" style="top:30px; left: 10px; z-index: 100;"></canvas>
 
             <div id="captureWrapper" class="abs" style="width:480px; height: 75px; background-color: rgba(0, 0, 0, 0.5);"></div>
-            <button id="capture" class="abs hand" style="width:120px; z-index: 400;">Take Selfie</button>
-            <button class="abs" id="reCapture" style="top:420px; left:60px; z-index: 400; display: none;"><span style="font-size: 21px;"> &lt;</span> &nbsp; &nbsp; Retake Selfie</button>
-            <button class="abs" id="sendPic" style="top:420px; left:300px; z-index: 400; display: none;" onclick="showCheckboxes()">✓ &nbsp; Analyze My Selfie</button>
+            <button id="capture" class="abs hand selfieButton" style="z-index: 400;">Take Selfie</button>
+            <button class="abs hand selfieButton" id="reCapture" style="left:60px; z-index: 400; display: none;"><span style="font-size: 21px;"> Retake</button>
+            <button class="abs hand selfieButton" id="sendPic" style="left:300px; z-index: 400; display: none;" onclick="showCheckboxes()"> Analyze Selfie</button>
             <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
         </div>
     </div>
@@ -278,7 +408,7 @@
             $$("canvasElement").height = $$("canvasElement").width * 4 / 3;
             $$("canvasElementToSend").height = $$("canvasElementToSend").width * 4 / 3;
             vratio = 3 / 4;
-            ellipseRatio = 3 / 4.2;
+            ellipseRatio = 3 / 4.4;
         }
 
         const video = document.querySelector("#videoElement");
@@ -308,21 +438,17 @@
                     phx.stroke();
                     phx.closePath();
 
-                    $$("captureWrapper").style.left = "38px";
+                    $$("captureWrapper").style.left = "10px";
                     $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
                     
-                    $$("capture").style.left = `${phCanvas.width / 2 - 20}px`
-                    $$("capture").style.top = `${phCanvas.height - 20}px`
+                    $$("capture").style.left = `${phCanvas.width / 2 - 56}px`;
+                    $$("capture").style.top = `${phCanvas.height - 26}px`;
                     
-                    $$("reCapture").style.left = `${phCanvas.width / 2 - 150}px`
-                    $$("reCapture").style.top = `${phCanvas.height - 20}px`
+                    $$("reCapture").style.left = `${phCanvas.width / 2 - 145}px`;
+                    $$("reCapture").style.top = `${phCanvas.height - 26}px`;
                     
-                    $$("sendPic").style.left = `${phCanvas.width / 2 + 50}px`
-                    $$("sendPic").style.top = `${phCanvas.height - 20}px`
-
-                    if (window.innerWidth < 1000) {
-                        $$("leftDiv").style.top = `${phCanvas.height + 180}px`;
-                    }
+                    $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
+                    $$("sendPic").style.top = `${phCanvas.height - 26}px`;
            })
                .catch(function (error) {
                    console.log("Something went wrong!");
@@ -332,97 +458,117 @@
     </script>
 
     <!-- checkbox div -->
-    <div id="checkDiv" class="abs" style="top:165px; left:410px; width: 100%; border:5px solid #fdfaf6; border-radius: 10px; width:920px; height: 600px;; display: none;">
-        <div class="abs" style='top:30px; left:20px; font-size: 30px; font-family: "Lora"; text-align: center; width: 100%; color:#777777; border: 1px solid #ffffff;'>
+    <div id="checkDiv" class="abs checkboxGridLayout" style="display: none;">
+        <div class="abs checkBoxCaptionLayout" style='font-family: "Lora"; text-align: center; width: 100%; color:#333333; border: 1px solid #ffffff;'>
             While We Analyze Your Biomarkers, <br />
             Please Check All That Applies To You
         </div>
-        <table class="abs" style='left: 30px; top:120px; font-size: 18px; font-family: "Quattrocento"; width: 82; vertical-align: top; '>
-            <tr>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb1_outer').click();">New onset heavy and/or longer flow</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb2", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb2_outer').click();">Shorter menstrual cycles (up to 25 days)</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb3", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb3_outer').click();">New sore, swollen or lumpy breasts</td>
-            </tr>
-            <tr>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb4", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb4_outer').click();">New mid-sleep wakening</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb5", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb5_outer').click();">New or markedly increased migrane headaches</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb6", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb6_outer').click();">Increased cramps</td>
-            </tr>
-            <tr>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb7", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb7_outer').click();">Onset of night sweats, in particular premenstraully</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb8", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb8_outer').click();">New/increased premenstrual mood swings</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb9", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb9_outer').click();">Weight gain without changes in exercise or eating</td>
-            </tr>
-            <tr>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "cb10", onclick: "clearNoSymp"}); %></td>
-                <td class="checkTd" onclick="$$('cb10_outer').click();">Other</td>
-                <td class="checkTd"><%- include('../partials/mark_checkbox', {cb: "no_symp", onclick: "clearChecks"}); %></td>
-                <td class="checkTd" onclick="$$('no_symp_outer').click();">I don't have any symptoms</td>
-                <td></td>
-                <td ></td>
-            </tr>
-        </table>
+        <div class="abs checkBoxWrapperLayout" style='font-size: 18px; font-family: "Quattrocento"; vertical-align: top;'>
+            <%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp", label: "New onset heavy and/or longer flow"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb2", onclick: "clearNoSymp", label: "Shorter menstrual cycles (up to 25 days)"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb3", onclick: "clearNoSymp", label: "New sore, swollen or lumpy breasts"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb4", onclick: "clearNoSymp", label: "New mid-sleep wakening"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb5", onclick: "clearNoSymp", label: "New or markedly increased migraine headaches"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb6", onclick: "clearNoSymp", label: "Increased cramps"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb7", onclick: "clearNoSymp", label: "Onset of night sweats, in particular premenstrually"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb8", onclick: "clearNoSymp", label: "New/increased premenstrual mood swings"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb9", onclick: "clearNoSymp", label: "Weight gain without changes in exercise or eating"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "no_symp", onclick: "clearChecks", label: "I don't have any symptoms"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "__other", onclick: "clearNoSymp", label: "Other"}); %>
+            
+            <div id="ageWrapper" class="checkDivWrapper" style="display: flex; flex-direction: row; border: 2px solid #f7f7f7; border-radius: 5px; background-color: #f7f7f7; width:470px; cursor: default;">
+                <div style="padding-left: 8px; padding-top: 5px;">What is your age?<span style="color: #ff0082;">*&nbsp;</span></div>
+                <input id="age" type="number" style=" border-top: none; border-left: none; 
+                                                    border-right: none; border-bottom: 2px solid #ff0082;
+                                                    background-color: #f7f7f7; font-family: 'Quattrocento';
+                                                    font-size: 18px;" max="140">
+                <script>
+                    $$("age").addEventListener("change", (event) => {
+                        $$("ageWrapper").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
+                        $$("age").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
+                        toggleAnalyzeDisableness();
+                    });
 
-        <button class="abs" id="sendPicFinal" style="top:480px; left:350px;">Ready For My Results!</button>
-        <div class="abs" id="disableAnalyze" style="top:460px; left: 330px; width: 240px; height: 80px; z-index: 100; background-color: rgba(255, 255, 255, 0.5);"></div>
-        <img id="loadingImg" class="abs" style="width:36px; height: 36px; top:435px; left: 280px; z-index: 20; display: none;" src="./img/loading.gif" />
+                    $$("age").addEventListener("keyup", (event) => {
+                        $$("ageWrapper").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
+                        $$("age").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
+                        toggleAnalyzeDisableness();
+                    });
+
+                    $$("age").addEventListener("mousedown", (event) => {
+                        $$("ageWrapper").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
+                        $$("age").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
+                        toggleAnalyzeDisableness();
+                    });
+                </script>
+            </div>
+
+
+        </div>
+
+        <button class="fxd sendPicFinalLayout" id="sendPicFinal">Ready For My Results!</button>
+        <button class="fxd sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">Ready For My Results!</button>
+        <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
 
     <!-- left div -->
-    <div id="leftDiv" class="abs" style="top: 150px; left:100px; max-width:400px; height: 700px; display:none;">
-
-        <span style='font-family: "Lora"; font-size: 36px; font-weight: 900; text-align: left; width: 100%;'>
+    <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 700px; display:none;">
+        <div class="leftOrBottomLayout" style='font-family: "Lora"; font-size: 36px; font-weight: 900; text-align: left; width: 100%;'>
             Analyze Your Biomarkers
             <br /><br />
-        </span>
-        <span style='font-family: "Quattrocento"; font-size: 32px; text-align: left;'>
+        </div>
+        <div  class="leftOrBottomLayout" style='font-family: "Quattrocento"; font-size: 32px; text-align: left;'>
             Take a selfie and get your biomarker analysis results instantly 
-            <br /><br />
+            <br />
             <a href="javascript:void(0)">Why test my biomarkers</a>
             <br /><br />
-        </span>
-        <div class="abs" style="background-color: #f4ebe5; 
-                        width: 360px;
-                        height: 180px;;
-                        padding:10px;">
-            <div style="width:100%; height: 100%; border: 1px solid black;">
-                <div class="abs" style="left: 0px; top: 14px; font-family: 'Quattrocento'; font-size: 24px; font-weight: 900; padding-left: 0px;">
-                    &nbsp; &nbsp; Before You Take Your Picture
-                </div>
-                <div class="abs" style="left: 0px; top: 40px; font-family: 'Quattrocento'; font-size: 18px;">
-                    <img class="abs" style="left: 16px; top: 5px; left: 17px;" src="./img/vsign.png" width="30" height="auto" />
-                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Remove your glasses</div>
-                </div>
-                <div class="abs" style="left: 0px; top: 74px; font-family: 'Quattrocento'; font-size: 18px;">
-                    <img class="abs" style="left: 16px; top: 5px; left: 17px;;" src="./img/vsign.png" width="30" height="auto" />
-                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Remove your makeup</div>
-                </div>
-                <div class="abs" style="left: 0px; top: 108px; font-family: 'Quattrocento'; font-size: 18px;">
-                    <img class="abs" style="left: 16px; top: 5px; left: 17px;;" src="./img/vsign.png" width="30" height="auto" />
-                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Ensure proper lighting</div>
-                </div>
-                <div class="abs" style="left: 0px; top: 142px; font-family: 'Quattrocento'; font-size: 18px;">
-                    <img class="abs" style="left: 16px; top: 5px; left: 17px;;" src="./img/vsign.png" width="30" height="auto" />
-                    <div class="abs" style="left: 45px; top:9px; width: 360px;">Face directly at camera</div>
-                </div>
-                
+        </div>
+        <div class="abs" style="width: 360px; height: 230px; padding:20px; background-color: #f7f7f7; border: 2px solid #f8f0f3; border-radius: 5px;;">
+            <div class="abs" style="left: 20px; top: 22px; font-family: 'Quattrocento'; font-size: 24px; font-weight: 900; padding-left: 0px;">
+                Before You Take Your Picture
+            </div>
+            <div class="abs" style="left: 20px; top: 67px; font-family: 'Quattrocento'; font-size: 18px;">
+                <img class="abs" style="left: 0px; top:5px;" src="./img/vsign.png" width="30" height="auto" />
+                <div class="abs" style="left: 45px; top:12px; width: 360px;">Remove your glasses</div>
+            </div>
+            <div class="abs" style="left: 20px; top: 117px; font-family: 'Quattrocento'; font-size: 18px;">
+                <img class="abs" style="left: 0px; top: 5px;" src="./img/vsign.png" width="30" height="auto" />
+                <div class="abs" style="left: 45px; top:12px; width: 360px;">Remove your makeup</div>
+            </div>
+            <div class="abs" style="left: 20px; top: 167px; font-family: 'Quattrocento'; font-size: 18px;">
+                <img class="abs" style="left: 0px; top: 5px;" src="./img/vsign.png" width="30" height="auto" />
+                <div class="abs" style="left: 45px; top:12px; width: 360px;">Ensure proper lighting</div>
+            </div>
+            <div class="abs" style="left: 20px; top: 217px; font-family: 'Quattrocento'; font-size: 18px;">
+                <img class="abs" style="left: 0px; top: 5px; " src="./img/vsign.png" width="30" height="auto" />
+                <div class="abs" style="left: 45px; top:12px; width: 360px;">Face directly at camera</div>
             </div>
         </div>
     </div>
 
-    <!-- resutls image -->
-    <div id="resDiv" style="position:fixed; top:120px; left: 770px; z-index: 1000; width: 100%; height: 100%; overflow: scroll; display: none;">
-        <!--img src="img/results.png" class="abs" style="top:0px; left: 0px; max-width:600px; height:auto;" /-->
+    <div class="abs resDivLayout" id="resDiv" style="z-index: 100; height: 100%; overflow: scroll; display: none;">
+        <div class="leftOrBottomLayout" style="font-size: 36px; line-height: 48px; font-family: 'Lora';">
+            Personal Insights
+        </div>
+
+        <div class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Quattrocento'; line-height: 33px;">
+            <br/> your analysis score is <span id="scoreSpan" style="text-decoration: underline; font-weight: 900;"></span>
+        </div>
+
+        <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Quattrocento'; line-height: 33px;">
+            <br/> What does it mean?
+            It appears that you have entered the perimenopause stage, 
+            a natural phase in a woman's life marked by a series of 
+            hormonal changes that instigate both physical and emotional transformations. 
+            During this transitional period, your body undergoes shifts in hormone levels, 
+            which can influence various aspects of your well-being, including your menstrual cycle, 
+            skin health, energy levels, and mood. It's important to recognize that these 
+            changes are a normal and natural part of the hormonal transitions in women's life.   
+            <br /><a>More about Perimenopause and its symptoms</a>
+            <br/><br/>
+            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+        </div>
     </div>
 
     <form id="uploadForm" enctype="multipart/form-data" style="display: none;">
@@ -503,9 +649,6 @@
                     .catch (error => showResults (error));
             
             },"image/jpeg", 1);
-
-
-            
         });
 
         $$('uploadForm').addEventListener('submit', (e) => {
@@ -513,14 +656,15 @@
 
             const fileInput = $$('fileInput');
             const file = fileInput.files[0];
-
             const res = $$('resInput').value;
             const dim = $$('dimInput').value;
+            const score = $$('scoreInput').value
 
             const formData = new FormData();
             formData.append('file', file);
             formData.append('res', res);
             formData.append('dim', dim);
+            formData.append('score', score)
 
             fetch('/submit', {
                 method: 'POST',
