@@ -98,8 +98,7 @@ const calcScore = (res, userInfo) => {
     const factors_names = ["water_score", "pore_score", "melanin_score", "dark_circle_score", "sensitivity_score", "eye_pouch_score", "skin_type_score"];
 
     let total_score_relative =    factors.reduce((a, b) => a + b, 0)
-    //const total_score_empiric = Math.round (total_score_relative / factors.length * 10);
-    const total_score_empiric = 95;
+    const total_score_empiric = Math.round (total_score_relative / factors.length * 10);
 
     factors.forEach ((a, i) => updateScoreJson (`${factors_names[i]}: ${a}`));
     updateScoreJson (`total_score_relative: ${total_score_relative}`);
