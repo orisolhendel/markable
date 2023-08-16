@@ -9,7 +9,7 @@
         .checkDivWrapper {
             cursor: pointer;
             color: #333333;
-            font-weight: 600;
+            font-weight: 400;
             word-wrap: break-word;  
             padding-top: 11px;     
             padding-bottom: 11px;     
@@ -20,8 +20,7 @@
 
             div.introTextLayout {
                 left:10px;
-                top: 595px;
-                height: 100%;
+                top: 635px;
             }
 
             img.clipLayout {
@@ -40,7 +39,6 @@
                 left:10px;
                 top: 80px;
                 width: 460px;
-                height: 120%;
             }
 
             div.checkBoxWrapperLayout {
@@ -48,7 +46,7 @@
                 grid-template-columns: 1fr; 
                 grid-gap: 14px;
                 left: 5px; 
-                top:80px; 
+                top:90px; 
             }
 
             div.checkBoxCaptionLayout {
@@ -195,9 +193,9 @@
 
             button.sendPicFinalLayout {
                 position: absolute;
-                left: 775px;
+                left: 735px;
                 top: 600px; 
-                width: 220px;
+                width: 260px;
                 height: 40px;
             }
 
@@ -382,14 +380,15 @@
     <!-- indroduction: -->
     <div id="introDiv">
         <div class="abs introTextLayout" style="font-family: 'Merriweather', serif;">
-            <div class="leftOrBottomLayoutNarrow" style="font-size: 36px; line-height: 48px;;">
+            <div class="leftOrBottomLayoutNarrow" style="font-size: 32px; line-height: 140%;">
                 Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle?
             </div>
 
-            <div class="leftOrBottomLayoutNarrow" style="font-size: 32px;font-weight: 100; font-family: 'Lato', sans-serif; line-height: 33px;">
+            <div class="leftOrBottomLayoutNarrow" style="font-size: 28px;font-weight: 100; font-family: 'Lato', sans-serif;">
                 <br />
                 Brain fog, extreme fatigue, and even depression are just a few of the many troubling symptoms of perimenopause. 
                 Our AI biomarker assessment swiftly provides perimenopause insights and treatment suggestions
+                <br /><br /><br /><br /><br />
             </div>
         </div>
 
@@ -401,7 +400,7 @@
             <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
                                 background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
         </div>
-        <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 32px; z-index: 100;" onclick="getStarted()">GET INSTANT ANALYSIS</button>
+        <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 28px; z-index: 100;" onclick="getStarted()">GET INSTANT ANALYSIS</button>
     </div>
 
     <!-- video and canvas -->
@@ -418,8 +417,8 @@
 
             <div id="captureWrapper" class="abs" style="width:480px; height: 75px; background-color: rgba(0, 0, 0, 0.5);"></div>
             <button id="capture" class="abs hand selfieButton" style="z-index: 400;">Take Selfie</button>
-            <button class="abs hand selfieButton" id="reCapture" style="left:60px; z-index: 400; display: none;"><span style="font-size: 21px;"> Retake</button>
-            <button class="abs hand selfieButton" id="sendPic" style="left:300px; z-index: 400; display: none;" onclick="showCheckboxes()"> Analyze Selfie</button>
+            <button class="abs hand selfieButton" id="reCapture" style="z-index: 400; display: none;"><span style="font-size: 21px;"> Retake</button>
+            <button class="abs hand selfieButton" id="sendPic" style="z-index: 400; display: none;" onclick="showCheckboxes()"> Analyze Selfie</button>
             <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
         </div>
     </div>
@@ -472,10 +471,10 @@
                     $$("captureWrapper").style.left = "10px";
                     $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
                     
-                    $$("capture").style.left = `${phCanvas.width / 2 - 56}px`;
+                    $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
                     $$("capture").style.top = `${phCanvas.height - 26}px`;
                     
-                    $$("reCapture").style.left = `${phCanvas.width / 2 - 145}px`;
+                    $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
                     $$("reCapture").style.top = `${phCanvas.height - 26}px`;
                     
                     $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
@@ -490,10 +489,10 @@
 
     <!-- checkbox div -->
     <div id="checkDiv" class="abs checkboxGridLayout" style="display: none;">
-        <div class="abs checkBoxCaptionLayout" style="font-family: 'Merriweather', serif; font-size: 24px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+        <div class="abs checkBoxCaptionLayout" style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
             While We Analyze Your Biomarkers.... Please Check All That Applies To You
         </div>
-        <div class="abs checkBoxWrapperLayout" style="font-size: 18px; font-family: 'Lato', sans-serif; vertical-align: top;">
+        <div class="abs checkBoxWrapperLayout" style="font-size: 16px; font-family: 'Lato', sans-serif; vertical-align: top;">
             <%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp", label: "New onset heavy and/or longer flow"}); %>
             <%- include('../partials/mark_checkbox', {cb: "cb2", onclick: "clearNoSymp", label: "Shorter menstrual cycles (up to 25 days)"}); %>
             <%- include('../partials/mark_checkbox', {cb: "cb3", onclick: "clearNoSymp", label: "New sore, swollen or lumpy breasts"}); %>
@@ -533,17 +532,19 @@
                 </script>
             </div>
 
+            <div><br /><br /><br /><br /><br /><br /></div>
+
 
         </div>
 
-        <button class="sendPicFinalLayout" id="sendPicFinal">Ready For My Results!</button>
-        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">Ready For My Results!</button>
+        <button class="sendPicFinalLayout" id="sendPicFinal">READY FOR MY RESULTS!</button>
+        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">READY FOR MY RESULTS!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
 
     <!-- left div -->
-    <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 700px; display:none;">
+    <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 640px; display:none;">
         <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 36px; font-weight: 900; text-align: left; width: 100%;">
             Analyze Your Biomarkers
             <br /><br />
@@ -578,11 +579,11 @@
     </div>
 
     <div class="abs resDivLayout" id="resDiv" style="z-index: 100; height: 100%; overflow: scroll; display: none;">
-        <div class="leftOrBottomLayout" style="font-size: 36px; line-height: 48px; font-family: 'Merriweather', serif;">
+        <div class="leftOrBottomLayout" style="font-size: 36px; font-family: 'Merriweather', serif;">
             Personal Insights
         </div>
 
-        <div class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Lato', sans-serif; line-height: 33px; font-weight: bold;">
+        <div class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Lato', sans-serif; font-weight: bold;">
             <br/> Your analysis score is <span id="scoreSpan"></span>
         </div>
 
@@ -599,7 +600,7 @@
         </div>
         
 
-        <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; line-height: 33px;">
+        <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif;">
             What does it mean? <br /><br />
             It appears that you have entered the perimenopause stage, 
             a natural phase in a woman's life marked by a series of 
