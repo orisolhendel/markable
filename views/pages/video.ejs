@@ -23,15 +23,15 @@
                 top: 595px;
             }
 
-            video.clipLayout {
-                right: -50px;
+            img.clipLayout {
+                right: 10px;
                 top: 0px;
-                width: 600px; 
-                height: 600px;
+                width: 460px; 
+                height: auto;
             }
 
             div.leftDivLayout {
-                left: 48px;
+                left: 18px;
                 top:800px;
             }
 
@@ -53,7 +53,6 @@
             div.checkBoxCaptionLayout {
                 left: 10px;
                 top:0px;
-                font-size: 24px;
             }
 
             div.mediaLayout {
@@ -72,11 +71,19 @@
             }
 
             div.leftOrBottomLayout { /* left side on web, bottom side on mobile */
+                width:95%
+            }
+
+            div.leftOrBottomLayoutNarrow { /* left side on web, bottom side on mobile */
                 width:100%
             }
 
+            div.instructionsLayout {
+                width:85%;
+            }
+
             div.progressBarLayout {
-                width:95%
+                width:90%
             }
 
             button.startButtonLayout {
@@ -87,6 +94,7 @@
             }
 
             button.sendPicFinalLayout {
+                position: fixed;
                 left: 20px;
                 bottom: 50px;
                 width: 95%;
@@ -94,8 +102,6 @@
             }
 
             button.discoverTreatLayout {
-                left: 20px;
-                bottom: 50px;
                 width: 95%;
                 height: 50px;
             }
@@ -116,11 +122,11 @@
                 top: 170px;
             }
 
-            video.clipLayout {
-                right: 0px;
+            img.clipLayout {
+                right: 120px;
                 top: 100px;
-                width: 640px;
-                height: 640px;
+                width: 30%;
+                height: auto;
             }
 
             div.leftDivLayout {
@@ -130,7 +136,7 @@
 
             div.checkboxGridLayout {
                 right: 400px; 
-                top: 80px;
+                top: 130px;
                 width: 920px;
                 height: 100%;
             }
@@ -140,13 +146,12 @@
                 grid-template-columns: 1fr 1fr; 
                 grid-gap: 24px;
                 left: 5px; 
-                top:120px; 
+                top:90px; 
             }
 
             div.checkBoxCaptionLayout {
-                left: 20px;
+                left: 5px;
                 top:15px;
-                font-size: 30px;
             }
 
             div.mediaLayout {
@@ -156,39 +161,46 @@
 
             div.mediaLayoutAfterRes {
                 right: 100px; 
-                top: 50px; 
+                top: 120px; 
             }
 
             div.resDivLayout {
                 left:30px;
-                top:80px;
+                top:130px;
             }
 
             div.leftOrBottomLayout { /* left side on web, bottom side on mobile */
                 width:55%
             }
 
+            div.leftOrBottomLayoutNarrow { /* left side on web, bottom side on mobile */
+                width:45%
+            }
+
+            div.instructionsLayout {
+                width:45%;
+            }
+
             div.progressBarLayout {
-                width:50%
+                width:32%
             }
 
             button.startButtonLayout {
                 left: 100px; 
                 bottom: 100px;  
-                width:300px; 
+                width: 550px; 
                 height: 50px; 
             }
 
             button.sendPicFinalLayout {
-                right:330px;
-                bottom:150px; 
+                position: absolute;
+                left: 775px;
+                top: 600px; 
                 width: 220px;
                 height: 40px;
             }
 
             button.discoverTreatLayout {
-                right:330px;
-                bottom:150px; 
                 width: 380px;
                 height: 40px;
             }
@@ -206,10 +218,12 @@
 
     <script>
         const getStarted = () => {
+
+            moveUp();
+
             $$("introDiv").style.display = "none";
             $$("vidDiv").style.display = "";
             $$("leftDiv").style.display = "";
-            console.log (document.body.style.backgroundImage);
         }
 
         const showCanvas = show => {
@@ -221,6 +235,19 @@
         }
 
         const showCheckboxes = () => {
+
+            moveUp();
+
+            try {
+                mainStream.getTracks().forEach((track) => {
+                    if (track.readyState == 'live' && track.kind === 'video') {
+                        track.stop();
+                    }
+                });
+            } catch (e) {
+                console.log(e);
+            }
+
             $$("mediaDiv").style.display = "none";
             $$("leftDiv").style.display = "none";
             $$("vidDiv").style.display = "none";
@@ -228,6 +255,8 @@
         }
 
         const showResults = (res) => {
+
+            moveUp();
 
             $$("scoreInput").value = calcScore (res, getUserInfo());
 
@@ -351,28 +380,19 @@
 
     <!-- indroduction: -->
     <div id="introDiv">
-        <div class="abs introTextLayout" style="font-family: 'Lora';">
-            <div class="leftOrBottomLayout" style="font-size: 36px; line-height: 48px;;">
-                Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle? 
+        <div class="abs introTextLayout" style="font-family: 'Merriweather', serif;">
+            <div class="leftOrBottomLayoutNarrow" style="font-size: 36px; line-height: 48px;;">
+                Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle?
             </div>
 
-            <div class="leftOrBottomLayout" style="font-size: 32px;font-weight: 100; font-family: 'Quattrocento'; line-height: 33px;">
-                <br /><br />
-                Brain fog, extreme fatigue and even depression are just a few of
-                the many troubling symptoms of perimenopause
-            </div>
-
-            <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 900; font-family: 'Quattrocento'; line-height: 33px;">
-                <br /><br />
-                Take a selfie and instantly receive your perimenopause assessment.
-                <br /><br /><br /><br /><br /><br />
+            <div class="leftOrBottomLayoutNarrow" style="font-size: 32px;font-weight: 100; font-family: 'Lato', sans-serif; line-height: 33px;">
+                <br />
+                Brain fog, extreme fatigue, and even depression are just a few of the many troubling symptoms of perimenopause. 
+                Our AI biomarker assessment swiftly provides perimenopause insights and treatment suggestions
             </div>
         </div>
 
-        <video class="abs clipLayout" width="50%" height="auto" autoplay="autoplay">
-            <source src="../img/clip.webm" type='video/webm; codecs="vp8, vorbis"'>
-        </video>
-
+        <img src="../img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
 
         <!-- 2 fader divs: -->
         <div id="faders">
@@ -380,7 +400,7 @@
             <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
                                 background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
         </div>
-        <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 32px; z-index: 100;" onclick="getStarted()">Let's Get Started!</button>
+        <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 32px; z-index: 100;" onclick="getStarted()">GET INSTANT ANALYSIS</button>
     </div>
 
     <!-- video and canvas -->
@@ -420,11 +440,13 @@
         }
 
         const video = document.querySelector("#videoElement");
+        let mainStream = null;
 
         if (navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
                .then(function (stream) {
                     video.srcObject = stream;
+                    mainStream = stream;
                     // const vsettings = (stream.getVideoTracks()[0].getSettings());
                     // const vwidht = vsettings.width;
                     // const vheight = vsettings.height;
@@ -467,11 +489,10 @@
 
     <!-- checkbox div -->
     <div id="checkDiv" class="abs checkboxGridLayout" style="display: none;">
-        <div class="abs checkBoxCaptionLayout" style='font-family: "Lora"; text-align: center; width: 100%; color:#333333; border: 1px solid #ffffff;'>
-            While We Analyze Your Biomarkers, <br />
-            Please Check All That Applies To You
+        <div class="abs checkBoxCaptionLayout" style="font-family: 'Merriweather', serif; font-size: 24px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+            While We Analyze Your Biomarkers.... Please Check All That Applies To You
         </div>
-        <div class="abs checkBoxWrapperLayout" style='font-size: 18px; font-family: "Quattrocento"; vertical-align: top;'>
+        <div class="abs checkBoxWrapperLayout" style="font-size: 18px; font-family: 'Lato', sans-serif; vertical-align: top;">
             <%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp", label: "New onset heavy and/or longer flow"}); %>
             <%- include('../partials/mark_checkbox', {cb: "cb2", onclick: "clearNoSymp", label: "Shorter menstrual cycles (up to 25 days)"}); %>
             <%- include('../partials/mark_checkbox', {cb: "cb3", onclick: "clearNoSymp", label: "New sore, swollen or lumpy breasts"}); %>
@@ -488,7 +509,7 @@
                 <div style="padding-left: 8px; padding-top: 5px;">What is your age?<span style="color: #ff0082;">*&nbsp;</span></div>
                 <input id="age" type="number" style=" border-top: none; border-left: none; 
                                                     border-right: none; border-bottom: 2px solid #ff0082;
-                                                    background-color: #f7f7f7; font-family: 'Quattrocento';
+                                                    background-color: #f7f7f7; font-family: 'Lato', sans-serif;
                                                     font-size: 18px;" max="140">
                 <script>
                     $$("age").addEventListener("change", (event) => {
@@ -514,66 +535,71 @@
 
         </div>
 
-        <button class="fxd sendPicFinalLayout" id="sendPicFinal">Ready For My Results!</button>
-        <button class="fxd sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">Ready For My Results!</button>
+        <button class="sendPicFinalLayout" id="sendPicFinal">Ready For My Results!</button>
+        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">Ready For My Results!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
 
     <!-- left div -->
     <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 700px; display:none;">
-        <div class="leftOrBottomLayout" style='font-family: "Lora"; font-size: 36px; font-weight: 900; text-align: left; width: 100%;'>
+        <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 36px; font-weight: 900; text-align: left; width: 100%;">
             Analyze Your Biomarkers
             <br /><br />
         </div>
-        <div  class="leftOrBottomLayout" style='font-family: "Quattrocento"; font-size: 32px; text-align: left;'>
+        <div  class="leftOrBottomLayout" style="font-family: 'Lato', sans-serif; font-size: 28px; text-align: left;">
             Take a selfie and get your biomarker analysis results instantly 
             <br />
             <a href="javascript:void(0)">Why test my biomarkers</a>
             <br /><br />
         </div>
-        <div class="abs" style="width: 360px; height: 230px; padding:20px; background-color: #f7f7f7; border: 2px solid #f8f0f3; border-radius: 5px;;">
-            <div class="abs" style="left: 20px; top: 22px; font-family: 'Quattrocento'; font-size: 24px; font-weight: 900; padding-left: 0px;">
+        <div class="abs instructionsLayout" style="height: 230px; padding:20px; background-color: #f7f7f7; border: 2px solid #f8f0f3; border-radius: 5px;;">
+            <div class="abs" style="left: 20px; top: 22px; font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 900; padding-left: 0px;">
                 Before You Take Your Picture
             </div>
-            <div class="abs" style="left: 20px; top: 67px; font-family: 'Quattrocento'; font-size: 18px;">
+            <div class="abs" style="left: 20px; top: 67px; font-family: 'Lato', sans-serif; font-size: 18px;">
                 <img class="abs" style="left: 0px; top:5px;" src="./img/vsign.png" width="30" height="auto" />
-                <div class="abs" style="left: 45px; top:12px; width: 360px;">Remove your glasses</div>
+                <div class="abs" style="left: 40px; top:10px; width: 360px;">Remove your glasses</div>
             </div>
-            <div class="abs" style="left: 20px; top: 117px; font-family: 'Quattrocento'; font-size: 18px;">
+            <div class="abs" style="left: 20px; top: 117px; font-family: 'Lato', sans-serif; font-size: 18px;">
                 <img class="abs" style="left: 0px; top: 5px;" src="./img/vsign.png" width="30" height="auto" />
-                <div class="abs" style="left: 45px; top:12px; width: 360px;">Remove your makeup</div>
+                <div class="abs" style="left: 40px; top:10px; width: 360px;">Remove your makeup</div>
             </div>
-            <div class="abs" style="left: 20px; top: 167px; font-family: 'Quattrocento'; font-size: 18px;">
+            <div class="abs" style="left: 20px; top: 167px; font-family: 'Lato', sans-serif; font-size: 18px;">
                 <img class="abs" style="left: 0px; top: 5px;" src="./img/vsign.png" width="30" height="auto" />
-                <div class="abs" style="left: 45px; top:12px; width: 360px;">Ensure proper lighting</div>
+                <div class="abs" style="left: 40px; top:10px; width: 360px;">Ensure proper lighting</div>
             </div>
-            <div class="abs" style="left: 20px; top: 217px; font-family: 'Quattrocento'; font-size: 18px;">
+            <div class="abs" style="left: 20px; top: 217px; font-family: 'Lato', sans-serif; font-size: 18px;">
                 <img class="abs" style="left: 0px; top: 5px; " src="./img/vsign.png" width="30" height="auto" />
-                <div class="abs" style="left: 45px; top:12px; width: 360px;">Face directly at camera</div>
+                <div class="abs" style="left: 40px; top:10px; width: 360px;">Face directly at camera</div>
             </div>
         </div>
     </div>
 
     <div class="abs resDivLayout" id="resDiv" style="z-index: 100; height: 100%; overflow: scroll; display: none;">
-        <div class="leftOrBottomLayout" style="font-size: 36px; line-height: 48px; font-family: 'Lora';">
+        <div class="leftOrBottomLayout" style="font-size: 36px; line-height: 48px; font-family: 'Merriweather', serif;">
             Personal Insights
         </div>
 
-        <div class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Quattrocento'; line-height: 33px;">
-            <br/> your analysis score is <span id="scoreSpan" style="text-decoration: underline; font-weight: 900;"></span>
+        <div class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Lato', sans-serif; line-height: 33px; font-weight: bold;">
+            <br/> Your analysis score is <span id="scoreSpan"></span>
         </div>
 
         <!-- progress bar: -->
-        <br/>
-        <div>
-            <div id="score_prog" class="abs progressBarLayout" style="height: 40px; border: 2px solid #ff0083; border-radius: 25px;">
-                <div id="score_prog_inner" class="abs" style="left: 4px; top: 4px; width: 0%; height: 32px; border-radius: 25px; background-color: #ff0083; display: none;"></div>
+        <div style="height: 40px;"></div>
+        <div style="height: 80px;">
+            <div id="score_prog" class="abs progressBarLayout" style="height: 37px; border: 1px solid #ffffff; border-radius: 25px; 
+                                                                box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25)">
+                <div id="score_prog_inner" class="abs" style="  left: 4px; top: 4px; width: 0%; height: 27px; border: 1px solid #ffffff; 
+                                                                border-radius: 25px; background-color: #ff0083;  
+                                                                box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25);
+                                                                display: none;"></div>
             </div>
         </div>
+        
 
-        <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Quattrocento'; line-height: 33px;">
-            <br/><br/> What does it mean?
+        <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; line-height: 33px;">
+            What does it mean? <br /><br />
             It appears that you have entered the perimenopause stage, 
             a natural phase in a woman's life marked by a series of 
             hormonal changes that instigate both physical and emotional transformations. 
@@ -689,7 +715,6 @@
             .then(response => response.text())
             .then(result => {
                 $$("loadingImg").style.display = "none";
-                alert(result);
             })
             .catch(error => {
                 console.error(error);
