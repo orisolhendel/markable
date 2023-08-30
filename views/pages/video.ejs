@@ -278,20 +278,44 @@
 
             console.log (scoreJson);
 
-            $$("scoreSpan").innerText = scoreJson.total_score_empiric;
-            //$$("score_prog_inner").style.width = `${scoreJson.total_score_empiric * .99}%`;
-            $$("score_prog_inner").style.display = "";
-            $$("score_prog_inner").spread = 0;
-            $$("score_prog_inner").interval = setInterval(() => {
-                $$("score_prog_inner").spread++;
-                if ($$("score_prog_inner").spread < scoreJson.total_score_empiric) {
-                    $$("score_prog_inner").style.width = `${$$("score_prog_inner").spread * .99}%`;
-                } else {
-                    $$("score_prog_inner").style.width = `${scoreJson.total_score_empiric * .99}%`;
-                    clearInterval ($$("score_prog_inner").interval);
-                }
-                
-            }, 10);
+            const classification = scoreJson.class;
+            const scoreToDisplay = (classification === 'Young') ? 20 : scoreJson.total_score_empiric;
+
+            $$("scoreSpan").innerText = scoreToDisplay;
+
+            // progress bar:
+            if (classification !== "Old") {
+                $$("progressBar").style.display = "";
+                $$("scoreSummary").style.display = "";
+                $$("score_prog_inner").style.display = "";
+                $$("score_prog_inner").spread = 0;
+                $$("score_prog_inner").interval = setInterval(() => {
+                    $$("score_prog_inner").spread++;
+                    if ($$("score_prog_inner").spread < scoreToDisplay) {
+                        $$("score_prog_inner").style.width = `${$$("score_prog_inner").spread * .99}%`;
+                    } else {
+                        $$("score_prog_inner").style.width = `${scoreToDisplay * .99}%`;
+                        clearInterval($$("score_prog_inner").interval);
+                    }
+
+                }, 10);
+            }
+            //====================================================================
+
+
+            switch (classification) {
+                case "Young":
+                    $$("classD").style.display = "";
+                    break;
+                case "Old":
+                    $$("classX").style.display = "";
+                    break;
+                default: // A, B, C or D
+                    $$(`class${classification}`).style.display = "";
+                    break;
+            }
+
+
             //$$("dateSpanRes").innerText = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(new Date());
 
             //alert (calcScore (res, getCheckCount()));
@@ -578,18 +602,18 @@
         </div>
     </div>
 
-    <div class="abs resDivLayout" id="resDiv" style="z-index: 100; height: 100%; overflow: scroll; display: none;">
+    <div class="abs resDivLayout" id="resDiv" style="z-index: 100; width:100%; height: 100%; overflow: scroll; display: none;">
         <div class="leftOrBottomLayout" style="font-size: 36px; font-family: 'Merriweather', serif;">
             Personal Insights
         </div>
 
-        <div class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Lato', sans-serif; font-weight: bold;">
+        <div id="scoreSummary" class="leftOrBottomLayout" style="font-size: 24px;font-weight: 100; font-family: 'Lato', sans-serif; font-weight: bold; display: none;">
             <br/> Your analysis score is <span id="scoreSpan"></span>
         </div>
 
         <!-- progress bar: -->
         <div style="height: 40px;"></div>
-        <div style="height: 80px;">
+        <div id="progressBar" style="height: 80px; display: none;">
             <div id="score_prog" class="abs progressBarLayout" style="height: 37px; border: 1px solid #ffffff; border-radius: 25px; 
                                                                 box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25)">
                 <div id="score_prog_inner" class="abs" style="  left: 4px; top: 4px; width: 0%; height: 27px; border: 1px solid #ffffff; 
@@ -599,18 +623,82 @@
             </div>
         </div>
         
-
-        <div class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif;">
+        <div id="classA" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
-            It appears that you have entered the perimenopause stage, 
-            a natural phase in a woman's life marked by a series of 
-            hormonal changes that instigate both physical and emotional transformations. 
-            During this transitional period, your body undergoes shifts in hormone levels, 
-            which can influence various aspects of your well-being, including your menstrual cycle, 
-            skin health, energy levels, and mood. It's important to recognize that these 
-            changes are a normal and natural part of the hormonal transitions in women's life.   
+
+            It appears that you have entered the perimenopause stage, a natural phase in a woman's life marked by a series of
+            hormonal changes that instigate both physical and emotional transformations. During this transitional period, your body
+            undergoes shifts in hormone levels, which can influence various aspects of your well-being, including your menstrual
+            cycle, skin health, energy levels, and mood. It's important to recognize that these changes are a normal and natural
+            part of the hormonal transitions in women's life.
             <br /><a>More about Perimenopause and its symptoms</a>
-            <br/><br/>
+            <br /><br />
+            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+        </div>
+
+        <div id="classB" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+            What does it mean? <br /><br />
+            
+            According to our analysis, you may be experiencing the beginning stages of Perimenopause which is the transition phase
+            into menopause occurring roughly 5-10 years prior to menopause onset. It is a natural phase in a woman's life marked by
+            a series of hormonal changes that instigate both physical and emotional transformations. During this transitional
+            period, your body undergoes shifts in hormone levels, which can influence various aspects of your well-being, including
+            your menstrual cycle, skin health, energy levels, and mood.
+            <br /><br />    
+            We strongly recommend that you discuss your symptoms with your healthcare provider for further consideration.
+            <br /><a>More about Perimenopause and its symptoms</a>
+            <br /><br />
+            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+        </div>
+
+        <div id="classC" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+            What does it mean? <br /><br />
+            
+            According to our analysis, you may be experiencing the beginning stages of Perimenopause which is the transition phase
+            into menopause occurring roughly 5-10 years prior to menopause onset. It is a natural phase in a woman's life marked by
+            a series of hormonal changes that instigate both physical and emotional transformations. During this transitional
+            period, your body undergoes shifts in hormone levels, which can influence various aspects of your well-being, including
+            your menstrual cycle, skin health, energy levels, and mood.
+            <br /><br />
+            We strongly recommend that you discuss your symptoms with your healthcare provider for further consideration.
+            <br /><a>More about Perimenopause and its symptoms</a>
+            <br /><br />
+            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+        </div>
+
+        <div id="classD" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+            What does it mean? <br /><br />
+            
+            According to our analysis, you have yet to begin your perimenopause transition.
+            What does it mean? Perimenopause is the transition phase into menopause occurring roughly 5-10 years prior to menopause
+            onset. It is a natural phase in a woman's life marked by a series of hormonal changes that instigate both physical and
+            emotional transformations. During this transitional period, your body undergoes shifts in hormone levels, which can
+            influence various aspects of your well-being, including your menstrual cycle, skin health, energy levels, and mood.
+            <br /><br />
+            Even though our analysis found that you have yet to begin the perimenopausal transition, we strongly recommend that you
+            discuss your symptoms with your healthcare provider for further consideration. Additionally, we invite you to repeat our
+            perimenopause analysis in 6-12 months free of charge.
+
+            <br /><a>More about Perimenopause and its symptoms</a>
+            <br /><br />
+            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+        </div>
+
+        <div id="classX" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+            Based on our analysis, it's likely that you are entering or have already entered the menopause stage. This is a
+            significant and natural transition in a woman's life, signaling the end of your reproductive years.
+            <br /><br />
+            It's important to remember that every woman's journey through menopause is unique. Some women experience symptoms
+            earlier, while others may experience them later. As you navigate this stage, you might encounter a variety of physical
+            and emotional changes. Hot flashes, night sweats, mood fluctuations, and changes in sleep patterns are some common
+            symptoms.
+            <br /><br />
+            Remember, you're not alone on this journey, and there are many resources and support systems available to help you
+            manage any challenges that may arise. Maintaining a healthy lifestyle, regular exercise, and a balanced diet can greatly
+            contribute to your well-being during this transition. It's also essential to have open conversations with your
+            healthcare provider, who can guide you through this phase and help you make informed decisions about your health.
+            <br /><a>More about Perimenopause and its symptoms</a>
+            <br /><br />
             <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
         </div>
     </div>
