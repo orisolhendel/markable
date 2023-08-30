@@ -132,8 +132,6 @@ const calcScore = (res, userInfo) => {
         }
     }
 
-    classification = "Old"
-
     updateScoreJson (`class: "${classification}"`, "no_delim");
     updateScoreJson ("}", "no_delim");
 
