@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="shortcut icon" href="./img/fab.ico">
-    <meta content='width=device-width; initial-scale=0.75; maximum-scale=0.75; user-scalable=yes;' name='viewport' />
+    <meta content='width=device-width, initial-scale=0.75, maximum-scale=0.75, user-scalable=yes' name='viewport' />
     <title></title>
     <style>
         
@@ -86,6 +86,7 @@
             }
 
             button.startButtonLayout {
+                position: fixed;
                 bottom:10px;
                 left: 10px;
                 width:96%;
@@ -164,7 +165,7 @@
             }
 
             div.resDivLayout {
-                left:30px;
+                left:100px;
                 top:130px;
             }
 
@@ -185,8 +186,8 @@
             }
 
             button.startButtonLayout {
-                left: 100px; 
-                bottom: 100px;  
+                /*left: 100px; 
+                bottom: 100px; */ 
                 width: 550px; 
                 height: 50px; 
             }
@@ -408,23 +409,28 @@
                 Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle?
             </div>
 
-            <div class="leftOrBottomLayoutNarrow" style="font-size: 28px;font-weight: 100; font-family: 'Lato', sans-serif;">
+            <div class="leftOrBottomLayoutNarrow" style="font-size: 28px; font-weight: 100; font-family: 'Lato', sans-serif; line-height: 140%;">
                 <br />
                 Brain fog, extreme fatigue, and even depression are just a few of the many troubling symptoms of perimenopause. 
                 Our AI biomarker assessment swiftly provides perimenopause insights and treatment suggestions
-                <br /><br /><br /><br /><br />
+                <br /><br />
+                <span class="onlyForMobile">
+                    <br /><br /><br />
+                </span>
             </div>
+            
+            <!-- 2 fader divs: -->
+            <div id="faders">
+                <div class="fxd onlyForMobile"
+                    style="left: 0px; bottom: 0px; width: 100%; height: 65px; background-color: #ffffff;"></div>
+                <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
+                                            background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
+            </div>
+            <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 28px; z-index: 100;"
+                onclick="getStarted()">GET INSTANT ANALYSIS</button>
         </div>
 
         <img src="../img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
-
-        <!-- 2 fader divs: -->
-        <div id="faders">
-            <div class="fxd onlyForMobile" style="left: 0px; bottom: 0px; width: 100%; height: 65px; background-color: #ffffff;"></div>
-            <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
-                                background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
-        </div>
-        <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 28px; z-index: 100;" onclick="getStarted()">GET INSTANT ANALYSIS</button>
     </div>
 
     <!-- video and canvas -->
@@ -439,9 +445,9 @@
 
             <canvas  id="placeHolderCanvas"  width="480" class="abs" style="top:30px; left: 10px; z-index: 100;"></canvas>
 
-            <div id="captureWrapper" class="abs" style="width:480px; height: 75px; background-color: rgba(0, 0, 0, 0.5);"></div>
+            <div id="captureWrapper" class="abs" style="width:480px; height:75px; background-color: rgba(0, 0, 0, 0.5);"></div>
             <button id="capture" class="abs hand selfieButton" style="z-index: 400;">Take Selfie</button>
-            <button class="abs hand selfieButton" id="reCapture" style="z-index: 400; display: none;"><span style="font-size: 21px;"> Retake</button>
+            <button class="abs hand selfieButton" id="reCapture" style="z-index: 400; display: none;"> Retake</button>
             <button class="abs hand selfieButton" id="sendPic" style="z-index: 400; display: none;" onclick="showCheckboxes()"> Analyze Selfie</button>
             <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
         </div>
@@ -449,66 +455,68 @@
 
     <script>
 
-        let vratio = 0;
-        let ellipseRatio = 0;
-        if (window.innerWidth > 1000) {
-            $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
-            $$("canvasElementToSend").height = $$("canvasElementToSend").width * 3 / 4;
-            vratio = 4 / 3;
-            ellipseRatio = 1;
-        } else {
-            $$("canvasElement").height = $$("canvasElement").width * 4 / 3;
-            $$("canvasElementToSend").height = $$("canvasElementToSend").width * 4 / 3;
-            vratio = 3 / 4;
-            ellipseRatio = 3 / 4.4;
-        }
-
-        const video = document.querySelector("#videoElement");
         let mainStream = null;
+        window.addEventListener ("load", () => {
+            let vratio = 0;
+            let ellipseRatio = 0;
+            if (window.innerWidth > 1000) {
+                $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
+                $$("canvasElementToSend").height = $$("canvasElementToSend").width * 3 / 4;
+                vratio = 4 / 3;
+                ellipseRatio = 1;
+            } else {
+                $$("canvasElement").height = $$("canvasElement").width * 4 / 3;
+                $$("canvasElementToSend").height = $$("canvasElementToSend").width * 4 / 3;
+                vratio = 3 / 4;
+                ellipseRatio = 3 / 4.4;
+            }
 
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-               .then(function (stream) {
-                    video.srcObject = stream;
-                    mainStream = stream;
-                    // const vsettings = (stream.getVideoTracks()[0].getSettings());
-                    // const vwidht = vsettings.width;
-                    // const vheight = vsettings.height;
-                    // const vratio = vwidht / vheight;
+            const video = $$("videoElement");
 
-                    //canvasElement.height = Math.round (canvasElement.width / vratio);
-                    //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                        video.srcObject = stream;
+                        mainStream = stream;
+                        // const vsettings = (stream.getVideoTracks()[0].getSettings());
+                        // const vwidht = vsettings.width;
+                        // const vheight = vsettings.height;
+                        // const vratio = vwidht / vheight;
 
-                    // draw place holder
-                    const phCanvas = $$("placeHolderCanvas");
-                    const phx = phCanvas.getContext("2d");
+                        //canvasElement.height = Math.round (canvasElement.width / vratio);
+                        //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
 
-                    phCanvas.height =  Math.round (phCanvas.width / vratio);
+                        // draw place holder
+                        const phCanvas = $$("placeHolderCanvas");
+                        const phx = phCanvas.getContext("2d");
 
-                    phx.beginPath();
-                    phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio , 320 / ellipseRatio, 0, 2 * Math.PI, false);
-                    phx.strokeStyle = "rgba(0,0,0,0.4)";
-                    phx.lineWidth = 395 / ellipseRatio;
-                    phx.stroke();
-                    phx.closePath();
+                        phCanvas.height =  Math.round (phCanvas.width / vratio);
 
-                    $$("captureWrapper").style.left = "10px";
-                    $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
-                    
-                    $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
-                    $$("capture").style.top = `${phCanvas.height - 26}px`;
-                    
-                    $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
-                    $$("reCapture").style.top = `${phCanvas.height - 26}px`;
-                    
-                    $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
-                    $$("sendPic").style.top = `${phCanvas.height - 26}px`;
-           })
-               .catch(function (error) {
-                   console.log("Something went wrong!");
-                   console.log(error);
-           });
-        }
+                        phx.beginPath();
+                        phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio , 320 / ellipseRatio, 0, 2 * Math.PI, false);
+                        phx.strokeStyle = "rgba(0,0,0,0.4)";
+                        phx.lineWidth = 395 / ellipseRatio;
+                        phx.stroke();
+                        phx.closePath();
+
+                        $$("captureWrapper").style.left = "10px";
+                        $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
+                        
+                        $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
+                        $$("capture").style.top = `${phCanvas.height - 26}px`;
+                        
+                        $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
+                        $$("reCapture").style.top = `${phCanvas.height - 26}px`;
+                        
+                        $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
+                        $$("sendPic").style.top = `${phCanvas.height - 26}px`;
+                })
+                .catch(function (error) {
+                    console.log("Something went wrong!");
+                    console.log(error);
+                });
+            }
+        });
     </script>
 
     <!-- checkbox div -->
@@ -712,12 +720,16 @@
     </form>
 
     <script>
+
+        // event listeners:
+        // ===============
+
+        const video = $$('videoElement');
         const canvas = $$('canvasElement');
         const canvasToSend = $$('canvasElementToSend');
         const captureButton = $$('capture');
         const recaptureButton = $$('reCapture');
         const sendPicButton = $$('sendPicFinal');
-
 
         captureButton.addEventListener('click', () => {
             showCanvas (true);
