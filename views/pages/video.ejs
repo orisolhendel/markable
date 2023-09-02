@@ -453,72 +453,6 @@
         </div>
     </div>
 
-    <script>
-
-        let mainStream = null;
-        /*window.addEventListener */(/*"load",*/ () => {
-            let vratio = 0;
-            let ellipseRatio = 0;
-            if (window.innerWidth > 1000) {
-                $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
-                $$("canvasElementToSend").height = $$("canvasElementToSend").width * 3 / 4;
-                vratio = 4 / 3;
-                ellipseRatio = 1;
-            } else {
-                $$("canvasElement").height = $$("canvasElement").width * 4 / 3;
-                $$("canvasElementToSend").height = $$("canvasElementToSend").width * 4 / 3;
-                vratio = 3 / 4;
-                ellipseRatio = 3 / 4.4;
-            }
-
-            const video = $$("videoElement");
-
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                        video.srcObject = stream;
-                        mainStream = stream;
-                        // const vsettings = (stream.getVideoTracks()[0].getSettings());
-                        // const vwidht = vsettings.width;
-                        // const vheight = vsettings.height;
-                        // const vratio = vwidht / vheight;
-
-                        //canvasElement.height = Math.round (canvasElement.width / vratio);
-                        //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
-
-                        // draw place holder
-                        const phCanvas = $$("placeHolderCanvas");
-                        const phx = phCanvas.getContext("2d");
-
-                        phCanvas.height =  Math.round (phCanvas.width / vratio);
-
-                        phx.beginPath();
-                        phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio , 320 / ellipseRatio, 0, 2 * Math.PI, false);
-                        phx.strokeStyle = "rgba(0,0,0,0.4)";
-                        phx.lineWidth = 395 / ellipseRatio;
-                        phx.stroke();
-                        phx.closePath();
-
-                        $$("captureWrapper").style.left = "10px";
-                        $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
-                        
-                        $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
-                        $$("capture").style.top = `${phCanvas.height - 26}px`;
-                        
-                        $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
-                        $$("reCapture").style.top = `${phCanvas.height - 26}px`;
-                        
-                        $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
-                        $$("sendPic").style.top = `${phCanvas.height - 26}px`;
-                })
-                .catch(function (error) {
-                    console.log("Something went wrong!");
-                    console.log(error);
-                });
-            }
-        })();
-    </script>
-
     <!-- checkbox div -->
     <div id="checkDiv" class="abs checkboxGridLayout" style="display: none;">
         <div class="abs checkBoxCaptionLayout" style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
@@ -823,9 +757,69 @@
             });
         });
 
+        window.addEventListener("load", () => {
+            let vratio = 0;
+            let ellipseRatio = 0;
+            if (window.innerWidth > 1000) {
+                $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
+                $$("canvasElementToSend").height = $$("canvasElementToSend").width * 3 / 4;
+                vratio = 4 / 3;
+                ellipseRatio = 1;
+            } else {
+                $$("canvasElement").height = $$("canvasElement").width * 4 / 3;
+                $$("canvasElementToSend").height = $$("canvasElementToSend").width * 4 / 3;
+                vratio = 3 / 4;
+                ellipseRatio = 3 / 4.4;
+            }
+
+            const video = $$("videoElement");
+
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        mainStream = stream;
+                        // const vsettings = (stream.getVideoTracks()[0].getSettings());
+                        // const vwidht = vsettings.width;
+                        // const vheight = vsettings.height;
+                        // const vratio = vwidht / vheight;
+
+                        //canvasElement.height = Math.round (canvasElement.width / vratio);
+                        //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
+
+                        // draw place holder
+                        const phCanvas = $$("placeHolderCanvas");
+                        const phx = phCanvas.getContext("2d");
+
+                        phCanvas.height = Math.round(phCanvas.width / vratio);
+
+                        phx.beginPath();
+                        phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio, 320 / ellipseRatio, 0, 2 * Math.PI, false);
+                        phx.strokeStyle = "rgba(0,0,0,0.4)";
+                        phx.lineWidth = 395 / ellipseRatio;
+                        phx.stroke();
+                        phx.closePath();
+
+                        $$("captureWrapper").style.left = "10px";
+                        $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
+
+                        $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
+                        $$("capture").style.top = `${phCanvas.height - 26}px`;
+
+                        $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
+                        $$("reCapture").style.top = `${phCanvas.height - 26}px`;
+
+                        $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
+                        $$("sendPic").style.top = `${phCanvas.height - 26}px`;
+                    })
+                    .catch(function (error) {
+                        console.log("Something went wrong!");
+                        console.log(error);
+                    });
+            }
+        });
+
     </script>
-
-
 </body>
 </html>
 
