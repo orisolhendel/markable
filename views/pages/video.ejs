@@ -277,8 +277,6 @@
 
             const scoreJson = JSON.parse ($$("scoreInput").value);
 
-            console.log (scoreJson);
-
             const classification = scoreJson.class;
             const scoreToDisplay = (classification === 'Young') ? 20 : scoreJson.total_score_empiric;
 
@@ -714,7 +712,7 @@
                 fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
                     .then(async (result) => {
-                        console.log (result);
+                        //console.log (result);
                         $$("resInput").value = result;
                         $$("dimInput").value = generateDimJson();
                         showResults (result);
@@ -760,8 +758,6 @@
         let mainStream = null;
         let vratio = 0;
         let ellipseRatio = 0;
-
-        console.log (screen.width);
 
         if (screen.width > 1000) {
             $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
