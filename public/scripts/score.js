@@ -60,8 +60,8 @@ const calcScore = (res, userInfo) => {
     try {
         jres_wrapper = (JSON.parse (res));
     } catch (e) {
-        console.log (e);
-        console.log (res);
+        console.log('res: ' + res);
+        console.log('error: ' + e);
     }
     const jres = jres_wrapper.result;
 
@@ -92,11 +92,11 @@ const calcScore = (res, userInfo) => {
     updateScoreJson (`skin_type_val: ${skin_type_val}`);
     updateScoreJson (`skin_type_conf: ${skin_type_conf}`);
 
-    const water_score = gradeScore (water, [30, 50, 70, 100], ['error', 10, 5, 0]);
-    const pore_score = gradeScore(pores, [30, 50, 70, 100], ['error', 10, 5, 0]);
-    const melanin_score = gradeScore(melanin, [30, 50, 70, 100], ['error', 10, 5, 0]);
-    const dark_circle_score = gradeScore(dark_circle, [30, 50, 70, 100], ['error', 10, 5, 0])
-    const sensitivity_score = gradeScore(sensitivity, [30, 50, 70, 100], ['error', 10, 5, 0])
+    const water_score = gradeScore (water, [30, 50, 70, 101], ['error', 10, 5, 0]);
+    const pore_score = gradeScore(pores, [30, 50, 70, 101], ['error', 10, 5, 0]);
+    const melanin_score = gradeScore(melanin, [30, 50, 70, 101], ['error', 10, 5, 0]);
+    const dark_circle_score = gradeScore(dark_circle, [30, 50, 70, 101], ['error', 10, 5, 0])
+    const sensitivity_score = gradeScore(sensitivity, [30, 50, 70, 101], ['error', 10, 5, 0])
     const eye_pouch_score = eye_pouch_val == 1 && eye_pouch_conf > 0.1 ? 10 : 0;
     const skin_type_score = skin_type_val == 1 && skin_type_conf > 0.2 ? 10 : 0;
 

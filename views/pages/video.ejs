@@ -502,7 +502,7 @@
         </div>
 
         <button class="sendPicFinalLayout" id="sendPicFinal">READY FOR MY RESULTS!</button>
-        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">READY FOR MY RESULTS!</button>
+        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" nonclick="showResults()">READY FOR MY RESULTS!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
@@ -702,12 +702,9 @@
                         'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
                     }
                 };
-
-                const requestOptionsForSaving = {
-                    method: 'POST',
-                    body: formdata,
-                    redirect: 'follow',
-                };
+                
+                console.log("requestOptions:");
+                console.log(requestOptions);
 
                 fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
