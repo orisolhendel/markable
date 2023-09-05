@@ -864,8 +864,8 @@
                 console.log (response)
                 FB.api('/me?fields=name,email', function (response) {
                     console.log('Good to see you, ' + response.name + '.');
-                    console.log(`/${response.id}/?fields=id,name,email`);
-                    FB.api (`/${response.id}/?fields=id,name,email`,'GET',{}, response => console.log (response));
+                    console.log(`/${response.id}?fields=id,name,email`);
+                    FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
                 });
             } else {
                 console.log('User cancelled login or did not fully authorize.');
