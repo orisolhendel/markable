@@ -77,6 +77,14 @@
                 width:100%
             }
 
+            div.mainCaption {
+                font-size: 32px;
+            }
+
+            div.subMainCaption {
+                font-size: 28px;
+            }
+
             div.instructionsLayout {
                 width:85%;
             }
@@ -177,6 +185,14 @@
                 width:45%
             }
 
+            div.mainCaption {
+                font-size: 42px;
+            }
+
+            div.subMainCaption {
+                font-size: 30px;
+            }
+
             div.instructionsLayout {
                 width:45%;
             }
@@ -186,8 +202,6 @@
             }
 
             button.startButtonLayout {
-                /*left: 100px; 
-                bottom: 100px; */ 
                 width: 550px; 
                 height: 50px; 
             }
@@ -403,29 +417,36 @@
     <!-- indroduction: -->
     <div id="introDiv">
         <div class="abs introTextLayout" style="font-family: 'Merriweather', serif;">
-            <div class="leftOrBottomLayoutNarrow" style="font-size: 32px; line-height: 140%;">
+            <div class="leftOrBottomLayoutNarrow mainCaption" style="line-height: 140%;">
                 Are you feeling out of whack? Like everything that used to come so easy is suddenly a struggle?
             </div>
 
-            <div class="leftOrBottomLayoutNarrow" style="font-size: 28px; font-weight: 100; font-family: 'Lato', sans-serif; line-height: 140%;">
+            <div class="leftOrBottomLayoutNarrow subMainCaption" style="font-weight: 100; font-family: 'Lato', sans-serif; line-height: 140%;">
                 <br />
                 Brain fog, extreme fatigue, and even depression are just a few of the many troubling symptoms of perimenopause. 
                 Our AI biomarker assessment swiftly provides perimenopause insights and treatment suggestions
-                <br /><br />
+                <span class="hideForMobile"><br /><br /></span>
+                <div class="onlyForMobile">
+                    <a style="font-size: 20px;">how does it work?</a>
+                </div>
                 <span class="onlyForMobile">
                     <br /><br /><br />
                 </span>
             </div>
             
             <!-- 2 fader divs: -->
-            <div id="faders">
-                <div class="fxd onlyForMobile"
+            <div class="onlyForMobile">
+                <div class="fxd"
                     style="left: 0px; bottom: 0px; width: 100%; height: 65px; background-color: #ffffff;"></div>
-                <div class="fxd onlyForMobile" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
+                <div class="fxd" style="left: 0px; bottom: 50px; width: 100%; height: 120px; 
                                             background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
             </div>
-            <button id="letsGetStarted" class="fxd startButtonLayout" style="font-size: 28px; z-index: 100;"
+            <button id="letsGetStarted" class="startButtonLayout" style="font-size: 28px; z-index: 100;"
                 onclick="getStarted()">GET INSTANT ANALYSIS</button>
+            <div class="hideForMobile">
+                <br />
+                <a style="font-size: 22px;">how does it work?</a>
+            </div>
         </div>
 
         <img src="../img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
@@ -502,14 +523,14 @@
         </div>
 
         <button class="sendPicFinalLayout" id="sendPicFinal">READY FOR MY RESULTS!</button>
-        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" nonclick="showResults()">READY FOR MY RESULTS!</button>
+        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" onclick="showResults()">READY FOR MY RESULTS!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
 
     <!-- left div -->
     <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 640px; display:none;">
-        <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 36px; font-weight: 900; text-align: left; width: 100%;">
+        <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align: left; width: 100%;">
             Analyze Your Biomarkers
             <br /><br />
         </div>
@@ -542,7 +563,7 @@
         </div>
     </div>
 
-    <div class="abs resDivLayout" id="resDiv" style="z-index: 100; width:100%; height: 100%; overflow: scroll; display: none;">
+    <div class="abs resDivLayout" id="resDiv" style="z-index: 100; width:100%; height: 100%; overflow: visible; display: none;">
         <div class="leftOrBottomLayout" style="font-size: 36px; font-family: 'Merriweather', serif;">
             Personal Insights
         </div>
@@ -574,6 +595,7 @@
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
             <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <br /><br /><br /><br />
         </div>
 
         <div id="classB" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
@@ -589,6 +611,7 @@
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
             <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <br /><br /><br /><br />
         </div>
 
         <div id="classC" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
@@ -604,6 +627,7 @@
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
             <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <br /><br /><br /><br />
         </div>
 
         <div id="classD" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
@@ -622,6 +646,7 @@
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
             <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <br /><br /><br /><br />
         </div>
 
         <div id="classX" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
@@ -640,6 +665,7 @@
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
             <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <br /><br /><br /><br />
         </div>
     </div>
 

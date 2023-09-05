@@ -43,7 +43,7 @@ const calcScore = (res, userInfo) => {
         res = resTest;
         userInfo = {};
         userInfo.symptoms = ['symp1', 'symp2', 'symp3'];
-        userInfo.age = 21;
+        userInfo.age = 45;
         userInfo.other = "testing123"
     }
     //====================================
