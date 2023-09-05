@@ -523,7 +523,7 @@
         </div>
 
         <button class="sendPicFinalLayout" id="sendPicFinal">READY FOR MY RESULTS!</button>
-        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" onclick="showResults()">READY FOR MY RESULTS!</button>
+        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" onclick="fblogin()">READY FOR MY RESULTS!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
@@ -840,6 +840,38 @@
                 });
         }
 
+
+    </script>
+
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '811507054312899',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v17.0'
+            });
+        };
+    </script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+    <script>
+
+    const fblogin = () => {
+        FB.login(function (response) {
+            if (response.authResponse) {
+                console.log ('Welcome! Fetching your information.... ');
+                console.log (response)
+                FB.api('/me?fields=name,email', function (response) {
+                    console.log('Good to see you, ' + response.name + '.');
+                    console.log(`/${response.id}/?fields=id,name,email`);
+                    FB.api (`/${response.id}/?fields=id,name,email`,'GET',{}, response => console.log (response));
+                });
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        });
+    }
 
     </script>
 
