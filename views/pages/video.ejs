@@ -3,9 +3,9 @@
 <head>
     <link rel="shortcut icon" href="./img/fab.ico">
     <meta content='width=device-width, initial-scale=0.75, maximum-scale=0.75, user-scalable=yes' name='viewport' />
+    <meta name="google-signin-client_id" content="markable2023.apps.googleusercontent.com">
     <title></title>
     <style>
-        
         .checkDivWrapper {
             cursor: pointer;
             color: #333333;
@@ -449,7 +449,7 @@
             </div>
         </div>
 
-        <img src="../img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
+        <img src="./img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
     </div>
 
     <!-- video and canvas -->
@@ -708,7 +708,6 @@
                 
                 const formdata = new FormData();
                 formdata.append("image", blob);
-
                 formdata.append("side_image", blob);
                 formdata.append("return_maps", "");
                 formdata.append("return_marks", "");
@@ -873,6 +872,29 @@
         });
     }
 
+    </script>
+
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+    <div id="my-signin2"></div>
+    <script>
+        function onSuccess(googleUser) {
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+        }
+        function onFailure(error) {
+            console.log(error);
+        }
+        function renderButton() {
+            gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
     </script>
 
 
