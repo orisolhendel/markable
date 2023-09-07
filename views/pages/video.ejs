@@ -874,29 +874,28 @@
 
     </script>
 
-    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+         data-client_id="392522309838-k8k4v2uk1tqmof77h3ut2l4cgs0vbvon.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
 
-    <div id="my-signin2"></div>
     <script>
-        function onSuccess(googleUser) {
-            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-        }
-        function onFailure(error) {
-            console.log(error);
-        }
-        function renderButton() {
-            gapi.signin2.render('my-signin2', {
-                'scope': 'profile email',
-                'width': 240,
-                'height': 50,
-                'longtitle': true,
-                'theme': 'dark',
-                'onsuccess': onSuccess,
-                'onfailure': onFailure
-            });
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            const responsePayload = decodeJwtResponse(response.credential);
+
+            console.log("ID: " + responsePayload.sub);
+            console.log('Full Name: ' + responsePayload.name);
+            console.log('Given Name: ' + responsePayload.given_name);
+            console.log('Family Name: ' + responsePayload.family_name);
+            console.log("Image URL: " + responsePayload.picture);
+            console.log("Email: " + responsePayload.email);
         }
     </script>
-
 
 </body>
 </html>
