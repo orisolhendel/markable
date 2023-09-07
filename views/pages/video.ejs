@@ -842,6 +842,9 @@
 
     </script>
 
+    <!-- facebook and google: -->
+    <!--=========================================-->
+
     <script>
         window.fbAsyncInit = function () {
             FB.init({
@@ -856,21 +859,21 @@
 
     <script>
 
-    const fblogin = () => {
-        FB.login(function (response) {
-            if (response.authResponse) {
-                console.log ('Welcome! Fetching your information.... ');
-                console.log (response)
-                FB.api('/me?fields=name,email', function (response) {
-                    console.log('Good to see you, ' + response.name + '.');
-                    console.log(`/${response.id}?fields=id,name,email`);
-                    FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
-                });
-            } else {
-                console.log('User cancelled login or did not fully authorize.');
-            }
-        });
-    }
+        const fblogin = () => {
+            FB.login(function (response) {
+                if (response.authResponse) {
+                    console.log ('Welcome! Fetching your information.... ');
+                    console.log (response)
+                    FB.api('/me?fields=name,email', function (response) {
+                        console.log('Good to see you, ' + response.name + '.');
+                        console.log(`/${response.id}?fields=id,name,email`);
+                        FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
+                    });
+                } else {
+                    console.log('User cancelled login or did not fully authorize.');
+                }
+            });
+        }
 
     </script>
 
@@ -880,13 +883,12 @@
          data-client_id="392522309838-k8k4v2uk1tqmof77h3ut2l4cgs0vbvon.apps.googleusercontent.com"
          data-callback="handleCredentialResponse">
     </div>
-    <div class="g_id_signin" data-type="standard"></div>
+
+    <div class="g_id_signin" data-type="standard" style="display: none;"></div>
 
     <script>
         function handleCredentialResponse(response) {
-            // decodeJwtResponse() is a custom function defined by you
-            // to decode the credential response.
-
+            
             function decodeJwtResponse(token) {
                 var base64Url = token.split('.')[1];
                 var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
