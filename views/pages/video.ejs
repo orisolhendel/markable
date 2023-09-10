@@ -268,6 +268,10 @@
             $$("checkDiv").style.display = "";
         }
 
+        const showSocialLogin = show => {
+            $$("socialDiv").style.display = show ? "" : "none";
+        }
+
         const showResults = (res) => {
 
             moveUp();
@@ -563,6 +567,22 @@
         </div>
     </div>
 
+    <!-- login with Facebook / Google: -->
+    <div id="socialDiv" class="fxd" style="background-color: #eeeeee; padding: 10px; z-index: 500; border-radius: 10px; display:none">
+        <div style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 14px; text-align: center;">To Receive Your Personalized Results</div>
+        <br />
+        <div    class="g_id_signin" 
+                data-type="standard" data-text="continue_with" data-locale="en_US" data-auto_prompt="false" data-width="280"
+                style="left: 20px; z-index: 200;"></div>
+        <br />
+        <div class="hand" style="width: 230px; 
+                                padding-top: 4px; padding-bottom: 3px; padding-left: 25px; padding-right: 25px;
+                                background-color: #2473f2; border-radius: 5px;" onclick="fblogin()">
+            <img src="./img/facebook.png" style="width: 230px;" />
+        </div>
+    </div>
+
+    <!-- result div: -->
     <div class="abs resDivLayout" id="resDiv" style="z-index: 100; width:100%; height: 100%; overflow: visible; display: none;">
         <div class="leftOrBottomLayout" style="font-size: 36px; font-family: 'Merriweather', serif;">
             Personal Insights
@@ -699,7 +719,41 @@
             showCanvas (false);
         });
 
-        sendPicButton.addEventListener('click', () => {
+        sendPicButton.addEventListener('click', () => { 
+            showSocialLogin (true);
+        });
+
+        $$('uploadForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const fileInput = $$('fileInput');
+            const file = fileInput.files[0];
+            const res = $$('resInput').value;
+            const dim = $$('dimInput').value;
+            const score = $$('scoreInput').value
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('res', res);
+            formData.append('dim', dim);
+            formData.append('score', score)
+
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                $$("loadingImg").style.display = "none";
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        });
+
+        const sendPicAction = () => {
+
+            showSocialLogin(false);
             
             canvasToSend.toBlob ( blob => {
 
@@ -747,35 +801,11 @@
                     .catch (error => showResults (error));
             
             },"image/jpeg", 1);
-        });
+        };
 
-        $$('uploadForm').addEventListener('submit', (e) => {
-            e.preventDefault();
 
-            const fileInput = $$('fileInput');
-            const file = fileInput.files[0];
-            const res = $$('resInput').value;
-            const dim = $$('dimInput').value;
-            const score = $$('scoreInput').value
-
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('res', res);
-            formData.append('dim', dim);
-            formData.append('score', score)
-
-            fetch('/submit', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(result => {
-                $$("loadingImg").style.display = "none";
-            })
-            .catch(error => {
-                console.error(error);
-            });
-        });
+        // video streaming handling:
+        // ========================
 
         let mainStream = null;
         let vratio = 0;
@@ -792,8 +822,6 @@
             vratio = 3 / 4;
             ellipseRatio = 3 / 4.4;
         }
-
-        //const video = $$("videoElement");
 
         if (navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
@@ -867,7 +895,8 @@
                     FB.api('/me?fields=name,email', function (response) {
                         console.log('Good to see you, ' + response.name + '.');
                         console.log(`/${response.id}?fields=id,name,email`);
-                        FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
+                        sendPicAction ();
+                        //FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
                     });
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
@@ -883,8 +912,6 @@
          data-client_id="392522309838-k8k4v2uk1tqmof77h3ut2l4cgs0vbvon.apps.googleusercontent.com"
          data-callback="handleCredentialResponse">
     </div>
-
-    <div class="g_id_signin" data-type="standard" style="display: none;"></div>
 
     <script>
         function handleCredentialResponse(response) {
@@ -907,6 +934,7 @@
             console.log('Family Name: ' + responsePayload.family_name);
             console.log("Image URL: " + responsePayload.picture);
             console.log("Email: " + responsePayload.email);
+            sendPicAction();
         }
     </script>
 
