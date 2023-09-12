@@ -168,7 +168,7 @@
             }
 
             div.mediaLayoutAfterRes {
-                right: 100px; 
+                right: 0px; 
                 top: 120px; 
             }
 
@@ -568,11 +568,13 @@
     </div>
 
     <!-- login with Facebook / Google: -->
-    <div id="socialDiv" class="fxd" style="background-color: #eeeeee; padding: 10px; z-index: 500; border-radius: 10px; display:none">
+    <div id="socialDiv" class="fxd" style=" background-color: #eeeeee; padding: 10px; 
+                                            z-index: 500; border-radius: 20px; border:2px solid #e3e3e3;
+                                            display:none">
         <div style="font-family: 'Lato', sans-serif; font-weight: 900; font-size: 14px; text-align: center;">To Receive Your Personalized Results</div>
         <br />
         <div    class="g_id_signin" 
-                data-type="standard" data-text="continue_with" data-locale="en_US" data-auto_prompt="false" data-width="280"
+                data-type="standard" data-text="continue_with" data-locale="en_US" data-width="280"
                 style="left: 20px; z-index: 200;"></div>
         <br />
         <div class="hand" style="width: 230px; 
@@ -593,8 +595,8 @@
         </div>
 
         <!-- progress bar: -->
-        <div style="height: 40px;"></div>
-        <div id="progressBar" style="height: 80px; display: none;">
+        <div style="height: 20px;"></div>
+        <div id="progressBar" style="height: 60px; display: none;">
             <div id="score_prog" class="abs progressBarLayout" style="height: 37px; border: 1px solid #ffffff; border-radius: 25px; 
                                                                 box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.25)">
                 <div id="score_prog_inner" class="abs" style="  left: 4px; top: 4px; width: 0%; height: 27px; border: 1px solid #ffffff; 
@@ -604,7 +606,7 @@
             </div>
         </div>
         
-        <div id="classA" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classA" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
 
             It appears that you have entered the perimenopause stage, a natural phase in a woman's life marked by a series of
@@ -618,7 +620,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classB" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classB" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
             
             According to our analysis, you may be experiencing the beginning stages of Perimenopause which is the transition phase
@@ -634,7 +636,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classC" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classC" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
             
             According to our analysis, you may be experiencing the beginning stages of Perimenopause which is the transition phase
@@ -650,7 +652,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classD" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classD" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
             
             According to our analysis, you have yet to begin your perimenopause transition.
@@ -669,7 +671,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classX" class="leftOrBottomLayout" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classX" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             Based on our analysis, it's likely that you are entering or have already entered the menopause stage. This is a
             significant and natural transition in a woman's life, signaling the end of your reproductive years.
             <br /><br />
@@ -873,6 +875,7 @@
     <!-- facebook and google: -->
     <!--=========================================-->
 
+    <!-- facebook -->
     <script>
         window.fbAsyncInit = function () {
             FB.init({
@@ -886,7 +889,6 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
     <script>
-
         const fblogin = () => {
             FB.login(function (response) {
                 if (response.authResponse) {
@@ -895,22 +897,24 @@
                     FB.api('/me?fields=name,email', function (response) {
                         console.log('Good to see you, ' + response.name + '.');
                         console.log(`/${response.id}?fields=id,name,email`);
-                        sendPicAction ();
                         //FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
+
+                        sendPicAction();
                     });
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
                 }
             });
         }
-
     </script>
 
-    
+    <!-- google -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <div id="g_id_onload"
          data-client_id="392522309838-k8k4v2uk1tqmof77h3ut2l4cgs0vbvon.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse">
+         data-callback="handleCredentialResponse"  
+         data-locale="en_US" 
+         data-auto_prompt="false">
     </div>
 
     <script>
@@ -934,6 +938,7 @@
             console.log('Family Name: ' + responsePayload.family_name);
             console.log("Image URL: " + responsePayload.picture);
             console.log("Email: " + responsePayload.email);
+            
             sendPicAction();
         }
     </script>
