@@ -82,6 +82,37 @@ const calcScore = (res, userInfo) => {
     let sensitivity = info.sensitivity_score
     updateScoreJson (`sensitivity: ${sensitivity}`);
 
+    let wrinkle = info.wrinkle_score;
+    updateScoreJson(`wrinkle: ${wrinkle}`);
+
+    let glabella_wrinkle = jres.glabella_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`glabella_wrinkle: ${glabella_wrinkle}`);
+
+    let left_cheek_wrinkle = jres.left_cheek_wrinkle_severity.value;
+    updateScoreJson(`left_cheek_wrinkle: ${left_cheek_wrinkle}`);
+
+    let right_cheek_wrinkle = jres.right_cheek_wrinkle_severity.value;
+    updateScoreJson(`right_cheek_wrinkle: ${right_cheek_wrinkle}`);
+
+    let left_nasolabial_wrinkle = jres.left_nasolabial_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`left_nasolabial_wrinkle: ${left_nasolabial_wrinkle}`);
+
+    let right_nasolabial_wrinkle = jres.right_nasolabial_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`right_nasolabial_wrinkle: ${right_nasolabial_wrinkle}`);
+
+    let left_crowsfeet_wrinkle = jres.left_crowsfeet_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`left_crowsfeet_wrinkle: ${left_crowsfeet_wrinkle}`);
+
+    let right_crowsfeet_wrinkle = jres.right_crowsfeet_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`right_crowsfeet_wrinkle: ${right_crowsfeet_wrinkle}`);
+
+    let left_mouth_wrinkle = jres.left_mouth_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`left_mouth_wrinkle: ${left_mouth_wrinkle}`);
+
+    let right_mouth_wrinkle = jres.right_mouth_wrinkle_info.wrinkle_severity_level;
+    updateScoreJson(`right_mouth_wrinkle: ${right_mouth_wrinkle}`);
+
+    
     let eye_pouch_val = jres.eye_pouch.value;
     let eye_pouch_conf = jres.eye_pouch.confidence;
     updateScoreJson (`eye_pouch_val: ${eye_pouch_val}`);
@@ -92,16 +123,38 @@ const calcScore = (res, userInfo) => {
     updateScoreJson (`skin_type_val: ${skin_type_val}`);
     updateScoreJson (`skin_type_conf: ${skin_type_conf}`);
 
-    const water_score = gradeScore (water, [30, 50, 70, 101], ['error', 10, 5, 0]);
-    const pore_score = gradeScore(pores, [30, 50, 70, 101], ['error', 10, 5, 0]);
-    const melanin_score = gradeScore(melanin, [30, 50, 70, 101], ['error', 10, 5, 0]);
-    const dark_circle_score = gradeScore(dark_circle, [30, 50, 70, 101], ['error', 10, 5, 0])
-    const sensitivity_score = gradeScore(sensitivity, [30, 50, 70, 101], ['error', 10, 5, 0])
+    const water_score = gradeScore(water, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
+    const pore_score = gradeScore(pores, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
+    const melanin_score = gradeScore(melanin, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
+    const dark_circle_score = gradeScore(dark_circle, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
+    const sensitivity_score = gradeScore(sensitivity, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
+    const wrinkle_score = gradeScore(wrinkle, [81, 95, Infinity], [10, 5, 0]);
+    const glabella_wrinkle_score = gradeScore(glabella_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const left_cheek_wrinkle_score = gradeScore(left_cheek_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const right_cheek_wrinkle_score = gradeScore(right_cheek_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const left_nasolabial_wrinkle_score = gradeScore(left_nasolabial_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const right_nasolabial_wrinkle_score = gradeScore(right_nasolabial_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const left_crowsfeet_wrinkle_score = gradeScore(left_crowsfeet_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const right_crowsfeet_wrinkle_score = gradeScore(right_crowsfeet_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const left_mouth_wrinkle_score = gradeScore(left_mouth_wrinkle, [1, 2, Infinity], [0, 5, 10]);
+    const right_mouth_wrinkle_score = gradeScore(right_mouth_wrinkle, [1, 2, Infinity], [0, 5, 10]);
     const eye_pouch_score = eye_pouch_val == 1 && eye_pouch_conf > 0.1 ? 10 : 0;
     const skin_type_score = skin_type_val == 1 && skin_type_conf > 0.2 ? 10 : 0;
 
-    const factors = [water_score, pore_score, melanin_score, dark_circle_score, sensitivity_score, eye_pouch_score, skin_type_score];
-    const factors_names = ["water_score", "pore_score", "melanin_score", "dark_circle_score", "sensitivity_score", "eye_pouch_score", "skin_type_score"];
+    const factors = [water_score, pore_score, melanin_score, dark_circle_score, sensitivity_score, wrinkle_score, 
+                    glabella_wrinkle_score,  
+                    left_cheek_wrinkle_score, right_cheek_wrinkle_score,
+                    left_nasolabial_wrinkle_score, right_nasolabial_wrinkle_score,
+                    left_crowsfeet_wrinkle_score, right_crowsfeet_wrinkle_score,
+                    left_mouth_wrinkle_score, right_mouth_wrinkle_score,
+                    eye_pouch_score, skin_type_score];
+    const factors_names = ["water_score", "pore_score", "melanin_score", "dark_circle_score", "sensitivity_score", "wrinkle_score", 
+                            "glabella_wrinkle_score", 
+                            "left_cheek_wrinkle_score", "right_cheek_wrinkle_score",
+                            "left_nasolabial_wrinkle_score", "right_nasolabial_wrinkle_score",
+                            "left_crowsfeet_wrinkle_score", "right_crowsfeet_wrinkle_score",
+                            "left_mouth_wrinkle_score", "right_mouth_wrinkle_score",
+                            "eye_pouch_score", "skin_type_score"];
 
     let total_score_relative =    factors.reduce((a, b) => a + b, 0)
     const total_score_empiric = Math.round (total_score_relative / factors.length * 10);
