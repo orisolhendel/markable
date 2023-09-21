@@ -60,7 +60,7 @@
     </div>
 
     <!-- table div -->
-    <div id="tableDiv" class="abs captionText" style="top:120px; left: 10px; width: 100%;">
+    <div id="tableDiv" class="abs captionText" style="top:120px; left: 10px; width: 500px; table-layout:fixed;">
         <img id="loadingImg" class="abs" style="width:36px; height: 36px; top:80px; left: 500px; display: none;" src="./img/loading.gif" />
         <table id="resTable" style="width:1300px; border: 1px solid gray;">
             <tr>
@@ -69,7 +69,7 @@
                 <th>date-time</th>
                 <th>selfie</th>
                 <th style="width:120px;">image dimentions</th>
-                <th style="width:500px;">results</th>
+                <th style="width:150px;">results</th>
                 <th style="width:120px;">score</th>
             </tr>
         </table>
@@ -104,11 +104,11 @@
                     <tr>
                         <td>${row.id}</td>
                         <td>${row.uid}</td>
-                        <td style="width:200px;">${row.dt}</td>
+                        <td>${row.dt}</td>
                         <td><a href="javascript:void(0);" onclick='showPic("${row.uid}", this.parentElement, ${row.results}, ${row.selfiesdim})'>show picture</a></td>
-                        <td style="width:150px;">${row.selfiesdim}</td>
-                        <td style="display:block; overflow:hidden; width:500px; max-height:500px; text-align:left;">${row.results}</td>
-                        <td style="overflow:hidden; width:150px; height:100px; text-align:left;">${row.score}</td>
+                        <td>${row.selfiesdim}</td>
+                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">${row.results}</td>
+                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">${row.score}</td>
                     </tr>
                 `;
             })

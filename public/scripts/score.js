@@ -174,19 +174,19 @@ const calcScore = (res, userInfo) => {
     } else  {
         switch (symptoms) {
             case 0:
-                classification = gradeScore (total_score_relative, [45, 70], ["D", "C"]);
+                classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
                 break;
             case 1:
-                classification = gradeScore (total_score_relative, [45, 70], ["D", "C"]);
+                classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
                 break;
             case 2:
-                classification = gradeScore (total_score_relative, [30, 40, 70], ["D", "C", "B"]);
+                classification = gradeScore (total_score_relative, [50, Infinity], ["C", "B"]);
                 break;
             case 3:
-                classification = gradeScore (total_score_relative, [40, 45, 70], ["C", "B", "A"]);
+                classification = gradeScore (total_score_relative, [50, Infinity], ["C", "A"]);
                 break;
             default: // 4 and above
-                classification = gradeScore (total_score_relative, [15, 45, 70], ["C", "B", "A"]);
+                classification = gradeScore (total_score_relative, [50, Infinity], ["B", "A"]);
                 break;
         }
     }
