@@ -163,6 +163,8 @@ const calcScore = (res, userInfo) => {
     updateScoreJson (`total_score_relative: ${total_score_relative}`);
     updateScoreJson (`total_score_empiric: ${total_score_empiric}`);
 
+    let total_score_relative_plus_symptoms = total_score_relative;
+
     let classification = "";
 
     const age = Number(userInfo.age);
@@ -178,18 +180,28 @@ const calcScore = (res, userInfo) => {
                 break;
             case 1:
                 classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
+                total_score_relative_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [5, 0, 0]);
                 break;
             case 2:
                 classification = gradeScore (total_score_relative, [50, Infinity], ["C", "B"]);
+                total_score_relative_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [20, 5, 3]);
                 break;
             case 3:
                 classification = gradeScore (total_score_relative, [50, Infinity], ["C", "A"]);
+                total_score_relative_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [35, 15, 10]);
                 break;
             default: // 4 and above
                 classification = gradeScore (total_score_relative, [50, Infinity], ["B", "A"]);
+                total_score_relative_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [35, 15, 10]);
                 break;
         }
     }
+
+    let total_score_empiric_plus_symptoms = Math.round (total_score_relative_plus_symptoms / factors.length * 10);
+    total_score_empiric_plus_symptoms = Math.min (total_score_empiric_plus_symptoms, 96);
+
+    updateScoreJson (`total_score_relative_plus_symptoms: ${total_score_relative_plus_symptoms}`);
+    updateScoreJson (`total_score_empiric_plus_symptoms: ${total_score_empiric_plus_symptoms}`);
 
     updateScoreJson (`class: "${classification}"`, "no_delim");
     updateScoreJson ("}", "no_delim");

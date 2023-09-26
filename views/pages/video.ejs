@@ -296,7 +296,7 @@
             const scoreJson = JSON.parse ($$("scoreInput").value);
 
             const classification = scoreJson.class;
-            const scoreToDisplay = (classification === 'Young') ? 20 : scoreJson.total_score_empiric;
+            const scoreToDisplay = (classification === 'Young') ? 20 : scoreJson.total_score_empiric_plus_symptoms;
 
             $$("scoreSpan").innerText = scoreToDisplay;
 
