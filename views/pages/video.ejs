@@ -186,11 +186,11 @@
             }
 
             div.mainCaption {
-                font-size: 42px;
+                font-size: 38px;
             }
 
             div.subMainCaption {
-                font-size: 30px;
+                font-size: 28px;
             }
 
             div.instructionsLayout {
@@ -229,8 +229,10 @@
 
     <script src="./scripts/score.js"></script>
     <script src="./scripts/mark_checkboxes.js"></script>
+    <script src="./scripts/device.js"></script>
 
     <script>
+
         const getStarted = () => {
 
             moveUp();
@@ -696,6 +698,7 @@
         <input type="text" name="res" id="resInput" />
         <input type="text" name="dim" id="dimInput" />
         <input type="text" name="score" id="scoreInput" />
+        <input type="text" name="device" id="deviceInput" />
         <button type="submit" id="uploadButton">Upload</button>
     </form>
 
@@ -733,12 +736,14 @@
             const res = $$('resInput').value;
             const dim = $$('dimInput').value;
             const score = $$('scoreInput').value
+            const device = $$('deviceInput').value;
 
             const formData = new FormData();
             formData.append('file', file);
             formData.append('res', res);
             formData.append('dim', dim);
             formData.append('score', score)
+            formData.append('device', device);
 
             fetch('/submit', {
                 method: 'POST',
@@ -793,6 +798,7 @@
                         //console.log (result);
                         $$("resInput").value = result;
                         $$("dimInput").value = generateDimJson();
+                        $$("deviceInput").value = deviceData();
                         showResults (result);
                     })
                     .then(

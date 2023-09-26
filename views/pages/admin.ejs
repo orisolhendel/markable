@@ -65,10 +65,12 @@
         <table id="resTable" style="width:1300px; border: 1px solid gray;">
             <tr>
                 <th>id</th>
-                <th style="width:120px;">uid</th>
+                <!--th style="width:120px;">uid</th-->
                 <th>date-time</th>
                 <th>selfie</th>
                 <th style="width:120px;">image dimentions</th>
+                <th style="width:180px;">device</th>
+                <th style="width:180px;">mobile / desktop</th>
                 <th style="width:150px;">results</th>
                 <th style="width:120px;">score</th>
             </tr>
@@ -91,6 +93,15 @@
             console.error(error);
         });
 
+        const getDeviceType = json => {
+            try {
+                return JSON.parse(json).summary
+            } catch (e) 
+            {   
+                return '';
+            }
+        }
+
         const renderTable = res => {
 
             $$("loadingImg").style.display = "none";
@@ -103,10 +114,12 @@
                 trs += `
                     <tr>
                         <td>${row.id}</td>
-                        <td>${row.uid}</td>
+                        <!--td>${row.uid}</td-->
                         <td>${row.dt}</td>
                         <td><a href="javascript:void(0);" onclick='showPic("${row.uid}", this.parentElement, ${row.results}, ${row.selfiesdim})'>show picture</a></td>
                         <td>${row.selfiesdim}</td>
+                        <td>${row.device}</td>
+                        <td>${getDeviceType(row.device)}</td>
                         <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">${row.results}</td>
                         <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">${row.score}</td>
                     </tr>
