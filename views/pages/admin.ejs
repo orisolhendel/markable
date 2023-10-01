@@ -52,16 +52,22 @@
     <%- include('../partials/header'); %>
 
     <!-- picture div -->
-    <div id="picDiv" class="abs" style="z-index: 100; border: 1px solid gray; width:565px; height: 700px; background-color: #eeeeee; display: none;">
+    <div id="picDiv" class="fxd" style="z-index: 100; border: 1px solid gray; width:565px; height: 700px; background-color: #eeeeee; display: none;">
         <img id="selfieImg" class="abs" style="width: 480px; height: auto; top: 40px; left: 40px;" width="480" height="auto"/>
         <canvas id="resCanvas" class="abs" width="480" height="auto"></canvas>
         <button id="toggleMarksBtn" class="abs" style="top:5px; left: 5px;;" onclick="toggleMarks(this)">Hide Marks</button>
         <div class="abs hand" style="top:6px; right: 10px; font-size: 27px; font-family: 'Merriweather', serif;" onclick="hidePic()">X</div>
     </div>
 
+    <!-- results div -->
+    <div id="resDiv" class="fxd" style="z-index: 100; border: 1px solid gray; width:565px; height: 700px; background-color: #eeeeee; display: none;">
+        <div id="resDivInner" style = "width:100%; height:100%; border: 1px solid;"></div>
+        <div class="abs hand" style="top:6px; right: 10px; font-size: 27px; font-family: 'Merriweather', serif;" onclick="hideRes()">X</div>
+    </div>
+
     <!-- table div -->
     <div id="tableDiv" class="abs captionText" style="top:120px; left: 10px; width: 500px; table-layout:fixed;">
-        <img id="loadingImg" class="abs" style="width:36px; height: 36px; top:80px; left: 500px; display: none;" src="./img/loading.gif" />
+        <img id="loadingImg" class="fxd" style="width:36px; height: 36px; top:80px; left: 500px; display: none;" src="./img/loading.gif" />
         <table id="resTable" style="width:1300px; border: 1px solid gray;">
             <tr>
                 <th>id</th>
@@ -73,6 +79,8 @@
                 <th style="width:180px;">mobile / desktop</th>
                 <th style="width:150px;">results</th>
                 <th style="width:120px;">score</th>
+                <th style="width:180px;">comments</th>
+                <th style="width:120px;">maks sense?</th>
             </tr>
         </table>
     </div>
@@ -110,7 +118,11 @@
 
             const rows = Array.from (JSON.parse(res).rows);
 
-            rows.forEach (row => {
+            rows.forEach (row => { 
+                
+                const comments = row.comments ? row.comments : ''
+                const makes_sense = row.makes_sense ? true : false
+
                 trs += `
                     <tr>
                         <td>${row.id}</td>
@@ -120,8 +132,25 @@
                         <td>${row.selfiesdim}</td>
                         <td>${row.device}</td>
                         <td>${getDeviceType(row.device)}</td>
-                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">${row.results}</td>
-                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">${row.score}</td>
+                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left; vertical-align:top;">
+                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:show_content($$('sp_${row.uid}'))">[view]</a>
+                            &nbsp;
+                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:copy_content($$('sp_${row.uid}'))">[copy]</a>
+                            <br /><br />
+                            <span id="sp_${row.uid}">${row.results}</span>
+                        </td>
+                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">
+                            ${row.score}
+                        </td>
+                        <td>
+                            <textarea id="ta_${row.uid}" style="width:95%; height:200px; font-size:20px; font-family: 'Lato', sans-serif;" 
+                            placeholder="your input...">${comments.replaceAll("[QUOT]","'").replaceAll("[AMP]","&")}</textarea>
+                            <br />
+                            <button onclick="add_input('${row.uid}', $$('ta_${row.uid}').value, $$('cb_${row.uid}').checked, this)">save</button>
+                        </td>
+                        <td><input type="checkbox" 
+                            id="cb_${row.uid}" class="hand" ${makes_sense ? "checked='true'" : ""}
+                            onclick="add_input('${row.uid}', $$('ta_${row.uid}').value, $$('cb_${row.uid}').checked, this)"/></td>
                     </tr>
                 `;
             })
@@ -199,10 +228,99 @@
             $$("picDiv").style.display = "none";
         }
 
+        const fadingPanels = [];
+        const copy_content = callee => {
+            navigator.clipboard.writeText(callee.innerText);
+            callee.style.backgroundColor = '#9999ff';
+
+            fadingPanels.forEach ( (panel, index) => {
+                if (panel === callee) {
+                    console.log ("found " + index);
+                    fadingPanels.splice (index, 1);
+                }
+            });
+
+            fadingPanels.push (callee);
+            console.log (fadingPanels);
+
+            fadingPanels.forEach ( (panel, index) => {
+                if (panel.interval) {
+                    return;
+                }
+                panel.interval = window.setInterval (
+                    () => {
+                        if (!panel.fading) {
+                            panel.fading = '9999ff';
+                        }
+                        panel.style.backgroundColor = `#${panel.fading}`;
+
+                        const newFade = (parseInt(panel.fading, 16) + parseInt ("010100", 16));
+
+                        panel.fading = newFade.toString(16);
+                        if (newFade >= parseInt ('ffffff', 16)) {
+                            panel.fading = null;
+                            console.log (fadingPanels);
+                            fadingPanels.splice (index, 1);
+                            console.log (fadingPanels);
+                            console.log (panel.interval);
+                            clearInterval (panel.interval);
+                            panel.interval = null;
+                        }
+                    }, 10
+                )
+            });
+        }
+
+        const show_content = callee => {
+            const resDiv = $$("resDiv");
+            resDivInner.innerText = callee.innerText;
+            resDiv.style.display = "";
+            resDiv.style.left = callee.getBoundingClientRect().left + "px";
+            resDiv.style.top = (callee.getBoundingClientRect().top + 40) + "px";
+        }
+
+        const hideRes = () => {
+            $$("resDiv").style.display = "none";
+        }
+
         const toggleMarks = button => {
             const resCanvas = $$("resCanvas");
             resCanvas.style.display = (resCanvas.style.display === "none") ? "" : "none";
             button.innerText = (resCanvas.style.display === "none") ? "Show Marks" : "Hide Marks";
+        }
+
+        const add_input = (uid, comments, makes_sense, callee) => {
+
+            // show loading sign:
+            const loading = $$("loadingImg");
+            loading.style.display = "";
+            loading.style.left = (callee.getBoundingClientRect().left - 10) + "px";
+            loading.style.top = (callee.getBoundingClientRect().top - 50) + "px";
+
+            // escape problematic chars:
+            comments = comments.replaceAll ("'", "[QUOT]")
+            comments = comments.replaceAll ("&", "[AMP]")
+
+            // save data:
+            const formData = new FormData();
+            formData.append('uid', uid);
+            formData.append('comments', comments);
+            formData.append('makes_sense', makes_sense.toString());
+
+            fetch('/add_input', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                console.log ("saved");
+                loading.style.display = "none";
+            })
+            .catch(error => {
+                console.error(error);
+                loading.style.display = "none";
+                alert (error);
+            });
         }
 
     </script>

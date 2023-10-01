@@ -754,7 +754,9 @@
                 $$("loadingImg").style.display = "none";
             })
             .catch(error => {
+                $$("loadingImg").style.display = "none";
                 console.error(error);
+                alert (error);
             });
         });
 

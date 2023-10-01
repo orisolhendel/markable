@@ -4,8 +4,18 @@ const multer = require("multer");
 const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
-
 app.set('view engine', 'ejs');
+
+const getPostgresClient = () => {
+    const { Client } = require('pg');
+    return new Client({
+        connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
+
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
 
 app.get('/', function(req, res) {
     res.render('pages/video');
@@ -17,21 +27,11 @@ app.get('/admin', function(req, res) {
 
 const upload = multer({ dest: "uploads/" });
 
-app.post("/submit", upload.array("file"), uploadFiles);
+const uploadFiles = (req, res) => {
 
-function uploadFiles(req, res) {
-
-    const { Client } = require('pg');
     const fs = require('fs');
-
-    const client = new Client({
-        connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
-
-        ssl: {
-            rejectUnauthorized: false
-        }
-    });
-
+    
+    const client = getPostgresClient();
     client.connect();
 
     fs.readFile(req.files[0].path, 'hex', function(err, imgData) {
@@ -65,22 +65,14 @@ function uploadFiles(req, res) {
       });
 }
 
+app.post("/submit", upload.array("file"), uploadFiles);
+
 app.get('/show_db', function(req, res, next) {
 
-    const { Client } = require('pg');
-    const fs = require('fs');
-
-    const client = new Client({
-        connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
-
-        ssl: {
-            rejectUnauthorized: false
-        }
-    });
-
+    const client = getPostgresClient();
     client.connect();
 
-    client.query('SELECT id, dt, results, selfiesDim, score, device, uid FROM Selfies ORDER BY dt DESC LIMIT 15',
+    client.query('SELECT id, dt, results, selfiesDim, score, device, comments, makes_sense, uid FROM Selfies ORDER BY dt DESC LIMIT 15',
                         function(err, readResult) {
                             if (err) {
                                 console.log (err);
@@ -90,11 +82,8 @@ app.get('/show_db', function(req, res, next) {
     });
 });
 
-
-
 app.get('/show_pic', async function(req, res, next) {
 
-    const { Client } = require('pg');
     const fs = require('fs');
 
     // before going to the db - see if our file is already in place:
@@ -117,14 +106,7 @@ app.get('/show_pic', async function(req, res, next) {
 
                 console.log ("fetching from database");
 
-                const client = new Client({
-                    connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
-            
-                    ssl: {
-                        rejectUnauthorized: false
-                    }
-                });
-            
+                const client = getPostgresClient();
                 client.connect();
             
                 client.query(`SELECT selfie, dt, selfiesDim FROM Selfies WHERE uid = '${req.query.uid}' `,
@@ -156,6 +138,31 @@ app.get('/show_pic', async function(req, res, next) {
         };
     });
 });
+
+const addInput = (req, res) => {
+
+    const client = getPostgresClient();
+    client.connect();
+
+    console.log (req.body);
+
+    console.log (`  UPDATE Selfies SET comments = '${req.body.comments}', makes_sense = ${req.body.makes_sense}
+                    WHERE uid='${req.body.uid}'`);
+
+    client.query(`  UPDATE Selfies SET comments = '${req.body.comments}', makes_sense = ${req.body.makes_sense}
+                    WHERE uid='${req.body.uid}'`,
+                        function(err) {
+                            if (err) {
+                                throw err;
+                            }
+                            
+                            res.send ("success");
+                            client.end();
+                        });
+
+}
+
+app.post("/add_input", upload.array("file"), addInput);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
