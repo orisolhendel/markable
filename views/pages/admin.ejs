@@ -133,14 +133,18 @@
                         <td>${row.device}</td>
                         <td>${getDeviceType(row.device)}</td>
                         <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left; vertical-align:top;">
-                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:show_content($$('sp_${row.uid}'))">[view]</a>
+                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:show_content($$('ressp_${row.uid}'))">[view]</a>
                             &nbsp;
-                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:copy_content($$('sp_${row.uid}'))">[copy]</a>
+                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:copy_content($$('ressp_${row.uid}'))">[copy]</a>
                             <br /><br />
-                            <span id="sp_${row.uid}">${row.results}</span>
+                            <span id="ressp_${row.uid}">${row.results}</span>
                         </td>
-                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left;">
-                            ${row.score}
+                        <td style="overflow:hidden; white-space: nowrap; max-height:100px; max-width:150px; text-align:left; vertical-align:top;">
+                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:show_content($$('scsp_${row.uid}'))">[view]</a>
+                            &nbsp;
+                            <a style="font-size:14px;" href="javascript:void(0)" onclick="javascript:copy_content($$('scsp_${row.uid}'))">[copy]</a>
+                            <br /><br />
+                            <span id="scsp_${row.uid}">${row.score}</span>
                         </td>
                         <td>
                             <textarea id="ta_${row.uid}" style="width:95%; height:200px; font-size:20px; font-family: 'Lato', sans-serif;" 
@@ -228,47 +232,30 @@
             $$("picDiv").style.display = "none";
         }
 
-        const fadingPanels = [];
         const copy_content = callee => {
             navigator.clipboard.writeText(callee.innerText);
             callee.style.backgroundColor = '#9999ff';
 
-            fadingPanels.forEach ( (panel, index) => {
-                if (panel === callee) {
-                    console.log ("found " + index);
-                    fadingPanels.splice (index, 1);
-                }
-            });
+            if (callee.interval) {
+                clearInterval (callee.interval);
+            }
+            callee.fading = '9999ff';
 
-            fadingPanels.push (callee);
-            console.log (fadingPanels);
+            callee.interval = window.setInterval (
+                () => {
+                    
+                    callee.style.backgroundColor = `#${callee.fading}`;
 
-            fadingPanels.forEach ( (panel, index) => {
-                if (panel.interval) {
-                    return;
-                }
-                panel.interval = window.setInterval (
-                    () => {
-                        if (!panel.fading) {
-                            panel.fading = '9999ff';
-                        }
-                        panel.style.backgroundColor = `#${panel.fading}`;
+                    const newFade = (parseInt(callee.fading, 16) + parseInt ("010100", 16));
 
-                        const newFade = (parseInt(panel.fading, 16) + parseInt ("010100", 16));
-
-                        panel.fading = newFade.toString(16);
-                        if (newFade >= parseInt ('ffffff', 16)) {
-                            panel.fading = null;
-                            console.log (fadingPanels);
-                            fadingPanels.splice (index, 1);
-                            console.log (fadingPanels);
-                            console.log (panel.interval);
-                            clearInterval (panel.interval);
-                            panel.interval = null;
-                        }
-                    }, 10
-                )
-            });
+                    callee.fading = newFade.toString(16);
+                    if (newFade >= parseInt ('ffffff', 16)) {
+                        callee.fading = null;
+                        clearInterval (callee.interval);
+                        callee.interval = null;
+                    }
+                }, 10
+            )
         }
 
         const show_content = callee => {
