@@ -25,7 +25,7 @@ app.get('/admin', function(req, res) {
     res.render('pages/admin');
 });
 
-app.get('/treatments', function(req, res) {
+app.get('/trt', function(req, res) {
     res.render('pages/treatments');
 });
 
