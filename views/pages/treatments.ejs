@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content='width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=yes' name='viewport' />
+    <title></title>
+    <style>
+
+    @media only screen and (max-width: 1000px) { /* mobile */
+
+        div.captionDivLayout {
+            left: 5%;
+            top: 90px;
+            width:100%;
+            font-size: 24px; 
+        }
+
+        div.contentDivLayout {
+            flex-direction: column;
+            left: 5%;
+            top: 160px;
+            width:100%;
+            height:1600px;
+            text-align: center;
+            align-items: left;
+        }
+
+        div.picDiv {
+            width:88%; 
+            height: 350px;
+            border: 1px solid rgb(255, 0, 131, 0.5);
+            background-color: rgb(247, 247, 247);
+            text-align: center;
+        }
+
+    }
+
+    /* ===================================================================================================================================== */
+
+    @media only screen and (min-width: 1000px) { /* web */
+
+        div.captionDivLayout {
+            left: 100px;
+            top: 150px;
+            width:100%;
+            font-size: 32px; 
+        }
+
+        div.contentDivLayout {
+            flex-direction: row;
+            left: 100px;
+            top: 230px;
+            width:80%;
+            align-items: center;
+        }
+
+        div.picDiv {
+            width:280px; 
+            height: 350px;
+            border: 1px solid rgb(255, 0, 131, 0.5);
+            background-color: rgb(247, 247, 247);
+            text-align: center;
+        }
+    }
+
+    .buttonLayout {
+        width:90%; 
+        margin-top:20px;                
+        padding-top:12px; 
+        padding-bottom:12px; 
+        font-size: 16px;
+    }
+   
+    </style>
+</head>
+
+<body style="width:100%;">
+
+<%- include('../partials/header'); %>
+
+<div class="abs captionDivLayout">
+    <div style="font-family: 'Merriweather', serif; font-weight: 900; text-align: left;">
+        What are My Treatment Options?
+    </div>
+</div>
+
+<div class="abs flex contentDivLayout" style="justify-content: space-between;"> 
+    <div class="picDiv">
+        <img style="margin-top:35px; width:210px; height: auto;" src="./img/doctor.png" />
+        <button class="buttonLayout"> CONSOLT WITH A DOCTOR </button>
+    </div>
+    <div class="picDiv">
+        <img style="margin-top:45px; width:230px; height: auto;" src="./img/nutrition.png" />
+        <button class="buttonLayout"> NUTRITION CONSULTATION </button>
+    </div>
+    <div class="picDiv">
+        <img style="margin-top:35px; width:260px; height: auto;" src="./img/mindbody.png" />
+        <button class="buttonLayout"> MIND-BODY THERAPIES </button>
+    </div>
+    <div class="picDiv">
+        <img style="margin-top:35px; width:130px; height: auto;" src="./img/supps.png" />
+        <button class="buttonLayout"> SUPPLEMENTS </button>
+    </div>
+    <div class="onlyForMobile">
+        <br />
+    </div>
+</div>
+
+
+</body>
+
+</html>

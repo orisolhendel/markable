@@ -180,19 +180,19 @@ const calcScore = (res, userInfo) => {
                 break;
             case 1:
                 classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [5, 0, 0]);
+                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [5, 5, 0]);
                 break;
             case 2:
                 classification = gradeScore (total_score_relative, [50, Infinity], ["C", "B"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [20, 5, 3]);
+                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [20, 10, 8]);
                 break;
             case 3:
                 classification = gradeScore (total_score_relative, [50, Infinity], ["C", "A"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [35, 15, 10]);
+                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [35, 25, 15]);
                 break;
             default: // 4 and above
                 classification = gradeScore (total_score_relative, [50, Infinity], ["B", "A"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_relative, [81, 131, Infinity], [35, 15, 10]);
+                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [35, 25, 15]);
                 break;
         }
     }

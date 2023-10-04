@@ -536,7 +536,7 @@
 
     <!-- left div -->
     <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 640px; display:none;">
-        <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align: left; width: 100%;">
+        <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align: left;">
             Analyze Your Biomarkers
             <br /><br />
         </div>
@@ -618,7 +618,7 @@
             part of the hormonal transitions in women's life.
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
-            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <button class="discoverTreatLayout" onclick="location.href='/treatmens'">DISCOVER YOUR TREATMENT OPTIONS</button>
             <br /><br /><br /><br />
         </div>
 
@@ -634,7 +634,7 @@
             We strongly recommend that you discuss your symptoms with your healthcare provider for further consideration.
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
-            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <button class="discoverTreatLayout" onclick="location.href='/treatmens'">DISCOVER YOUR TREATMENT OPTIONS</button>
             <br /><br /><br /><br />
         </div>
 
@@ -650,7 +650,7 @@
             We strongly recommend that you discuss your symptoms with your healthcare provider for further consideration.
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
-            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <button class="discoverTreatLayout" onclick="location.href='/treatmens'">DISCOVER YOUR TREATMENT OPTIONS</button>
             <br /><br /><br /><br />
         </div>
 
@@ -669,7 +669,7 @@
 
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
-            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <button class="discoverTreatLayout" onclick="location.href='/treatmens'">DISCOVER YOUR TREATMENT OPTIONS</button>
             <br /><br /><br /><br />
         </div>
 
@@ -688,7 +688,7 @@
             healthcare provider, who can guide you through this phase and help you make informed decisions about your health.
             <br /><a>More about Perimenopause and its symptoms</a>
             <br /><br />
-            <button class="discoverTreatLayout">DISCOVER YOUR TREATMENT OPTIONS</button>
+            <button class="discoverTreatLayout" onclick="location.href='/treatmens'">DISCOVER YOUR TREATMENT OPTIONS</button>
             <br /><br /><br /><br />
         </div>
     </div>
@@ -833,49 +833,52 @@
             ellipseRatio = 3 / 4.4;
         }
 
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    video.srcObject = stream;
-                    mainStream = stream;
-                    // const vsettings = (stream.getVideoTracks()[0].getSettings());
-                    // const vwidht = vsettings.width;
-                    // const vheight = vsettings.height;
-                    // const vratio = vwidht / vheight;
+        const startCamera = () => {
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                        mainStream = stream;
+                        // const vsettings = (stream.getVideoTracks()[0].getSettings());
+                        // const vwidht = vsettings.width;
+                        // const vheight = vsettings.height;
+                        // const vratio = vwidht / vheight;
 
-                    //canvasElement.height = Math.round (canvasElement.width / vratio);
-                    //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
+                        //canvasElement.height = Math.round (canvasElement.width / vratio);
+                        //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
 
-                    // draw place holder
-                    const phCanvas = $$("placeHolderCanvas");
-                    const phx = phCanvas.getContext("2d");
+                        // draw place holder
+                        const phCanvas = $$("placeHolderCanvas");
+                        const phx = phCanvas.getContext("2d");
 
-                    phCanvas.height = Math.round(phCanvas.width / vratio);
+                        phCanvas.height = Math.round(phCanvas.width / vratio);
 
-                    phx.beginPath();
-                    phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio, 320 / ellipseRatio, 0, 2 * Math.PI, false);
-                    phx.strokeStyle = "rgba(0,0,0,0.4)";
-                    phx.lineWidth = 395 / ellipseRatio;
-                    phx.stroke();
-                    phx.closePath();
+                        phx.beginPath();
+                        phx.ellipse(phCanvas.width / 2, 160 / ellipseRatio, 290 / ellipseRatio, 320 / ellipseRatio, 0, 2 * Math.PI, false);
+                        phx.strokeStyle = "rgba(0,0,0,0.4)";
+                        phx.lineWidth = 395 / ellipseRatio;
+                        phx.stroke();
+                        phx.closePath();
 
-                    $$("captureWrapper").style.left = "10px";
-                    $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
+                        $$("captureWrapper").style.left = "10px";
+                        $$("captureWrapper").style.top = `${phCanvas.height - 75 + 30}px`;
 
-                    $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
-                    $$("capture").style.top = `${phCanvas.height - 26}px`;
+                        $$("capture").style.left = `${phCanvas.width / 2 - 65}px`;
+                        $$("capture").style.top = `${phCanvas.height - 26}px`;
 
-                    $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
-                    $$("reCapture").style.top = `${phCanvas.height - 26}px`;
+                        $$("reCapture").style.left = `${phCanvas.width / 2 - 175}px`;
+                        $$("reCapture").style.top = `${phCanvas.height - 26}px`;
 
-                    $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
-                    $$("sendPic").style.top = `${phCanvas.height - 26}px`;
-                })
-                .catch(function (error) {
-                    console.log("Something went wrong!");
-                    console.log(error);
-                });
-        }
+                        $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
+                        $$("sendPic").style.top = `${phCanvas.height - 26}px`;
+                    })
+                    .catch(function (error) {
+                        console.log("Something went wrong!");
+                        console.log(error);
+                    });
+         }
+    }
+    startCamera();
 
 
     </script>

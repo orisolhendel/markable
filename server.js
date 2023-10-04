@@ -25,6 +25,10 @@ app.get('/admin', function(req, res) {
     res.render('pages/admin');
 });
 
+app.get('/treatments', function(req, res) {
+    res.render('pages/treatments');
+});
+
 const upload = multer({ dest: "uploads/" });
 
 const uploadFiles = (req, res) => {
