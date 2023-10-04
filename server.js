@@ -25,7 +25,7 @@ app.get('/admin', function(req, res) {
     res.render('pages/admin');
 });
 
-app.get('/trt', function(req, res) {
+app.get('/treatments', function(req, res) {
     res.render('pages/treatments');
 });
 
@@ -64,6 +64,7 @@ const uploadFiles = (req, res) => {
                                     }
                                     console.log(`moving: ${req.files[0].path} => ${__dirname}/public/tmp/${uid}.jpg`)
                                   })
+                                res.send ("success");
                                 client.end();
                             });
       });
