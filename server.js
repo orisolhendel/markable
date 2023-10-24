@@ -45,7 +45,7 @@ const uploadFiles = (req, res) => {
 
         imgData = '\\x' + imgData;
 
-        const uid_arr = req.files[0].path.split ("/");
+        const uid_arr = req.files[0].path.split ("/");   
         const uid = uid_arr[uid_arr.length - 1];
        
         console.log (req.body.device)
