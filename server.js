@@ -64,7 +64,7 @@ const uploadFiles = (req, res) => {
                                     }
                                     console.log(`moving: ${req.files[0].path} => ${__dirname}/public/tmp/${uid}.jpg`)
                                   })
-                                res.send ("success");
+                                  res.send ("success");
                                 client.end();
                             });
       });
