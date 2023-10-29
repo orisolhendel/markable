@@ -30,9 +30,8 @@
                 height: auto;
             }
 
-            div.leftDivLayout {
-                left: 18px;
-                top:800px;
+            div.videoDivLayout {
+                top: 80px;
             }
 
             div.checkboxGridLayout {
@@ -52,11 +51,6 @@
             div.checkBoxCaptionLayout {
                 left: 10px;
                 top:0px;
-            }
-
-            div.mediaLayout {
-                left: 10px;
-                top: 90px;
             }
 
             div.mediaLayoutAfterRes {
@@ -123,7 +117,7 @@
             img.loadingGifLayoutVid {
                 position: fixed;
                 left: 220px;
-                top: 200px;
+                top: 300px;
             }
         }
 
@@ -143,9 +137,8 @@
                 height: auto;
             }
 
-            div.leftDivLayout {
-                left: 100px;
-                top:150px;
+            div.videoDivLayout {
+                top: 125px;
             }
 
             div.checkboxGridLayout {
@@ -168,13 +161,8 @@
                 top:15px;
             }
 
-            div.mediaLayout {
-                right: 60px; 
-                top: 115px; 
-            }
-
             div.mediaLayoutAfterRes {
-                right: 0px; 
+                right: 540px; 
                 top: 120px; 
             }
 
@@ -233,8 +221,8 @@
 
             img.loadingGifLayoutVid {
                 position: fixed;
-                right: 315px; 
-                top: 265px; 
+                left: 220px;
+                top: 300px;
             }
         }
     </style>
@@ -250,11 +238,9 @@
             moveUp();
 
             $$("introDiv").style.display = "none";
-            //$$("vidDiv").style.display = "";
-            $$("leftDiv").style.display = "";
 
             startCamera ();
-        }
+        };
 
         const showCanvas = show => {
             $$("canvasElement").style.display = show ? "" : "none";
@@ -262,7 +248,7 @@
             $$("capture").style.display = show ? "none" : "";
             $$("reCapture").style.display = show ? "" : "none";
             $$("sendPic").style.display = show ? "" : "none";
-        }
+        };
 
         const showCheckboxes = () => {
 
@@ -278,15 +264,13 @@
                 console.log(e);
             }
 
-            $$("mediaDiv").style.display = "none";
-            $$("leftDiv").style.display = "none";
-            $$("vidDiv").style.display = "none";
+            setVideoVisibility ([false, false, false, false]);
             $$("checkDiv").style.display = "";
-        }
+        };
 
         const showSocialLogin = show => {
             $$("socialDiv").style.display = show ? "" : "none";
-        }
+        };
 
         const showResults = (res) => {
 
@@ -295,18 +279,15 @@
             $$("scoreInput").value = calcScore (res, getUserInfo());
 
             $$("resDiv").style.display = "";
-            $$("vidDiv").style.display = "";
-            $$("mediaDiv").style.display = "";
+            setVideoVisibility ([false, false, true, false]);
             $$("canvasElement").style.display = "";
             $$("videoElement").style.display = "none";
             $$("checkDiv").style.display = "none";
-            $$("leftDiv").style.display = "none";
             $$("reCapture").style.display = "none";
             $$("sendPic").style.display = "none";
             $$("placeHolderCanvas").style.display = "none";
             $$("captureWrapper").style.display = "none";
-
-            $$("vidDiv").classList.remove ("mediaLayout");
+            $$("vidDiv").classList.remove ("videoDivLayout");
             $$("vidDiv").classList.add ("mediaLayoutAfterRes");
 
             const scoreJson = JSON.parse ($$("scoreInput").value);
@@ -374,11 +355,11 @@
             //     ctx.fill();
             //     ctx.closePath();
             // });
-        }
+        };
 
         const generateDimJson = () => {
             return `{"width" : ${canvasToSend.width}, "height" : ${canvasToSend.height}}`;
-        }
+        };
 
         const clearNoSymp = (check) => {
             if (check.checked) {
@@ -387,7 +368,7 @@
             }
 
             toggleAnalyzeDisableness ();
-        }
+        };
 
         const clearChecks = () => {
             const checks = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -399,7 +380,7 @@
             });
 
             toggleAnalyzeDisableness ();
-        }
+        };
 
         const getSymptomList = () => {
             const checks = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -412,7 +393,7 @@
                 }
             });
             return arr;
-        }
+        };
 
         const getUserInfo = () => {
             const info = {};
@@ -420,13 +401,19 @@
             info.age = $$("age").value
             info.other = ($$("__other").checked) ? $$("__other_text").value : "";
             return info;
-        }
+        };
 
         const toggleAnalyzeDisableness = () => {
             const checks = document.querySelectorAll('input[type="checkbox"]:checked');
             const disdiv = $$("disableAnalyze");
             disdiv.style.display = checks.length && $$("age").value ? "none" : "";
         }
+
+        const setVideoVisibility = arr => {
+            arr.forEach((element, index) => {
+                $$(`videoEl${index}`).style.display = (element ? "" : "none");
+            });
+        };
     </script>
 </head>
 
@@ -471,11 +458,25 @@
 
         <img src="./img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
     </div>
-
-    <!-- video and canvas -->
-    <div id="vidDiv" class="abs mediaLayout" style="width:550px; height: 600px; display: none;">
   
-        <div id="mediaDiv">
+    <!-- video and canvas -->
+    <div id="vidDiv" class="abs videoDivLayout">
+
+        <div id="videoEl0" style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align: left; display: none;">
+            Take a Selfie for Instant Biomarker Analysis
+            <br /><br />
+        </div>
+
+        <span id="videoEl1" style="display: none;">
+            <span class="hideForMobile">
+                <div id="vidDivHowtoWeb" style="display : flex; align-items : center;">
+                    <img alt="" src="./img/camera.png" style="width:48px; height: auto;" />
+                    <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
+                </div>
+            </span>
+        </span>
+
+        <div id="videoEl2" class="abs" style="width:100%; display: none;">
             <div id="videoWrapper" class="abs" style="left:10px; top: 30px; margin: 0px; padding: 0px;">
                 <video id="videoElement" autoplay="true" loop="true" muted="true" playsinline="true" width="480" height="auto" style="background-color: #ffffff; transform: scale(-1, 1); -webkit-transform: scale(-1, 1); -moz-transform: scale(-1, 1);" ></video>
             </div>
@@ -489,9 +490,19 @@
             <button class="abs hand selfieButton" id="reCapture" style="z-index: 400; display: none;"> Retake</button>
             <button class="abs hand selfieButton" id="sendPic" style="z-index: 400; display: none;" onclick="showCheckboxes()"> Analyze Selfie</button>
             <!--canvas id="resCanvas" class="abs" width="512" height="512" style="display: none;"></canvas-->
+
+            <span id="videoEl3" style="display: none;">
+                <span class="onlyForMobile">
+                    <div class="abs" id="vidDivHowtoMobile" style="display : flex; align-items : center;">
+                        <img alt="" src="./img/camera.png" style="width:48px; height: auto;" />
+                        <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
+                    </div>
+                </span>
+            </span>
         </div>
+
     </div>
-    <img id="loadingImgVid" class="loadingGifLayoutVid" style="width:80px; height: 80px;  z-index: 200; display: none;" src="./img/loading.gif" />
+    <img id="loadingImgVid" class="loadingGifLayoutVid" style="width:80px; height: 80px; z-index: 200; display: none;" src="./img/loading.gif" />
 
     <!-- checkbox div -->
     <div id="checkDiv" class="abs checkboxGridLayout" style="display: none;">
@@ -547,41 +558,6 @@
         <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" onclick="fblogin()">READY FOR MY RESULTS!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
-    </div>
-
-    <!-- left div -->
-    <div id="leftDiv" class="abs leftDivLayout" style="width:100%; height: 640px; display:none;">
-        <div class="leftOrBottomLayout" style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align: left;">
-            Analyze Your Biomarkers
-            <br /><br />
-        </div>
-        <div  class="leftOrBottomLayout" style="font-family: 'Lato', sans-serif; font-size: 28px; text-align: left;">
-            Take a selfie and get your biomarker analysis results instantly 
-            <br />
-            <a href="javascript:void(0)">Why test my biomarkers</a>
-            <br /><br />
-        </div>
-        <div class="abs instructionsLayout" style="height: 230px; padding:20px;">
-            <div class="abs" style="left: 20px; top: 22px; font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 900; padding-left: 0px;">
-                Before You Take Your Picture
-            </div>
-            <div class="abs" style="left: 20px; top: 67px; font-family: 'Lato', sans-serif; font-size: 18px;">
-                <img class="abs" style="left: 0px; top:-2px;" src="./img/vsign_all.png" height="189px" width="auto" />
-                <div class="abs" style="left: 45px; top:10px; width: 360px;">Remove your glasses</div>
-            </div>
-            <div class="abs" style="left: 20px; top: 117px; font-family: 'Lato', sans-serif; font-size: 18px;">
-                <!--img class="abs" style="left: 0px; top: 5px;" src="./img/vsign.png" width="30" height="auto" /-->
-                <div class="abs" style="left: 45px; top:10px; width: 360px;">Remove your makeup</div>
-            </div>
-            <div class="abs" style="left: 20px; top: 167px; font-family: 'Lato', sans-serif; font-size: 18px;">
-                <!--img class="abs" style="left: 0px; top: 5px;" src="./img/vsign.png" width="30" height="auto" /-->
-                <div class="abs" style="left: 45px; top:10px; width: 360px;">Ensure proper lighting</div>
-            </div>
-            <div class="abs" style="left: 20px; top: 217px; font-family: 'Lato', sans-serif; font-size: 18px;">
-                <!--img class="abs" style="left: 0px; top: 5px; " src="./img/vsign.png" width="30" height="auto" /-->
-                <div class="abs" style="left: 45px; top:10px; width: 360px;">Face directly at camera</div>
-            </div>
-        </div>
     </div>
 
     <!-- login with Facebook / Google: -->
@@ -719,8 +695,6 @@
 
     <script>
 
-        alert ("fix in place");
-
         // event listeners:
         // ===============
 
@@ -851,6 +825,7 @@
         }
 
         const startCamera = () => {
+            setVideoVisibility ([true, true, false, true]);
             if (navigator.mediaDevices.getUserMedia) {
                 $$("loadingImgVid").style.display = "";
                 navigator.mediaDevices.getUserMedia({ video: true })
@@ -865,9 +840,8 @@
                         //canvasElement.height = Math.round (canvasElement.width / vratio);
                         //canvasToSend.height =  Math.round (canvasToSend.width / vratio);
 
-
                         setTimeout (() => {
-                            $$("vidDiv").style.display = "";
+                            setVideoVisibility ([true, true, true, true]);
                             $$("loadingImgVid").style.display = "none";
                         }, 500);
 
@@ -895,6 +869,9 @@
 
                         $$("sendPic").style.left = `${phCanvas.width / 2 + 38}px`;
                         $$("sendPic").style.top = `${phCanvas.height - 26}px`;
+
+                        $$("vidDivHowtoMobile").style.left = "10px";
+                        $$("vidDivHowtoMobile").style.top = `${phCanvas.height + 40}px`
                     })
                     .catch(function (error) {
                         console.log("Something went wrong!");
