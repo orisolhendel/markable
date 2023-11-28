@@ -5,17 +5,14 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-app.enable('trust proxy');
+//app.enable('trust proxy');
 
+app.use(function(request, response, next) {
 
-// app.use(function(request, response, next) {
+    response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'); 
 
-//     if (process.env.NODE_ENV != 'development' && !request.secure) {
-//        return response.redirect("https://" + request.headers.host + request.url);
-//     }
-
-//     next();
-// });
+    next();
+});
 
 const getPostgresClient = () => {
     const { Client } = require('pg');
@@ -23,7 +20,7 @@ const getPostgresClient = () => {
         connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
 
         ssl: {
-            rejectUnauthorized: true
+            rejectUnauthorized: false
         }
     });
 }
