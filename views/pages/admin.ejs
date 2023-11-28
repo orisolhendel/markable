@@ -162,7 +162,7 @@
                 console.log(result);
                 const selfieImg = $$("selfieImg");
                 const picDiv = $$("picDiv");
-                selfieImg.src = `./tmp/${result}`;
+                selfieImg.src = `/tmp/${result}`;
 
                 picDiv.style.left = container.getBoundingClientRect().left + "px";
                 picDiv.style.top = (container.getBoundingClientRect().top + 40) + "px";
