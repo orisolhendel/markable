@@ -1159,6 +1159,10 @@
                             $$("loadingImgVid").style.display = "none";
                         }, 500);
 
+
+                        setVideoVisibility ([true, true, true, true]);
+                        $$("loadingImgVid").style.display = "none";
+
                         // draw place holder
                         const phCanvas = $$("placeHolderCanvas");
                         const phx = phCanvas.getContext("2d");
