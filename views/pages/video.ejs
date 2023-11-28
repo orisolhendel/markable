@@ -251,9 +251,9 @@
         }
     </style>
 
-    <script src="./scripts/score.js"></script>
-    <script src="./scripts/mark_checkboxes.js"></script>
-    <script src="./scripts/device.js"></script>
+    <script src="/scripts/score.js"></script>
+    <script src="/scripts/mark_checkboxes.js"></script>
+    <script src="/scripts/device.js"></script>
 
     <script>
 
@@ -513,7 +513,7 @@
             </div>
         </div>
 
-        <img src="./img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
+        <img src="/img/clip.gif" class="abs clipLayout" width="50%" height="auto" />
     </div>
   
     <!-- video and canvas -->
@@ -527,7 +527,7 @@
         <span id="videoEl1" style="display: none;">
             <span class="hideForMobile">
                 <div id="vidDivHowtoWeb" style="display : flex; flex-direction: row; align-items : center;">
-                    <img alt="" src="./img/camera.png" style="width:48px; height: auto;" />
+                    <img alt="" src="/img/camera.png" style="width:48px; height: auto;" />
                     <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
                 </div>
             </span>
@@ -551,7 +551,7 @@
             <span id="videoEl3" style="display: none;">
                 <span class="onlyForMobile">
                     <div class="abs" id="vidDivHowtoMobile" style="display : flex; align-items : center;">
-                        <img alt="" src="./img/camera.png" style="width:48px; height: auto;" />
+                        <img alt="" src="/img/camera.png" style="width:48px; height: auto;" />
                         <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
                     </div>
                 </span>
@@ -559,7 +559,7 @@
         </div>
 
     </div>
-    <img id="loadingImgVid" class="loadingGifLayoutVid" style="width:80px; height: 80px; z-index: 200; display: none;" src="./img/loading.gif" />
+    <img id="loadingImgVid" class="loadingGifLayoutVid" style="width:80px; height: 80px; z-index: 200; display: none;" src="/img/loading.gif" />
 
     <!-- accuracy questions - mobile -->
     <script>
@@ -738,14 +738,14 @@
             </div>
         </span>
 
-        <img alt="back" class="fxd hand" src="./img/nav.png" style="width:49px; height: auto; 
+        <img alt="back" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto; 
                                                                     bottom: 20px; left:20px;" 
                                                                     onclick="back_mobile()"/>
-        <img alt="next" class="fxd hand" src="./img/nav.png" style="width:49px; height: auto;
+        <img alt="next" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto;
                                                                     bottom: 20px; right:20px;
                                                                     -webkit-transform: scaleX(-1); transform: scaleX(-1);"
                                                                     onclick = "forward_mobile()" />
-        <img alt="next" id="navMobiledDisabled" class="fxd" src="./img/nav_disabled.png" style="width:49px; height: auto;
+        <img alt="next" id="navMobiledDisabled" class="fxd" src="/img/nav_disabled.png" style="width:49px; height: auto;
                                                                     bottom: 20px; right:20px; z-index: 100;
                                                                     -webkit-transform: scaleX(-1); transform: scaleX(-1);" />
     </div>
@@ -860,7 +860,7 @@
 
         <button class="sendPicFinalLayout" id="sendPicFinal">READY FOR MY RESULTS!</button>
         <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">READY FOR MY RESULTS!</button>
-        <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
+        <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="/img/loading.gif" />
 
     </div>
 
@@ -877,7 +877,7 @@
         <div class="hand" style="width: 230px; 
                                 padding-top: 4px; padding-bottom: 3px; padding-left: 25px; padding-right: 25px;
                                 background-color: #2473f2; border-radius: 5px;" onclick="fblogin()">
-            <img src="./img/facebook.png" style="width: 230px;" />
+            <img src="/img/facebook.png" style="width: 230px;" />
         </div>
     </div>
 
@@ -1140,6 +1140,7 @@
 
         const startCamera = () => {
             setVideoVisibility ([true, true, false, true]);
+
             if (navigator.mediaDevices.getUserMedia) {
                 $$("loadingImgVid").style.display = "";
                 navigator.mediaDevices.getUserMedia({ video: true })
@@ -1158,10 +1159,6 @@
                             setVideoVisibility ([true, true, true, true]);
                             $$("loadingImgVid").style.display = "none";
                         }, 500);
-
-
-                        setVideoVisibility ([true, true, true, true]);
-                        $$("loadingImgVid").style.display = "none";
 
                         // draw place holder
                         const phCanvas = $$("placeHolderCanvas");
