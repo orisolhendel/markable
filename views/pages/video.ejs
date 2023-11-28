@@ -60,6 +60,11 @@
 
             div.resDivLayout {
                 left:20px;
+                top:100px;
+            }
+
+            div.resDivLayoutAfterPicTaken {
+                left:20px;
                 top:725px;
             }
 
@@ -100,6 +105,12 @@
                 left: 20px;
                 bottom: 50px;
                 width: 95%;
+                height: 50px;
+            }
+
+            button.continueToAnalyzeLayout {
+                position: fixed;
+                width: 100px;
                 height: 50px;
             }
 
@@ -171,6 +182,11 @@
                 top:130px;
             }
 
+            div.resDivLayoutAfterPicTaken {
+                left:100px;
+                top:130px;
+            }
+
             div.leftOrBottomLayout { /* left side on web, bottom side on mobile */
                 width:55%
             }
@@ -208,6 +224,14 @@
                 height: 40px;
             }
 
+            button.continueToAnalyzeLayout {
+                position: fixed;
+                right: 200px;
+                bottom: 100px; 
+                width: 260px;
+                height: 40px;
+            }
+
             button.discoverTreatLayout {
                 width: 380px;
                 height: 40px;
@@ -237,9 +261,33 @@
 
             moveUp();
 
-            $$("introDiv").style.display = "none";
+            $$("accQuestionsWeb").style.display = "none";
+            $$("accQuestionsMobile").style.display = "none";
 
             startCamera ();
+        };
+
+        const show_acc_questions = () => {
+            if (markable_device === MARKABLE_DEVICES.web) {
+                show_acc_questions_web ();
+            } else {
+                show_acc_questions_mobile ()
+            }
+        };
+
+        const show_acc_questions_web = () => {
+            $$("introDiv").style.display = "none";
+            $$("accQuestionsWeb").style.display = "";
+
+            $$("monthQuestionShadow").style.left = `${$$("monthQuesion").getBoundingClientRect().left}px`;
+            $$("monthQuestionShadow").style.top = `${$$("monthQuesion").getBoundingClientRect().top}px`;
+        };
+
+        const show_acc_questions_mobile = () => {
+            $$("introDiv").style.display = "none";
+            $$("accQuestionsMobile").style.display = "";
+
+            enable_forward_mobile_stage ();
         };
 
         const showCanvas = show => {
@@ -289,6 +337,14 @@
             $$("captureWrapper").style.display = "none";
             $$("vidDiv").classList.remove ("videoDivLayout");
             $$("vidDiv").classList.add ("mediaLayoutAfterRes");
+            $$("accQuestionsMobile").style.display = "none";
+            $$("accQuestionsWeb").style.display = "none";
+            $$("capture").style.display = "none";
+
+            if (pictureTaken) {
+                $$("resDiv").classList.remove ("resDivLayout");
+                $$("resDiv").classList.add ("resDivLayoutAfterPicTaken");
+            }
 
             const scoreJson = JSON.parse ($$("scoreInput").value);
 
@@ -319,10 +375,10 @@
 
             switch (classification) {
                 case "Young":
-                    $$("classD").style.display = "";
+                    $$("classYoung").style.display = "";
                     break;
                 case "Old":
-                    $$("classX").style.display = "";
+                    $$("classOld").style.display = "";
                     break;
                 default: // A, B, C or D
                     $$(`class${classification}`).style.display = "";
@@ -361,21 +417,19 @@
             return `{"width" : ${canvasToSend.width}, "height" : ${canvasToSend.height}}`;
         };
 
-        const clearNoSymp = (check) => {
+        const clearNoSymp = check => {
             if (check.checked) {
-                $$("no_symp").checked = false;
-                animateCb (mark_cb_get_outer_from_cb ($$("no_symp")), $$("no_symp"));
+                mark_turnOffRemotely ("no_symp");
             }
 
             toggleAnalyzeDisableness ();
         };
 
         const clearChecks = () => {
-            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            const checks = document.querySelectorAll('div.nine_questions input[type="checkbox"]:checked');
             checks.forEach (check => {
                 if (check.id != 'no_symp') {
-                    check.checked = false;
-                    animateCb (mark_cb_get_outer_from_cb (check), check);
+                    mark_turnOffRemotely (check.id);
                 }
             });
 
@@ -383,7 +437,7 @@
         };
 
         const getSymptomList = () => {
-            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            const checks = document.querySelectorAll('div.nine_questions input[type="checkbox"]:checked');
             let arr = [];
             checks.forEach (check => {
                 if (check.id === 'no_symp') {
@@ -397,16 +451,19 @@
 
         const getUserInfo = () => {
             const info = {};
+            info.age = (markable_device === MARKABLE_DEVICES.web) ? $$("age_web").value : $$("age_mobile").value
+            info.surg = (markable_device === MARKABLE_DEVICES.web)  ? $$("radio_web_surg_yes").checked :  $$("radio_mobile_surg_yes").checked;
+            info.no_month = (markable_device === MARKABLE_DEVICES.web)  ? $$("radio_web_month_no").checked :  $$("radio_mobile_month_no").checked;
             info.symptoms = getSymptomList ();
-            info.age = $$("age").value
             info.other = ($$("__other").checked) ? $$("__other_text").value : "";
+
             return info;
         };
 
         const toggleAnalyzeDisableness = () => {
-            const checks = document.querySelectorAll('input[type="checkbox"]:checked');
+            const checks = document.querySelectorAll('div.nine_questions input[type="checkbox"]:checked');
             const disdiv = $$("disableAnalyze");
-            disdiv.style.display = checks.length && $$("age").value ? "none" : "";
+            disdiv.style.display = checks.length ? "none" : "";
         }
 
         const setVideoVisibility = arr => {
@@ -417,7 +474,7 @@
     </script>
 </head>
 
-<body class="bgImage">
+<body>
 
     <%- include('../partials/header'); %>
 
@@ -449,7 +506,7 @@
                                             background-image:  linear-gradient( rgba(255,255,255,0), rgba(255,255,255,1));"></div>
             </div>
             <button id="letsGetStarted" class="startButtonLayout" style="font-size: 28px; z-index: 100;"
-                onclick="getStarted()">GET INSTANT ANALYSIS</button>
+                onclick="show_acc_questions()">GET INSTANT ANALYSIS</button>
             <div class="hideForMobile">
                 <br />
                 <a style="font-size: 22px;">how does it work?</a>
@@ -469,7 +526,7 @@
 
         <span id="videoEl1" style="display: none;">
             <span class="hideForMobile">
-                <div id="vidDivHowtoWeb" style="display : flex; align-items : center;">
+                <div id="vidDivHowtoWeb" style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="" src="./img/camera.png" style="width:48px; height: auto;" />
                     <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
                 </div>
@@ -504,58 +561,305 @@
     </div>
     <img id="loadingImgVid" class="loadingGifLayoutVid" style="width:80px; height: 80px; z-index: 200; display: none;" src="./img/loading.gif" />
 
+    <!-- accuracy questions - mobile -->
+    <script>
+        const get_mobile_stage = () => {
+            if ($$("accQuestionsMobile_1").style.display === "") {
+                return 1;
+            }
+            if ($$("accQuestionsMobile_2").style.display === "") {
+                return 2;
+            }
+            if ($$("accQuestionsMobile_3").style.display === "") {
+                return 3;
+            }
+
+            return -1;
+        }
+
+        const  enable_forward_mobile = () => {
+            $$("navMobiledDisabled").style.display = "none";
+        }
+
+        const  disable_forward_mobile = () => {
+            $$("navMobiledDisabled").style.display = "";
+        }
+
+        const enable_forward_mobile_combo = combo => {
+            if (combo.value.toString() === "-1") {
+                disable_forward_mobile ();
+            } else {
+                enable_forward_mobile ();
+            }
+        }
+
+        const enable_forward_mobile_stage = () => {
+            switch (get_mobile_stage()) {
+                case 1:
+                    enable_forward_mobile_combo ($$("age_mobile"));
+                    break;
+                case 2:
+                    if ($$("radio_mobile_surg_yes").checked ||  $$("radio_mobile_surg_no").checked)
+                        enable_forward_mobile ();
+                    else 
+                        disable_forward_mobile();
+                    break;
+                case 3: 
+                    if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked)
+                        enable_forward_mobile ();
+                    else 
+                        disable_forward_mobile();
+                    break;
+                default: 
+                    disable_forward_mobile();
+                    break;
+            }
+
+        }
+
+        const forward_mobile = () => { 
+            switch (get_mobile_stage()) {
+                case 1:
+                    $$("accQuestionsMobile_1").style.display = "none";
+                    $$("accQuestionsMobile_2").style.display = "";
+                    break;
+                case 2:
+                    if ($$("radio_mobile_surg_yes").checked) {
+                        showResults (100);
+                    } else {
+                        $$("accQuestionsMobile_2").style.display = "none";
+                        $$("accQuestionsMobile_3").style.display = "";
+                    }
+                    break;
+                case 3:
+                    if ($$("radio_mobile_month_no").checked || $$("age_mobile").value > 52 || $$("age_mobile").value < 38) {
+                        showResults (100);
+                    } else {
+                        getStarted ();
+                    }
+            }
+
+            enable_forward_mobile_stage ();
+        }
+
+        const back_mobile = () => {
+            switch (get_mobile_stage()) {
+                case 1:
+                    $$("accQuestionsMobile").style.display = "none";
+                    $$("introDiv").style.display = "";
+                    break;
+                case 2:
+                    $$("accQuestionsMobile_2").style.display = "none";
+                    $$("accQuestionsMobile_1").style.display = "";
+                    break;
+                case 3:
+                    $$("accQuestionsMobile_3").style.display = "none";
+                    $$("accQuestionsMobile_2").style.display = "";
+                    break;
+            }
+
+            enable_forward_mobile_stage ();
+        }
+
+        const radio_mobile_surg_yes_click = check => {
+            enable_forward_mobile ();
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_mobile_surg_no");
+            }
+        };
+
+        const radio_mobile_surg_no_click = check => {
+            enable_forward_mobile ();
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_mobile_surg_yes");
+            }
+        };
+
+        const radio_mobile_month_yes_click = check => {
+            enable_forward_mobile ();
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_mobile_month_no");
+            }
+        };
+
+        const radio_mobile_month_no_click = check => {
+            enable_forward_mobile ();
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_mobile_month_yes");
+            }
+        };
+    </script>
+
+    <div id="accQuestionsMobile" class="abs" style="left:12px; top: 80px; width: 100%; display:none;">
+        <span id="accQuestionsMobile_1">
+            <div style="font-family: 'Merriweather', serif; font-size: 38px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Help us improve accuracy
+            </div>
+            <br />
+            <br />
+            <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                what is your age?
+                &nbsp;
+                <%- include('../partials/mark_numeric_combo', {id: "age_mobile", start: 18, end: 65, selected: -1, nonval:45,  width:80, onchange:"enable_forward_mobile_combo(this)"}); %>
+            </div>
+            <br />
+            <br />
+        </span>
+
+        <span id="accQuestionsMobile_2" style="display:none;">
+            <div style="font-family: 'Merriweather', serif; font-size: 38px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Help us improve accuracy
+            </div>
+            <br />
+            <br />
+            <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Have you undergone a surgical procedure to have your ovaries removed?
+                <br />
+                <br />
+                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_surg_yes", onclick: "radio_mobile_surg_yes_click", width:100, label: "Yes"}); %>
+                <br />
+                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_surg_no", onclick: "radio_mobile_surg_no_click", width:100, label: "No"}); %>
+            </div>
+        </span>
+
+        <span id="accQuestionsMobile_3" style="display:none;">
+            <div style="font-family: 'Merriweather', serif; font-size: 38px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Help us improve accuracy
+            </div>
+            <br />
+            <br />
+            <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Have you experienced menstrual bleeding within the last 12 months?
+                <br />
+                <br />
+                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_month_yes", onclick: "radio_mobile_month_yes_click", width:100, label: "Yes"}); %>
+                <br />
+                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_month_no", onclick: "radio_mobile_month_no_click", width:100, label: "No"}); %>
+            </div>
+        </span>
+
+        <img alt="back" class="fxd hand" src="./img/nav.png" style="width:49px; height: auto; 
+                                                                    bottom: 20px; left:20px;" 
+                                                                    onclick="back_mobile()"/>
+        <img alt="next" class="fxd hand" src="./img/nav.png" style="width:49px; height: auto;
+                                                                    bottom: 20px; right:20px;
+                                                                    -webkit-transform: scaleX(-1); transform: scaleX(-1);"
+                                                                    onclick = "forward_mobile()" />
+        <img alt="next" id="navMobiledDisabled" class="fxd" src="./img/nav_disabled.png" style="width:49px; height: auto;
+                                                                    bottom: 20px; right:20px; z-index: 100;
+                                                                    -webkit-transform: scaleX(-1); transform: scaleX(-1);" />
+    </div>
+
+    <!-- accuracy questions - web -->
+    <script>
+        const radio_web_surg_yes_click = check => {
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_web_surg_no");
+                mark_turnOffRemotely ("radio_web_month_yes");
+                mark_turnOffRemotely ("radio_web_month_no");
+
+                $$("monthQuestionShadow").style.display = "";
+                $$("disableContinueToAnalysis").style.display = "none";
+            }
+        };
+
+        const radio_web_surg_no_click = check => {
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_web_surg_yes");
+
+                $$("monthQuestionShadow").style.display = "none";
+                $$("disableContinueToAnalysis").style.display = "";
+            }
+        };
+
+        const radio_web_month_yes_click = check => {
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_web_month_no");
+
+                $$("disableContinueToAnalysis").style.display = "none";
+            }
+        };
+
+        const radio_web_month_no_click = check => {
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_web_month_yes");
+                
+                $$("disableContinueToAnalysis").style.display = "none";
+            }
+        };
+
+        const forward_web = () => {
+            if ($$("age_web").value > 52 || $$("age_web").value < 38 || $$("radio_web_surg_yes").checked || $$("radio_web_month_no").checked) {
+                showResults (100);
+            }  else {
+                getStarted ()
+            }
+        }
+    </script>
+
+    <div id="accQuestionsWeb" class="abs" style="left:100px; top: 130px; width: 100%; height: 100%; display:none;">
+        <div style="font-family: 'Merriweather', serif; font-size: 38px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+            Help us improve accuracy
+        </div>
+        <br />
+        <br />
+        <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+            what is your age?
+        </div>
+        <br />
+        <%- include('../partials/mark_numeric_combo', {id: "age_web", start: 18, end: 65, selected: -1, nonval:45, width:200, onchange: ""}); %>
+        <br />
+        <br />
+        <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+            Have you undergone a surgical procedure to have your ovaries removed?
+        </div>
+        <br />
+        <div style="display : flex; flex-direction: row; align-items : center;">
+            <%- include('../partials/mark_checkbox', {cb: "radio_web_surg_yes", onclick: "radio_web_surg_yes_click", width:100, label: "Yes"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "radio_web_surg_no", onclick: "radio_web_surg_no_click", width:100, label: "No"}); %>
+        </div>
+        <br />
+        <br />
+        <div id="monthQuesion" style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+            Have you experienced menstrual bleeding within the last 12 months?
+        </div>
+        <br />
+        <div style="display : flex; flex-direction: row; align-items : center;">
+            <%- include('../partials/mark_checkbox', {cb: "radio_web_month_yes", onclick: "radio_web_month_yes_click", width:100, label: "Yes"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "radio_web_month_no", onclick: "radio_web_month_no_click", width:100, label: "No"}); %>
+        </div>
+
+        <div id="monthQuestionShadow" class="fxd" style="background-color: rgba(255, 255, 255, 0.5); width:900px; height: 200px;" ></div>
+
+        <button class="continueToAnalyzeLayout" onclick="forward_web()">CONTINUE TO ANALYSIS</button>
+        <button class="continueToAnalyzeLayout" id="disableContinueToAnalysis" style="z-index: 100; background-color: #e7e7e7; cursor: default;">CONTINUE TO ANALYSIS</button>
+    </div>
+
     <!-- checkbox div -->
     <div id="checkDiv" class="abs checkboxGridLayout" style="display: none;">
         <div class="abs checkBoxCaptionLayout" style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
             While We Analyze Your Biomarkers.... Please Check All That Applies To You
         </div>
-        <div class="abs checkBoxWrapperLayout" style="font-size: 16px; font-family: 'Lato', sans-serif; vertical-align: top;">
-            <%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp", label: "New onset heavy and/or longer flow"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb2", onclick: "clearNoSymp", label: "Shorter menstrual cycles (up to 25 days)"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb3", onclick: "clearNoSymp", label: "New sore, swollen or lumpy breasts"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb4", onclick: "clearNoSymp", label: "New mid-sleep wakening"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb5", onclick: "clearNoSymp", label: "New or markedly increased migraine headaches"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb6", onclick: "clearNoSymp", label: "Increased cramps"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb7", onclick: "clearNoSymp", label: "Onset of night sweats, in particular premenstrually"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb8", onclick: "clearNoSymp", label: "New/increased premenstrual mood swings"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "cb9", onclick: "clearNoSymp", label: "Weight gain without changes in exercise or eating"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "no_symp", onclick: "clearChecks", label: "I don't have any symptoms"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "__other", onclick: "clearNoSymp", label: "Other"}); %>
+        <div class="abs checkBoxWrapperLayout nine_questions" style="font-size: 16px; font-family: 'Lato', sans-serif; vertical-align: top;">
+            <%- include('../partials/mark_checkbox', {cb: "cb1", onclick: "clearNoSymp", width:470, label: "New onset heavy and/or longer flow"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb2", onclick: "clearNoSymp", width:470, label: "Shorter menstrual cycles (up to 25 days)"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb3", onclick: "clearNoSymp", width:470, label: "New sore, swollen or lumpy breasts"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb4", onclick: "clearNoSymp", width:470, label: "New mid-sleep wakening"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb5", onclick: "clearNoSymp", width:470, label: "New or markedly increased migraine headaches"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb6", onclick: "clearNoSymp", width:470, label: "Increased cramps"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb7", onclick: "clearNoSymp", width:470, label: "Onset of night sweats, in particular premenstrually"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb8", onclick: "clearNoSymp", width:470, label: "New/increased premenstrual mood swings"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "cb9", onclick: "clearNoSymp", width:470, label: "Weight gain without changes in exercise or eating"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "no_symp", onclick: "clearChecks", width:470, label: "I don't have any symptoms"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "__other", onclick: "clearNoSymp", width:470, label: "Other"}); %>
             
-            <div id="ageWrapper" class="checkDivWrapper" style="display: flex; flex-direction: row; border: 2px solid #f7f7f7; border-radius: 5px; background-color: #f7f7f7; width:470px; cursor: default;">
-                <div style="padding-left: 8px; padding-top: 5px;">What is your age?<span style="color: #ff0082;">*&nbsp;</span></div>
-                <input id="age" type="number" style=" border-top: none; border-left: none; 
-                                                    border-right: none; border-bottom: 2px solid #ff0082;
-                                                    background-color: #f7f7f7; font-family: 'Lato', sans-serif;
-                                                    font-size: 18px;" max="140">
-                <script>
-                    $$("age").addEventListener("change", (event) => {
-                        $$("ageWrapper").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
-                        $$("age").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
-                        toggleAnalyzeDisableness();
-                    });
-
-                    $$("age").addEventListener("keyup", (event) => {
-                        $$("ageWrapper").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
-                        $$("age").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
-                        toggleAnalyzeDisableness();
-                    });
-
-                    $$("age").addEventListener("mousedown", (event) => {
-                        $$("ageWrapper").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
-                        $$("age").style.backgroundColor = $$("age").value ? "#ffffff" : "#f7f7f7";
-                        toggleAnalyzeDisableness();
-                    });
-                </script>
-            </div>
-
             <div><br /><br /><br /><br /><br /><br /></div>
 
 
         </div>
 
         <button class="sendPicFinalLayout" id="sendPicFinal">READY FOR MY RESULTS!</button>
-        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;" onclick="fblogin()">READY FOR MY RESULTS!</button>
+        <button class="sendPicFinalLayout" id="disableAnalyze" style="z-index: 100; background-color: #e7e7e7; cursor: default;">READY FOR MY RESULTS!</button>
         <img id="loadingImg" class="loadingGifLayout" style="width:36px; height: 36px;  z-index: 200; display: none;" src="./img/loading.gif" />
 
     </div>
@@ -664,7 +968,15 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classX" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classYoung" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        
+        </div>
+
+        <script>
+            $$("classYoung").innerHTML = $$("classD").innerHTML
+        </script>
+
+        <div id="classOld" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; top:-720px; display: none;">
             Based on our analysis, it's likely that you are entering or have already entered the menopause stage. This is a
             significant and natural transition in a woman's life, signaling the end of your reproductive years.
             <br /><br />
@@ -705,10 +1017,12 @@
         const recaptureButton = $$('reCapture');
         const sendPicButton = $$('sendPicFinal');
 
+        let pictureTaken = false;
         captureButton.addEventListener('click', () => {
             showCanvas (true);
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             canvasToSend.getContext('2d').drawImage(video, 0, 0, canvasToSend.width, canvasToSend.height);
+            pictureTaken = true;
         });
 
         recaptureButton.addEventListener('click', () => {
@@ -812,7 +1126,7 @@
         let vratio = 0;
         let ellipseRatio = 0;
 
-        if (screen.width > 1000) {
+        if (markable_device === MARKABLE_DEVICES.web) {
             $$("canvasElement").height = $$("canvasElement").width * 3 / 4;
             $$("canvasElementToSend").height = $$("canvasElementToSend").width * 3 / 4;
             vratio = 4 / 3;
@@ -879,8 +1193,6 @@
                     });
          }
     }
-    //startCamera();
-
 
     </script>
 

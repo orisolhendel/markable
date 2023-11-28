@@ -3,9 +3,14 @@ const CB_CIRCLE_WIDTH = 25;
 
 const toggleAnimCb = outer => {
     const cb = mark_cb_get_cb_from_outer (outer);
+
+    if (outer.id.startsWith ("radio") && cb.checked) {
+        return;
+    }
+
     cb.click();
     animateCb (outer, cb);
-}
+};
 
 const animateCb = (outer, cb) => {
     const direction = (cb.checked ? 1 : -1);
@@ -42,20 +47,25 @@ const animateCb = (outer, cb) => {
     inner.style.top = `${(CB_CIRCLE_WIDTH - intSize) / 2}px`;
 
     outer.interval = setTimeout (() => {animateCb(outer, cb)}, 10);
-}
+};
+
+const mark_turnOffRemotely = id => {
+    $$(id).checked = false;
+    animateCb (mark_cb_get_outer_from_cb ($$(id)), $$(id));
+};
 
 const mark_cb_get_cb_from_outer = outer => {
     return $$(outer.id.replace(/_outer/i, ""));
-}
+};
 
 const mark_cb_get_inner_from_outer = outer => {
     return $$(outer.id.replace(/_outer/i, "_inner"));
-}
+};
 
 const mark_cb_get_outer_from_cb = cb => {
     return $$(`${cb.id}_outer`);
-}
+};
 
 const mark_cb_get_text_from_outer = outer => {
     return $$(outer.id.replace(/_outer/i, "_text"));
-}
+};

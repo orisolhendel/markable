@@ -1,0 +1,9 @@
+<select id="<%=id%>" class="hand" onchange="<%=onchange%>"
+        style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width:<%=width%>px; color:#333333; background-color: rgb(247, 247, 247);">
+    <% for (let i = start; i <= end; i++ ) { %>
+        <option value="<%=i%>" <%= i === selected ? "selected='yes" : "" %> ><%=i%></option>
+        <% if (i === nonval) { %>
+            <option value="-1" selected="yes">---</option>
+        <%}%>
+    <%}%>
+</select>

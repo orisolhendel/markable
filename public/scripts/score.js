@@ -43,14 +43,47 @@ const calcScore = (res, userInfo) => {
         res = resTest;
         userInfo = {};
         userInfo.symptoms = ['symp1', 'symp2', 'symp3'];
-        userInfo.age = 45;
+        userInfo.age = 40;
         userInfo.other = "testing123"
     }
     //====================================
 
-    const symptoms = userInfo.symptoms.length;
-
     scoreJson = "{";
+
+    let classification = "";
+
+    const surg = userInfo.surg;
+    const no_month = userInfo.no_month;
+    const age = Number(userInfo.age);
+
+    if (surg || no_month) {
+        classification = "Old";
+        updateScoreJson (`age: ${age}`);
+        updateScoreJson (`surg: ${surg}`);
+        updateScoreJson (`no_month: ${no_month}`);
+        updateScoreJson (`class: "${classification}"`, "no_delim");
+        updateScoreJson ("}", "no_delim");
+
+        console.log (scoreJson);
+
+        return scoreJson;
+    }
+
+    if (age < 38) {
+        classification = "Young";
+        updateScoreJson (`age: ${age}`);
+        updateScoreJson (`class: "${classification}"`, "no_delim");
+        updateScoreJson ("}", "no_delim");
+        return scoreJson;
+    } else if (age > 52) {
+        classification = "Old";
+        updateScoreJson (`age: ${age}`);
+        updateScoreJson (`class: "${classification}"`, "no_delim");
+        updateScoreJson ("}", "no_delim");
+        return scoreJson;
+    }
+
+    const symptoms = userInfo.symptoms.length;
 
     updateScoreJson (`symptoms: ${buildSymptomListForJson(userInfo.symptoms)}`);
     updateScoreJson (`age: ${userInfo.age}`);
@@ -165,36 +198,26 @@ const calcScore = (res, userInfo) => {
 
     let total_score_empiric_plus_symptoms = total_score_empiric;
 
-    let classification = "";
-
-    const age = Number(userInfo.age);
-
-    if (age < 38) {
-        classification = "Young";
-    } else if (age > 52) {
-        classification = "Old";
-    } else  {
-        switch (symptoms) {
-            case 0:
-                classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
-                break;
-            case 1:
-                classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [5, 5, 0]);
-                break;
-            case 2:
-                classification = gradeScore (total_score_relative, [50, Infinity], ["C", "B"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [20, 10, 8]);
-                break;
-            case 3:
-                classification = gradeScore (total_score_relative, [50, Infinity], ["C", "A"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [35, 25, 15]);
-                break;
-            default: // 4 and above
-                classification = gradeScore (total_score_relative, [50, Infinity], ["B", "A"]);
-                total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [35, 25, 15]);
-                break;
-        }
+    switch (symptoms) {
+        case 0:
+            classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
+            break;
+        case 1:
+            classification = gradeScore (total_score_relative, [80, Infinity], ["D", "C"]);
+            total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [5, 5, 0]);
+            break;
+        case 2:
+            classification = gradeScore (total_score_relative, [50, Infinity], ["C", "B"]);
+            total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [20, 10, 8]);
+            break;
+        case 3:
+            classification = gradeScore (total_score_relative, [50, Infinity], ["C", "A"]);
+            total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [35, 25, 15]);
+            break;
+        default: // 4 and above
+            classification = gradeScore (total_score_relative, [50, Infinity], ["B", "A"]);
+            total_score_empiric_plus_symptoms += gradeScore (total_score_empiric, [51, 76, Infinity], [35, 25, 15]);
+            break;
     }
 
     total_score_empiric_plus_symptoms = Math.min (total_score_empiric_plus_symptoms, 96);
