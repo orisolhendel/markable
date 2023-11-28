@@ -6,6 +6,8 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
+app.enable('trust proxy')
+
 const getPostgresClient = () => {
     const { Client } = require('pg');
     return new Client({
