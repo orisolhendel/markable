@@ -7,19 +7,19 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.enable('trust proxy');
 
-// app.use(function(request, response, next) {
+app.use(function(request, response, next) {
 
-//     response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'); 
+     response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'); 
 
-//     next();
-// });
+     next();
+});
 
 app.use((req, res, next) => {
     if (req.header('x-forwarded-proto') !== 'https')
       res.redirect(`https://${req.header('host')}${req.url}`);
     else
       next();
-  });
+});
 
 const getPostgresClient = () => {
     const { Client } = require('pg');
