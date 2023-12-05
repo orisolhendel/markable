@@ -34,6 +34,41 @@
                 top: 80px;
             }
 
+            div.instructionsDivLayout {
+                top:0px;
+                left:0px;
+                width: 100%;
+                height: 100%;
+                z-index: 500;
+            }
+
+            div.instructionsDivInnerLayout {
+                top:0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-color: #ffffff;
+            }
+
+            div.instructionsTextLayout {
+                top: 53%; 
+                left: 6%;
+            }
+
+            img.instructionsImgLayout {
+                top: 14%; 
+                left: 7%;
+                width: 90%;
+                height: auto;
+            }
+
+            button.instructionsButtomLayout {
+                left: 2%;
+                bottom: 4%;
+                width: 94%;
+                height: 50px;
+            }
+
             div.checkboxGridLayout {
                 left:10px;
                 top: 80px;
@@ -152,6 +187,43 @@
                 top: 125px;
             }
 
+            div.instructionsDivLayout {
+                top:0px;
+                left:0px;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 500;
+            }
+
+            div.instructionsDivInnerLayout {
+                top: 15%;
+                left:15%;
+                width:70%;
+                height: 70%;
+                background-color: #ffffff;
+                border-radius: 15px;
+            }
+
+            div.instructionsTextLayout {
+                top: 26%; 
+                left: 6%;
+            }
+
+            img.instructionsImgLayout {
+                top: 24%; 
+                left: 39%;
+                width:50%;
+                height: auto;
+            }
+
+            button.instructionsButtomLayout {
+                right: 3%;
+                bottom: 3%;
+                width:180px;
+                height: 40px;
+            }
+
             div.checkboxGridLayout {
                 right: 400px; 
                 top: 130px;
@@ -268,6 +340,9 @@
         };
 
         const show_acc_questions = () => {
+
+            moveUp();
+
             if (markable_device === MARKABLE_DEVICES.web) {
                 show_acc_questions_web ();
             } else {
@@ -291,6 +366,9 @@
         };
 
         const showCanvas = show => {
+
+            moveUp();
+
             $$("canvasElement").style.display = show ? "" : "none";
             $$("videoElement").style.display = show ? "none" : "";
             $$("capture").style.display = show ? "none" : "";
@@ -561,6 +639,45 @@
     </div>
     <img id="loadingImgVid" class="loadingGifLayoutVid" style="width:80px; height: 80px; z-index: 200; display: none;" src="/img/loading.gif" />
 
+    <div id="instructionsDiv" class="fxd instructionsDivLayout" style="display: none;">
+        <div id="instructionsDivInner" class="abs instructionsDivInnerLayout">
+            <div style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align:center;">
+                <br />
+                How To Get Optimal Results
+            </div>
+            <div class="abs instructionsTextLayout">
+                <div style="display : flex; flex-direction: row; align-items : center;">
+                    <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="font-family: 'Merriweather', serif; font-size: 22px;">Optimize lighting</span>
+                </div>
+                <br /><br /><br class="hideForMobile"/>
+                <div style="display : flex; flex-direction: row; align-items : center;">
+                    <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="font-family: 'Merriweather', serif; font-size: 22px;">Remove makeup</span>
+                </div>
+                <br /><br /><br class="hideForMobile"/>
+                <div style="display : flex; flex-direction: row; align-items : center;">
+                    <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="font-family: 'Merriweather', serif; font-size: 22px;">Remove glasses</span>
+                </div>
+                <br /><br /><br class="hideForMobile" />
+                <div style="display : flex; flex-direction: row; align-items : center;">
+                    <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
+                    &nbsp;&nbsp;&nbsp;
+                    <span style="font-family: 'Merriweather', serif; font-size: 22px;">Smile big :)</span>
+                </div>
+            </div>
+
+            <img class="abs instructionsImgLayout" alt="instructions" src="/img/instructions.png" />
+
+            <button class="abs instructionsButtomLayout" onclick="$$('instructionsDiv').style.display = 'none'">GOT IT!</button>
+
+        </div>
+    </div>
+
     <!-- accuracy questions - mobile -->
     <script>
         const get_mobile_stage = () => {
@@ -739,19 +856,29 @@
         </span>
 
         <img alt="back" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto; 
-                                                                    bottom: 20px; left:20px;" 
+                                                                    bottom: 35px; left:20px;" 
                                                                     onclick="back_mobile()"/>
         <img alt="next" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto;
-                                                                    bottom: 20px; right:20px;
+                                                                    bottom: 35px; right:20px;
                                                                     -webkit-transform: scaleX(-1); transform: scaleX(-1);"
                                                                     onclick = "forward_mobile()" />
         <img alt="next" id="navMobiledDisabled" class="fxd" src="/img/nav_disabled.png" style="width:49px; height: auto;
-                                                                    bottom: 20px; right:20px; z-index: 100;
+                                                                    bottom: 35px; right:20px; z-index: 100;
                                                                     -webkit-transform: scaleX(-1); transform: scaleX(-1);" />
     </div>
 
     <!-- accuracy questions - web -->
     <script>
+
+        const enable_forward_web_stage = () => {
+            if ($$("age_web").value > 0 &&
+            ($$("radio_web_surg_yes").checked || $$("radio_web_month_yes").checked || $$("radio_web_month_no").checked)) {
+                $$("disableContinueToAnalysis").style.display = "none";
+            } else {
+                $$("disableContinueToAnalysis").style.display = "";
+            }
+        }
+
         const radio_web_surg_yes_click = check => {
             if (check.checked) {
                 mark_turnOffRemotely ("radio_web_surg_no");
@@ -759,7 +886,7 @@
                 mark_turnOffRemotely ("radio_web_month_no");
 
                 $$("monthQuestionShadow").style.display = "";
-                $$("disableContinueToAnalysis").style.display = "none";
+                enable_forward_web_stage ();
             }
         };
 
@@ -768,7 +895,7 @@
                 mark_turnOffRemotely ("radio_web_surg_yes");
 
                 $$("monthQuestionShadow").style.display = "none";
-                $$("disableContinueToAnalysis").style.display = "";
+                enable_forward_web_stage ();
             }
         };
 
@@ -776,7 +903,7 @@
             if (check.checked) {
                 mark_turnOffRemotely ("radio_web_month_no");
 
-                $$("disableContinueToAnalysis").style.display = "none";
+                enable_forward_web_stage ();
             }
         };
 
@@ -807,7 +934,7 @@
             what is your age?
         </div>
         <br />
-        <%- include('../partials/mark_numeric_combo', {id: "age_web", start: 18, end: 65, selected: -1, nonval:45, width:200, onchange: ""}); %>
+        <%- include('../partials/mark_numeric_combo', {id: "age_web", start: 18, end: 65, selected: -1, nonval:45, width:200, onchange: "enable_forward_web_stage()"}); %>
         <br />
         <br />
         <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
@@ -1018,7 +1145,15 @@
         const sendPicButton = $$('sendPicFinal');
 
         let pictureTaken = false;
+        let picInstructionShown = false;
         captureButton.addEventListener('click', () => {
+
+            if (!picInstructionShown) {
+                $$("instructionsDiv").style.display = "";
+                picInstructionShown = true;
+                return;
+            }
+
             showCanvas (true);
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             canvasToSend.getContext('2d').drawImage(video, 0, 0, canvasToSend.width, canvasToSend.height);
@@ -1093,11 +1228,9 @@
                     redirect: 'follow',
                     headers: {
                         'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
+                        //'ailabapi-api-key': 'wEFOvZzJTmSCCfMG57Seb165iK3DhhjdmfuI2RRU2AgBBrbVqa6YkytXHit9ZM4W'
                     }
                 };
-                
-                console.log("requestOptions:");
-                console.log(requestOptions);
 
                 fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
