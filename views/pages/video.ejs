@@ -35,19 +35,21 @@
             }
 
             div.instructionsDivLayout {
-                top:0px;
+                top:60px;
                 left:0px;
                 width: 100%;
                 height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
                 z-index: 500;
             }
 
             div.instructionsDivInnerLayout {
-                top:0px;
-                left: 0px;
-                width: 100%;
-                height: 100%;
+                top: 5%;
+                left: 5%;
+                width: 90%;
+                height: 85%;
                 background-color: #ffffff;
+                border-radius: 15px;
             }
 
             div.instructionsTextLayout {
@@ -58,13 +60,13 @@
             img.instructionsImgLayout {
                 top: 14%; 
                 left: 7%;
-                width: 90%;
+                width: 400px;
                 height: auto;
             }
 
             button.instructionsButtomLayout {
                 left: 2%;
-                bottom: 4%;
+                bottom: 2%;
                 width: 94%;
                 height: 50px;
             }
@@ -213,7 +215,7 @@
             img.instructionsImgLayout {
                 top: 24%; 
                 left: 39%;
-                width:50%;
+                width:580px;
                 height: auto;
             }
 
@@ -375,6 +377,15 @@
             $$("reCapture").style.display = show ? "" : "none";
             $$("sendPic").style.display = show ? "" : "none";
         };
+
+        const showInstuctions = () => {
+            $$("instructionsDiv").style.display = "";
+            picInstructionShown = true;
+        }
+
+        const hideInstructions = () => {
+            $$("instructionsDiv").style.display = "none";
+        }
 
         const showCheckboxes = () => {
 
@@ -606,7 +617,7 @@
             <span class="hideForMobile">
                 <div id="vidDivHowtoWeb" style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="" src="/img/camera.png" style="width:48px; height: auto;" />
-                    <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
+                    <a id="showInstructionsWeb" style="font-size: 22px;" onclick="showInstuctions()">&nbsp;How to get optimal results</a>
                 </div>
             </span>
         </span>
@@ -630,7 +641,7 @@
                 <span class="onlyForMobile">
                     <div class="abs" id="vidDivHowtoMobile" style="display : flex; align-items : center;">
                         <img alt="" src="/img/camera.png" style="width:48px; height: auto;" />
-                        <a style="font-size: 22px;">&nbsp;How to get optimal results</a>
+                        <a id="showInstructionsMobile" style="font-size: 22px;" onclick="showInstuctions()">&nbsp;How to get optimal results</a>
                     </div>
                 </span>
             </span>
@@ -673,7 +684,9 @@
 
             <img class="abs instructionsImgLayout" alt="instructions" src="/img/instructions.png" />
 
-            <button class="abs instructionsButtomLayout" onclick="$$('instructionsDiv').style.display = 'none'">GOT IT!</button>
+            <div class="hand abs" onclick="hideInstructions ()" style="right: 2%; top: 2%; font-size: 28px; font-family: 'Lato', sans-serif; font-weight: bolder;">X</div>
+
+            <button class="hand abs instructionsButtomLayout" onclick="hideInstructions()">GOT IT!</button>
 
         </div>
     </div>
@@ -1146,11 +1159,10 @@
 
         let pictureTaken = false;
         let picInstructionShown = false;
-        captureButton.addEventListener('click', () => {
+        captureButton.addEventListener('click', (e) => {
 
             if (!picInstructionShown) {
-                $$("instructionsDiv").style.display = "";
-                picInstructionShown = true;
+                showInstuctions ();
                 return;
             }
 
@@ -1198,6 +1210,27 @@
                 console.error(error);
                 alert (error);
             });
+        });
+
+        document.body.addEventListener ('click', (e) => {
+
+            let tgt = e.target
+
+            if (tgt.id) {
+                if (e.target.id === 'showInstructionsMobile' || tgt.id === 'showInstructionsWeb' || tgt.id === 'capture' || tgt.id === 'instructionsDiv') {
+                    return;
+                }
+            }
+
+            while (tgt != document.body) {
+
+                if (tgt.id === 'instructionsDiv') {
+                    return;
+                }
+                tgt = tgt.parentElement;
+            }
+
+            hideInstructions ();
         });
 
         const sendPicAction = () => {
