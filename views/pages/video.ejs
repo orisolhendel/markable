@@ -2,9 +2,14 @@
 <html>
 <head>
     <link rel="shortcut icon" href="./img/fab.ico">
+    <meta charset="utf-8" />
     <meta content='width=device-width, initial-scale=0.75, maximum-scale=0.75, user-scalable=yes' name='viewport' />
+    <meta http-equiv="Content-Security-Policy" 
+            content="   img-src 'self'; 
+                        script-src 'unsafe-inline' 'self' https://accounts.google.com https://connect.facebook.net; 
+                        style-src 'unsafe-inline' 'self' https://accounts.google.com/gsi/style https://fonts.googleapis.com/css2;" />
     <meta name="google-signin-client_id" content="392522309838-k8k4v2uk1tqmof77h3ut2l4cgs0vbvon.apps.googleusercontent.com">
-    <title></title>
+    <title>Markable - biomarker analysis page</title>
     <style>
         .checkDivWrapper {
             cursor: pointer;
@@ -1217,14 +1222,14 @@
             let tgt = e.target
 
             if (tgt.id) {
-                if (e.target.id === 'showInstructionsMobile' || tgt.id === 'showInstructionsWeb' || tgt.id === 'capture' || tgt.id === 'instructionsDiv') {
+                if (tgt.id === 'showInstructionsMobile' || tgt.id === 'showInstructionsWeb' || tgt.id === 'capture' || tgt.id === 'instructionsDivInner') {
                     return;
                 }
             }
 
             while (tgt != document.body) {
 
-                if (tgt.id === 'instructionsDiv') {
+                if (tgt.id === 'instructionsDivInner') {
                     return;
                 }
                 tgt = tgt.parentElement;

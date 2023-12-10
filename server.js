@@ -7,19 +7,25 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.enable('trust proxy');
 
-// app.use(function(request, response, next) {
+app.use((req, res, next) => {
 
-//      response.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'); 
+    console.log (req.header('host'));
+    console.log (req.header('host').indexOf ("localhost"));
 
-//      next();
-// });
+    if (req.header('host').indexOf ("localhost") < 0 && req.header('x-forwarded-proto') !== 'https')
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    else
+      next();
+});
 
-// app.use((req, res, next) => {
-//     if (req.header('x-forwarded-proto') !== 'https')
-//       res.redirect(`https://${req.header('host')}${req.url}`);
-//     else
-//       next();
-// });
+app.use(function(req, res, next) {
+
+    if (req.header('host').indexOf ("localhost") < 0) {
+        res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'); 
+    }
+
+    next();
+});
 
 const getPostgresClient = () => {
     const { Client } = require('pg');
@@ -33,14 +39,17 @@ const getPostgresClient = () => {
 }
 
 app.get('/', function(req, res) {
+    res.setHeader("Content-Type", "text/html"); 
     res.render('pages/video');
 });
 
 app.get('/admin', function(req, res) {
+    res.setHeader("Content-Type", "text/html"); 
     res.render('pages/admin');
 });
 
 app.get('/treatments', function(req, res) {
+    res.setHeader("Content-Type", "text/html"); 
     res.render('pages/treatments');
 });
 
@@ -157,6 +166,12 @@ app.get('/show_pic', async function(req, res, next) {
             } 
         };
     });
+});
+
+// add robots.txt for improved crawling to our site:
+app.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nDisallow: /admin/");
 });
 
 const addInput = (req, res) => {
