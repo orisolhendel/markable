@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="/img/fab.ico">
+    <meta charset="utf-8">
+    <meta content='width=device-width, initial-scale=0.85, maximum-scale=0.85, user-scalable=yes' name='viewport' />
+    <title>Markable - treatmens page</title>
+    <style>
+   
+    </style>
+</head>
+
+
+<style>
+
+    @media only screen and (max-width: 1000px) { /* mobile */
+
+        div.imgLayout {
+            position: fixed;
+            left: 0px;
+            top: 40px;
+            width:100%;
+            height: auto;
+        }
+
+        div.captionDivLayout {
+            left: 5%;
+            width:100%;
+            font-size: 32px; 
+        }
+
+        div.textDivLayout {
+            left: 5%;
+            width:100%;
+            font-size: 16px; 
+        }
+    }
+
+    /* ===================================================================================================================================== */
+
+    @media only screen and (min-width: 1000px) { /* web */
+
+        div.imgLayout {
+            position: fixed;
+            left: 0px;
+            top: 100px;
+            width:100%;
+            height: auto;
+        }
+
+        div.captionDivLayout {
+            left: 30px;
+            width:100%;
+            font-size: 42px; 
+        }
+
+        div.textDivLayout {
+            left: 30px;
+            width:100%;
+            font-size: 18px; 
+        }
+    }
+   
+    </style>
+
+<body style="width:100%; overflow-y: scroll;">
+
+<%- include('../partials/header'); %>
+
+<div class="imgLayout" style="height: 100%; overflow-y: scroll;">
+    <img src="/img/team.png" alt="team" style="width:100%; height:auto"/>
+
+    <div class="abs captionDivLayout">
+        <div style="font-family: 'Merriweather', serif; font-weight: bold; text-align: left;">
+            <br />
+            About Us
+        </div>
+    </div>
+
+    <div class="abs textDivLayout" style="height: 100%; overflow-y: scroll;">
+        <div style="font-family: 'Merriweather', serif; font-weight: bold; text-align: left; vertical-align: top; width:90%;">
+            <br /><br /><br /><br /><br /><br />
+            Introducing our revolutionary femtech innovation: a cutting-edge AI-powered solution for perimenopause diagnosis, ushering in a new era of women's health and empowerment. Through objective, science-backed analysis during the hormonal window of opportunity, we eliminate misdiagnosis and unsuitable prescriptions, safeguarding women's well-being and longevity.
+            <br /><br />
+            Our state-of-the-art digital diagnosis employs computer vision and signal processing to analyze visible, research-based biomarkers from neck to crown. By simply taking a selfie, our AI model accurately assesses your hormonal profile, providing a personalized diagnosis and tailored treatment options.
+            <br /><br />
+            Bid farewell to the guessing game! Our solution bridges the knowledge gap, empowering both women and medical professionals. Embrace greater choice and transparency as you navigate perimenopause, guided by optimal outcomes and treatments addressing the root cause.
+            <br /><br />
+            Invest in a future where women's health and happiness take center stage. Together, let's redefine women's journey through perimenopause and beyond, with technology as our ally. Join us on this empowering path toward healthier, happier lives. Invest in the future of women's well-being today!
+            <br />
+        </div>
+    </div>
+</div>
+
+

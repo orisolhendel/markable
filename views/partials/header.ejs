@@ -66,7 +66,7 @@ a:hover {
     padding: 10px;
     color:#777777;
     display: inline;
-    padding-right: 20px;
+    padding-right: 15px;
 }
 
 .abs {
@@ -85,7 +85,7 @@ a:hover {
     display: flex;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1000px) { /* mobile */
   .hideForMobile {
     display: none;
   }
@@ -108,7 +108,7 @@ a:hover {
   }
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1000px) { /* web */
   .onlyForMobile {
     display: none;
   }
@@ -123,7 +123,7 @@ a:hover {
 
   div.logoLayout {
     top: 30px;
-    left: 95px;
+    left:  <%- logoLocation === "left" ? 30 : 95 -%>px;
   }
 }
 </style>
@@ -148,8 +148,11 @@ a:hover {
 
 <div class="abs captionLayout" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 25px; width:100%; right: 0px; top:0px; background-color: #ffffff; margin: 0%; z-index: 100;">
     <div class="abs subCaptionLayout" style="right: 0px; top:18px;">
+        <div class="hideForMobile captionText" onclick="location.href = '/about'" >
+            <a class="captionText">About Us</a>
+        </div>
         <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'" >
-            <a class="captionText">About</a>
+            <a class="captionText">For Businesses</a>
         </div>
         <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             <a class="captionText">Technology</a>
@@ -157,14 +160,17 @@ a:hover {
         <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             <a class="captionText">FAQ</a>
         </div>
-        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
+        <div class="hideForMobile captionText" onclick="location.href = '/treatments'">
             <a class="captionText">Treatment Options</a>
         </div>
-        <div class="hideForMobile captionText" onclick="showResults('test')">
+        <div class="hideForMobile captionText" onclick="location.href = 'javascript:void(0)'">
             <a class="captionText">Knowledge Base</a>
         </div>
         <div class="abs onlyForMobile" style="top:-8px; right:-10px;">
-            <%- include('./mark_hamburger', {hamb: "main", menu:["About", "Technology", "FAQ", "Treatment Options", "Knowledge Base"]}); %>
+            <%- include('./mark_hamburger', {hamb: "main", 
+                                            menu:["About Us", "For Businesses", "Technology", "FAQ", "Treatment Options", "Knowledge Base"],
+                                            href:["/about", "/", "Technology", "/", "treatments", ""]
+                                            }); %>
         </div>
     </div>
 </div>

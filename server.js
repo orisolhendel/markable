@@ -38,19 +38,32 @@ const getPostgresClient = () => {
     });
 }
 
-app.get('/', function(req, res) {
+const goToPage = (res, page, loc) => {
     res.setHeader("Content-Type", "text/html"); 
-    res.render('pages/video');
+    res.locals.logoLocation = loc;
+    res.render(`pages/${page}`);
+}
+
+app.get('/', function(req, res) {
+    goToPage (res, 'video', "right");
 });
 
 app.get('/admin', function(req, res) {
-    res.setHeader("Content-Type", "text/html"); 
-    res.render('pages/admin');
+    goToPage (res, 'admin', "right");
 });
 
 app.get('/treatments', function(req, res) {
-    res.setHeader("Content-Type", "text/html"); 
-    res.render('pages/treatments');
+    goToPage (res, 'treatments', "right");
+});
+
+app.get('/about', function(req, res) {
+    goToPage (res, 'about', "left");
+});
+
+// add robots.txt for improved crawling to our site:
+app.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nDisallow: /admin/");
 });
 
 const upload = multer({ dest: "uploads/" });
@@ -166,12 +179,6 @@ app.get('/show_pic', async function(req, res, next) {
             } 
         };
     });
-});
-
-// add robots.txt for improved crawling to our site:
-app.get('/robots.txt', function (req, res) {
-    res.type('text/plain');
-    res.send("User-agent: *\nDisallow: /admin/");
 });
 
 const addInput = (req, res) => {
