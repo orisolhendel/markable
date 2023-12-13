@@ -7,3 +7,7 @@ const moveUp = () => {
 }
 
 moveUp ();
+
+const getAppMode = () => {
+    return new URLSearchParams(window.location.search).get("mode");
+}

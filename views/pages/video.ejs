@@ -434,6 +434,7 @@
             $$("accQuestionsMobile").style.display = "none";
             $$("accQuestionsWeb").style.display = "none";
             $$("capture").style.display = "none";
+            $$("socialDiv").style.display = "none";
 
             if (pictureTaken) {
                 $$("resDiv").classList.remove ("resDivLayout");
@@ -1142,12 +1143,12 @@
     </div>
 
     <form id="uploadForm" enctype="multipart/form-data" style="display: none;">
-        <input type="file" name="file" id="fileInput" />
-        <input type="text" name="res" id="resInput" />
-        <input type="text" name="dim" id="dimInput" />
-        <input type="text" name="score" id="scoreInput" />
-        <input type="text" name="device" id="deviceInput" />
-        <button type="submit" id="uploadButton">Upload</button>
+        <input type="file" name="file" id="fileInput" accept="image/jpeg, image/jpg" />
+        <input type="text" name="res" id="resInput" style="visibility: hidden;" />
+        <input type="text" name="dim" id="dimInput" style="visibility: hidden;"/>
+        <input type="text" name="score" id="scoreInput" style="visibility: hidden;"/>
+        <input type="text" name="device" id="deviceInput" style="visibility: hidden;"/>
+        <button type="submit" id="uploadButton" style="visibility: hidden;">Upload</button>
     </form>
 
     <script>
@@ -1182,6 +1183,12 @@
         });
 
         sendPicButton.addEventListener('click', () => { 
+
+            if (getAppMode() === "admin") {
+                sendPicAction();
+                return;
+            }
+
             showSocialLogin (true);
         });
 
@@ -1239,6 +1246,47 @@
         });
 
         const sendPicAction = () => {
+
+            if ((getAppMode () === 'admin' && $$( "fileInput" ).files.length)) {
+                $$("loadingImg").style.display = "";
+
+                const formdata = new FormData();
+                formdata.append("image", $$( "fileInput" ).files[0]);
+                formdata.append("side_image", $$( "fileInput" ).files[0]);
+                formdata.append("return_maps", "");
+                formdata.append("return_marks", "");
+                formdata.append("roi_outline_color", "");
+                formdata.append("return_side_results", "");
+
+                console.log ($$( "fileInput" ).files[0]);
+
+                const requestOptions = {
+                    method: 'POST',
+                    body: formdata,
+                    redirect: 'follow',
+                    headers: {
+                        'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
+                        //'ailabapi-api-key': 'wEFOvZzJTmSCCfMG57Seb165iK3DhhjdmfuI2RRU2AgBBrbVqa6YkytXHit9ZM4W'
+                    }
+                };
+
+                fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
+                    .then(response => response.text())
+                    .then(async (result) => {
+                        $$("resInput").value = result;
+                        $$("dimInput").value = generateDimJson();
+                        $$("deviceInput").value = deviceData();
+                        showResults (result);
+                    })
+                    .then(
+                        () => {
+                            $$('uploadButton').click();
+                        }
+                    ) 
+                    .catch (error => showResults (error));
+
+                return;
+            }
 
             showSocialLogin(false);
             
@@ -1312,7 +1360,7 @@
         const startCamera = () => {
             setVideoVisibility ([true, true, false, true]);
 
-            if (navigator.mediaDevices.getUserMedia) {
+            if (navigator.mediaDevices.getUserMedia && getAppMode() !== "admin") {
                 $$("loadingImgVid").style.display = "";
                 navigator.mediaDevices.getUserMedia({ video: true })
                     .then(function (stream) {
@@ -1363,6 +1411,39 @@
                         console.log("Something went wrong!");
                         console.log(error);
                     });
+         }
+
+         if (getAppMode() === "admin") {
+            $$ ("uploadForm").style.position = "fixed";
+            $$ ("uploadForm").style.zIndex = 200;
+            $$ ("uploadForm").style.display = "";
+
+            const refobj = $$ ("vidDiv")
+            const refrect = refobj.getBoundingClientRect();
+
+            $$ ("uploadForm").style.top = `${refrect.top}px`;
+            $$ ("uploadForm").style.left = `${refrect.left + 30}px`;
+
+            setVideoVisibility ([false, false, false, false]);
+
+            const nxt = document.createElement("BUTTON");
+            nxt.textContent = 'Analyze Image';
+            nxt.style.position = "fixed";
+
+            nxt.style.top = `${refrect.top + 40}px`;
+            nxt.style.left = `${refrect.left + 30}px`;
+            nxt.style.zIndex = 200;
+
+            nxt.addEventListener('click', () => {
+                if ($$('fileInput').files.length) {
+                    $$ ("uploadForm").style.display = "none";
+                    showCheckboxes ();
+                } else {
+                    alert ("no files chosen");
+                }
+            });
+
+            $$ ("uploadForm").appendChild(nxt);
          }
     }
 
