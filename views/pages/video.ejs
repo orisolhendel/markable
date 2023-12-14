@@ -163,8 +163,9 @@
 
             img.loadingGifLayout {
                 position: fixed;
-                right: 250px;
-                bottom: 100px;
+                right: 200px;
+                bottom: 200px;
+                z-index: 1000;
             }
 
             img.loadingGifLayoutVid {
@@ -1266,7 +1267,6 @@
                     redirect: 'follow',
                     headers: {
                         'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
-                        //'ailabapi-api-key': 'wEFOvZzJTmSCCfMG57Seb165iK3DhhjdmfuI2RRU2AgBBrbVqa6YkytXHit9ZM4W'
                     }
                 };
 
@@ -1314,11 +1314,10 @@
                     redirect: 'follow',
                     headers: {
                         'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
-                        //'ailabapi-api-key': 'wEFOvZzJTmSCCfMG57Seb165iK3DhhjdmfuI2RRU2AgBBrbVqa6YkytXHit9ZM4W'
                     }
                 };
 
-                fetch("https://www.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
+                fetch("https://dummy.ailabapi.com/api/portrait/analysis/skin-analysis-pro", requestOptions)
                     .then(response => response.text())
                     .then(async (result) => {
                         //console.log (result);
