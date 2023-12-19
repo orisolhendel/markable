@@ -49,10 +49,10 @@
             }
 
             div.instructionsDivInnerLayout {
-                top: 5%;
-                left: 5%;
-                width: 90%;
-                height: 85%;
+                top: 15%;
+                left: 15%;
+                width: 70%;
+                height: 70%;
                 background-color: #ffffff;
                 border-radius: 15px;
             }
@@ -384,7 +384,25 @@
             $$("sendPic").style.display = show ? "" : "none";
         };
 
-        const showInstuctions = () => {
+        let picInstructionShown = false; 
+        const showInstuctions = gradient => {
+
+            if (gradient) {
+                $$("instructionsDiv").opacity = 0;
+                $$("instructionsDiv").style.opacity = "0";
+                const opInterval = setInterval (() => {
+                    $$("instructionsDiv").opacity += 0.05;
+                    $$("instructionsDiv").style.opacity = $$("instructionsDiv").opacity.toString();
+                    if ($$("instructionsDiv").opacity >= 1) {
+                        $$("instructionsDiv").style.opacity = "1";
+                        clearInterval (opInterval);
+                    }
+
+                }, 40);
+            } else {
+                $$("instructionsDiv").style.opacity = "1";
+            }
+
             $$("instructionsDiv").style.display = "";
             picInstructionShown = true;
         }
@@ -624,7 +642,7 @@
             <span class="hideForMobile">
                 <div id="vidDivHowtoWeb" style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="" src="/img/camera.png" style="width:48px; height: auto;" />
-                    <a id="showInstructionsWeb" style="font-size: 22px;" onclick="showInstuctions()">&nbsp;How to get optimal results</a>
+                    <a id="showInstructionsWeb" style="font-size: 22px;" onclick="showInstuctions(false)">&nbsp;How to get optimal results</a>
                 </div>
             </span>
         </span>
@@ -648,7 +666,7 @@
                 <span class="onlyForMobile">
                     <div class="abs" id="vidDivHowtoMobile" style="display : flex; align-items : center;">
                         <img alt="" src="/img/camera.png" style="width:48px; height: auto;" />
-                        <a id="showInstructionsMobile" style="font-size: 22px;" onclick="showInstuctions()">&nbsp;How to get optimal results</a>
+                        <a id="showInstructionsMobile" style="font-size: 22px;" onclick="showInstuctions(false)">&nbsp;How to get optimal results</a>
                     </div>
                 </span>
             </span>
@@ -669,19 +687,19 @@
                     &nbsp;&nbsp;&nbsp;
                     <span style="font-family: 'Merriweather', serif; font-size: 22px;">Optimize lighting</span>
                 </div>
-                <br /><br /><br class="hideForMobile"/>
+                <br /><br class="hideForMobile"/><br class="hideForMobile"/>
                 <div style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
                     &nbsp;&nbsp;&nbsp;
                     <span style="font-family: 'Merriweather', serif; font-size: 22px;">Remove makeup</span>
                 </div>
-                <br /><br /><br class="hideForMobile"/>
+                <br /><br class="hideForMobile"/><br class="hideForMobile"/>
                 <div style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
                     &nbsp;&nbsp;&nbsp;
                     <span style="font-family: 'Merriweather', serif; font-size: 22px;">Remove glasses</span>
                 </div>
-                <br /><br /><br class="hideForMobile" />
+                <br /><br class="hideForMobile"/><br class="hideForMobile" />
                 <div style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
                     &nbsp;&nbsp;&nbsp;
@@ -714,36 +732,39 @@
             return -1;
         }
 
-        const  enable_forward_mobile = () => {
+        const  enable_forward_mobile = active => {
             $$("navMobiledDisabled").style.display = "none";
+            if (active) {
+                forward_mobile ();
+            }
         }
 
         const  disable_forward_mobile = () => {
             $$("navMobiledDisabled").style.display = "";
         }
 
-        const enable_forward_mobile_combo = combo => {
+        const enable_forward_mobile_combo = (combo, active) => {
             if (combo.value.toString() === "-1") {
                 disable_forward_mobile ();
             } else {
-                enable_forward_mobile ();
+                enable_forward_mobile (active);
             }
         }
 
         const enable_forward_mobile_stage = () => {
             switch (get_mobile_stage()) {
                 case 1:
-                    enable_forward_mobile_combo ($$("age_mobile"));
+                    enable_forward_mobile_combo ($$("age_mobile"), false);
                     break;
                 case 2:
                     if ($$("radio_mobile_surg_yes").checked ||  $$("radio_mobile_surg_no").checked)
-                        enable_forward_mobile ();
+                        enable_forward_mobile (false);
                     else 
                         disable_forward_mobile();
                     break;
                 case 3: 
                     if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked)
-                        enable_forward_mobile ();
+                        enable_forward_mobile (false);
                     else 
                         disable_forward_mobile();
                     break;
@@ -799,28 +820,28 @@
         }
 
         const radio_mobile_surg_yes_click = check => {
-            enable_forward_mobile ();
+            enable_forward_mobile (true);
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_surg_no");
             }
         };
 
         const radio_mobile_surg_no_click = check => {
-            enable_forward_mobile ();
+            enable_forward_mobile (true);
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_surg_yes");
             }
         };
 
         const radio_mobile_month_yes_click = check => {
-            enable_forward_mobile ();
+            enable_forward_mobile (true);
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_month_no");
             }
         };
 
         const radio_mobile_month_no_click = check => {
-            enable_forward_mobile ();
+            enable_forward_mobile (true);
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_month_yes");
             }
@@ -837,7 +858,7 @@
             <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
                 what is your age?
                 &nbsp;
-                <%- include('../partials/mark_numeric_combo', {id: "age_mobile", start: 18, end: 65, selected: -1, nonval:45,  width:80, onchange:"enable_forward_mobile_combo(this)"}); %>
+                <%- include('../partials/mark_numeric_combo', {id: "age_mobile", start: 18, end: 65, selected: -1, nonval:45,  width:80, onchange:"enable_forward_mobile_combo(this, true)"}); %>
             </div>
             <br />
             <br />
@@ -878,13 +899,14 @@
         <img alt="back" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto; 
                                                                     bottom: 35px; left:20px;" 
                                                                     onclick="back_mobile()"/>
-        <img alt="next" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto;
+        <img id="navMobile" alt="next" class="fxd hand" src="/img/nav.png" style="width:49px; height: auto;
                                                                     bottom: 35px; right:20px;
                                                                     -webkit-transform: scaleX(-1); transform: scaleX(-1);"
                                                                     onclick = "forward_mobile()" />
-        <img alt="next" id="navMobiledDisabled" class="fxd" src="/img/nav_disabled.png" style="width:49px; height: auto;
-                                                                    bottom: 35px; right:20px; z-index: 100;
-                                                                    -webkit-transform: scaleX(-1); transform: scaleX(-1);" />
+        <div id="navMobiledDisabled" class="fxd" src="/img/nav_disabled.png" style="width:49px; height: 49px;
+                                                                background-color: #ffffff;
+                                                                bottom: 35px; right:20px; z-index: 100;
+                                                                -webkit-transform: scaleX(-1); transform: scaleX(-1);" ></div>
     </div>
 
     <!-- accuracy questions - web -->
@@ -978,7 +1000,7 @@
 
         <div id="monthQuestionShadow" class="fxd" style="background-color: rgba(255, 255, 255, 0.5); width:900px; height: 200px;" ></div>
 
-        <button class="continueToAnalyzeLayout" onclick="forward_web()">CONTINUE TO ANALYSIS</button>
+        <button class="continueToAnalyzeLayout" id="continueToAnalysis" onclick="forward_web()">CONTINUE TO ANALYSIS</button>
         <button class="continueToAnalyzeLayout" id="disableContinueToAnalysis" style="z-index: 100; background-color: #e7e7e7; cursor: default;">CONTINUE TO ANALYSIS</button>
     </div>
 
@@ -1165,14 +1187,7 @@
         const sendPicButton = $$('sendPicFinal');
 
         let pictureTaken = false;
-        let picInstructionShown = false;
         captureButton.addEventListener('click', (e) => {
-
-            if (!picInstructionShown) {
-                showInstuctions ();
-                return;
-            }
-
             showCanvas (true);
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             canvasToSend.getContext('2d').drawImage(video, 0, 0, canvasToSend.width, canvasToSend.height);
@@ -1227,10 +1242,10 @@
 
         document.body.addEventListener ('click', (e) => {
 
-            let tgt = e.target
+            let tgt = e.target;
 
             if (tgt.id) {
-                if (tgt.id === 'showInstructionsMobile' || tgt.id === 'showInstructionsWeb' || tgt.id === 'capture' || tgt.id === 'instructionsDivInner') {
+                if (tgt.id === 'showInstructionsMobile' || tgt.id === 'showInstructionsWeb' || tgt.id === 'continueToAnalysis' || tgt.id === 'instructionsDivInner') {
                     return;
                 }
             }
@@ -1378,6 +1393,12 @@
                             $$("loadingImgVid").style.display = "none";
                         }, 500);
 
+                        setTimeout (() => {
+                            if (!picInstructionShown) {
+                                showInstuctions (true);
+                            }
+                        }, 2500);
+
                         // draw place holder
                         const phCanvas = $$("placeHolderCanvas");
                         const phx = phCanvas.getContext("2d");
@@ -1407,6 +1428,7 @@
                         $$("vidDivHowtoMobile").style.top = `${phCanvas.height + 40}px`
                     })
                     .catch(function (error) {
+                        alert (`The use of camera for this website has been blocked. \nin order to allow the use of camera - \ngo to settings -> privacy and security -> site settings -> camera,  \nand chose "allow"`);
                         console.log("Something went wrong!");
                         console.log(error);
                     });
