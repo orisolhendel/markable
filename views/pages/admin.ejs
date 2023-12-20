@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="shortcut icon" href="/img/fab.ico">
     <meta charset="utf-8">
     <title>Markable - admin page</title>
     <style>
@@ -45,7 +46,7 @@
 
     <!-- table div -->
     <div id="tableDiv" class="abs captionText" style="top:120px; left: 10px; width: 500px; table-layout:fixed;">
-        <img id="loadingImg" class="fxd" style="width:36px; height: 36px; top:80px; left: 500px; display: none;" src="/img/loading.gif" />
+        <img id="loadingImg" class="fxd" style="width:36px; height: 36px; top:180px; left: 500px; display: none;" src="/img/loading.gif" />
         <table id="resTable" style="width:1300px; border: 1px solid gray;">
             <tr>
                 <th>id</th>
@@ -65,19 +66,23 @@
 
     <script>
 
-        $$("loadingImg").style.display = "";
+        const loadRows = from => {
 
-        fetch('/show_db', {
-            method: 'GET'
-        })
-        .then(response => response.text())
-        .then(result => {
-            renderTable (result);
-        })
-        .catch(error => {
-            $$("loadingImg").style.display = "none";
-            console.error(error);
-        });
+            $$("loadingImg").style.display = "";
+
+            fetch(`/show_db?from=${from}`, {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(result => {
+                renderTable (result);
+            })
+            .catch(error => {
+                $$("loadingImg").style.display = "none";
+                console.error(error);
+            });
+        }
+        loadRows (-1);
 
         const getDeviceType = json => {
             try {
@@ -88,6 +93,7 @@
             }
         }
 
+        let smallestRow = -1;
         const renderTable = res => {
 
             $$("loadingImg").style.display = "none";
@@ -96,10 +102,16 @@
 
             const rows = Array.from (JSON.parse(res).rows);
 
+            if (!rows.length) {
+                console.log ("none left");
+                noRowsLeft = true;
+            }
+
             rows.forEach (row => { 
                 
                 const comments = row.comments ? row.comments : ''
                 const makes_sense = row.makes_sense ? true : false
+                smallestRow = row.id;
 
                 trs += `
                     <tr>
@@ -150,8 +162,8 @@
             // show loading sign:
             const loading = $$("loadingImg");
             loading.style.display = "";
-            loading.style.left = (container.getBoundingClientRect().left - 285) + "px";
-            loading.style.top = (container.getBoundingClientRect().top - 110) + "px";
+            loading.style.left = (container.getBoundingClientRect().left) + "px";
+            loading.style.top = (container.getBoundingClientRect().top) + "px";
 
             // fetch data:
             fetch(`/show_pic?uid=${uid}`, {
@@ -165,7 +177,15 @@
                 selfieImg.src = `/tmp/${result}`;
 
                 picDiv.style.left = container.getBoundingClientRect().left + "px";
-                picDiv.style.top = (container.getBoundingClientRect().top + 40) + "px";
+                picDiv.style.top = (container.getBoundingClientRect().top + 100) + "px";
+
+                let picTop = container.getBoundingClientRect().top + 100;
+                while (picTop + 850 > screen.availHeight) {
+                    console.log ("deviation");
+                    picTop -= 10;
+                    picDiv.style.top = picTop + "px";
+                }
+
                 picDiv.style.display = "";
 
                 const resJson = res;
@@ -287,6 +307,26 @@
                 alert (error);
             });
         }
+
+        let tryLoad = 0;
+        let noRowsLeft = false;
+        window.onscroll = function(ev) {
+
+            if (noRowsLeft) {
+                $$("loadingImg").style.display = "none";
+                return;
+            }
+
+            if ((window.innerHeight + Math.round(window.scrollY)) >= $$("tableDiv").scrollHeight) {
+                $$("loadingImg").style.display = "";
+                if (tryLoad) {
+                    clearTimeout (tryLoad);
+                }
+                tryLoad = window.setTimeout (() => {
+                    loadRows (smallestRow);
+                }, 500);
+            }
+        };
 
     </script>
 

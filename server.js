@@ -9,9 +9,6 @@ app.enable('trust proxy');
 
 app.use((req, res, next) => {
 
-    console.log (req.header('host'));
-    console.log (req.header('host').indexOf ("localhost"));
-
     if (req.header('host').indexOf ("localhost") < 0 && req.header('x-forwarded-proto') !== 'https')
       res.redirect(`https://${req.header('host')}${req.url}`);
     else
@@ -111,14 +108,20 @@ app.post("/submit", upload.array("file"), uploadFiles);
 
 app.get('/show_db', function(req, res, next) {
 
+    let whereClause = "";
+    if (req.query.from > 0) {
+        whereClause = `WHERE id < ${req.query.from}`;
+    }
+
     const client = getPostgresClient();
     client.connect();
 
-    client.query('SELECT id, dt, results, selfiesDim, score, device, comments, makes_sense, uid FROM Selfies ORDER BY dt DESC LIMIT 15',
+    client.query(`SELECT id, dt, results, selfiesDim, score, device, comments, makes_sense, uid FROM Selfies ${whereClause} ORDER BY dt DESC LIMIT 10`,
                         function(err, readResult) {
                             if (err) {
                                 console.log (err);
                             }
+                            console.log (readResult);
                             res.send(JSON.stringify(readResult));
                             client.end();
     });
@@ -185,8 +188,6 @@ const addInput = (req, res) => {
 
     const client = getPostgresClient();
     client.connect();
-
-    console.log (req.body);
 
     console.log (`  UPDATE Selfies SET comments = '${req.body.comments}', makes_sense = ${req.body.makes_sense}
                     WHERE uid='${req.body.uid}'`);
