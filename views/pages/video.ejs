@@ -55,6 +55,7 @@
                 height: 70%;
                 background-color: #ffffff;
                 border-radius: 15px;
+                font-size: 22px;
             }
 
             div.instructionsTextLayout {
@@ -211,6 +212,7 @@
                 height: 70%;
                 background-color: #ffffff;
                 border-radius: 15px;
+                font-size: 32px;
             }
 
             div.instructionsTextLayout {
@@ -677,8 +679,8 @@
 
     <div id="instructionsDiv" class="fxd instructionsDivLayout" style="display: none;">
         <div id="instructionsDivInner" class="abs instructionsDivInnerLayout">
-            <div style="font-family: 'Merriweather', serif; font-size: 32px; font-weight: 900; text-align:center;">
-                <br />
+            <div style="font-family: 'Merriweather', serif; font-weight: 900; text-align:center;">
+                <br /><br class="onlyForMobile"/><br class="onlyForMobile"/>
                 How To Get Optimal Results
             </div>
             <div class="abs instructionsTextLayout">
@@ -711,7 +713,7 @@
 
             <div class="hand abs" onclick="hideInstructions ()" style="right: 2%; top: 2%; font-size: 28px; font-family: 'Lato', sans-serif; font-weight: bolder;">X</div>
 
-            <button class="hand abs instructionsButtomLayout" onclick="hideInstructions()">GOT IT!</button>
+            <button class="hand abs instructionsButtomLayout" onclick="hideInstructions ()">GOT IT!</button>
 
         </div>
     </div>
@@ -725,9 +727,9 @@
             if ($$("accQuestionsMobile_2").style.display === "") {
                 return 2;
             }
-            if ($$("accQuestionsMobile_3").style.display === "") {
-                return 3;
-            }
+            // if ($$("accQuestionsMobile_3").style.display === "") {
+            //     return 3;
+            // }
 
             return -1;
         }
@@ -735,7 +737,8 @@
         const  enable_forward_mobile = active => {
             $$("navMobiledDisabled").style.display = "none";
             if (active) {
-                forward_mobile ();
+                //forward_mobile ();
+                setTimeout (forward_mobile, 500)
             }
         }
 
@@ -757,17 +760,18 @@
                     enable_forward_mobile_combo ($$("age_mobile"), false);
                     break;
                 case 2:
-                    if ($$("radio_mobile_surg_yes").checked ||  $$("radio_mobile_surg_no").checked)
+                    if (($$("radio_mobile_surg_yes").checked ||  $$("radio_mobile_surg_no").checked) && 
+                        ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked))
                         enable_forward_mobile (false);
                     else 
                         disable_forward_mobile();
                     break;
-                case 3: 
-                    if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked)
-                        enable_forward_mobile (false);
-                    else 
-                        disable_forward_mobile();
-                    break;
+                // case 3: 
+                //     if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked)
+                //         enable_forward_mobile (false);
+                //     else 
+                //         disable_forward_mobile();
+                //     break;
                 default: 
                     disable_forward_mobile();
                     break;
@@ -780,17 +784,19 @@
                 case 1:
                     $$("accQuestionsMobile_1").style.display = "none";
                     $$("accQuestionsMobile_2").style.display = "";
+                    $$("accQuestionsMobile_3").style.display = "";
                     break;
+                // case 2:
+                //     if ($$("radio_mobile_surg_yes").checked) {
+                //         showResults (100);
+                //     } else {
+                //         $$("accQuestionsMobile_2").style.display = "none";
+                //         $$("accQuestionsMobile_3").style.display = "";
+                //     }
+                //     break;
                 case 2:
-                    if ($$("radio_mobile_surg_yes").checked) {
-                        showResults (100);
-                    } else {
-                        $$("accQuestionsMobile_2").style.display = "none";
-                        $$("accQuestionsMobile_3").style.display = "";
-                    }
-                    break;
-                case 3:
-                    if ($$("radio_mobile_month_no").checked || $$("age_mobile").value > 52 || $$("age_mobile").value < 38) {
+                    if ($$("radio_mobile_surg_yes").checked || $$("radio_mobile_month_no").checked ||  
+                        $$("age_mobile").value > 52 || $$("age_mobile").value < 38) {
                         showResults (100);
                     } else {
                         getStarted ();
@@ -807,43 +813,56 @@
                     $$("introDiv").style.display = "";
                     break;
                 case 2:
+                    $$("accQuestionsMobile_3").style.display = "none";
                     $$("accQuestionsMobile_2").style.display = "none";
                     $$("accQuestionsMobile_1").style.display = "";
                     break;
-                case 3:
-                    $$("accQuestionsMobile_3").style.display = "none";
-                    $$("accQuestionsMobile_2").style.display = "";
-                    break;
+                // case 3:
+                //     $$("accQuestionsMobile_3").style.display = "none";
+                //     $$("accQuestionsMobile_2").style.display = "";
+                //     break;
             }
 
             enable_forward_mobile_stage ();
         }
 
-        const radio_mobile_surg_yes_click = check => {
-            enable_forward_mobile (true);
-            if (check.checked) {
-                mark_turnOffRemotely ("radio_mobile_surg_no");
-            }
-        };
-
-        const radio_mobile_surg_no_click = check => {
-            enable_forward_mobile (true);
-            if (check.checked) {
-                mark_turnOffRemotely ("radio_mobile_surg_yes");
-            }
-        };
-
         const radio_mobile_month_yes_click = check => {
-            enable_forward_mobile (true);
+            enable_forward_mobile (false);
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_month_no");
             }
         };
 
         const radio_mobile_month_no_click = check => {
-            enable_forward_mobile (true);
+            enable_forward_mobile (false);
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_month_yes");
+            }
+        };
+
+        const radio_mobile_surg_yes_click = check => {
+            if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked) {
+                enable_forward_mobile (true);
+            }
+            else {
+                enable_forward_mobile (false);
+            }
+            
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_mobile_surg_no");
+            }
+        };
+
+        const radio_mobile_surg_no_click = check => {
+            if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked) {
+                enable_forward_mobile (true);
+            }
+            else {
+                enable_forward_mobile (false);
+            }
+
+            if (check.checked) {
+                mark_turnOffRemotely ("radio_mobile_surg_yes");
             }
         };
     </script>
@@ -871,28 +890,28 @@
             <br />
             <br />
             <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
-                Have you undergone a surgical procedure to have your ovaries removed?
-                <br />
-                <br />
-                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_surg_yes", onclick: "radio_mobile_surg_yes_click", width:100, label: "Yes"}); %>
-                <br />
-                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_surg_no", onclick: "radio_mobile_surg_no_click", width:100, label: "No"}); %>
-            </div>
-        </span>
-
-        <span id="accQuestionsMobile_3" style="display:none;">
-            <div style="font-family: 'Merriweather', serif; font-size: 38px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
-                Help us improve accuracy
-            </div>
-            <br />
-            <br />
-            <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
                 Have you experienced menstrual bleeding within the last 12 months?
                 <br />
                 <br />
                 <%- include('../partials/mark_checkbox', {cb: "radio_mobile_month_yes", onclick: "radio_mobile_month_yes_click", width:100, label: "Yes"}); %>
                 <br />
                 <%- include('../partials/mark_checkbox', {cb: "radio_mobile_month_no", onclick: "radio_mobile_month_no_click", width:100, label: "No"}); %>
+            </div>
+        </span>
+
+        <span id="accQuestionsMobile_3" style="display:none;">
+            <!--div style="font-family: 'Merriweather', serif; font-size: 38px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Help us improve accuracy
+            </div-->
+            <br />
+            <br />
+            <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+                Have you undergone a surgical procedure to have your ovaries removed?
+                <br />
+                <br />
+                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_surg_yes", onclick: "radio_mobile_surg_yes_click", width:100, label: "Yes"}); %>
+                <br />
+                <%- include('../partials/mark_checkbox', {cb: "radio_mobile_surg_no", onclick: "radio_mobile_surg_no_click", width:100, label: "No"}); %>
             </div>
         </span>
 
@@ -1281,7 +1300,7 @@
                     body: formdata,
                     redirect: 'follow',
                     headers: {
-                        'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
+                        'ailabapi-api-key': 'wEFOvZzJTmSCCfMG57Seb165iK3DhhjdmfuI2RRU2AgBBrbVqa6YkytXHit9ZM4W'
                     }
                 };
 
