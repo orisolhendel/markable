@@ -64,9 +64,9 @@
             }
 
             img.instructionsImgLayout {
-                top: 20%; 
+                top: 22%; 
                 left: 7%;
-                width: 350px;
+                width: 310px;
                 height: auto;
             }
 
@@ -363,9 +363,6 @@
         const show_acc_questions_web = () => {
             $$("introDiv").style.display = "none";
             $$("accQuestionsWeb").style.display = "";
-
-            $$("monthQuestionShadow").style.left = `${$$("monthQuesion").getBoundingClientRect().left}px`;
-            $$("monthQuestionShadow").style.top = `${$$("monthQuesion").getBoundingClientRect().top}px`;
         };
 
         const show_acc_questions_mobile = () => {
@@ -684,28 +681,23 @@
                 How To Get Optimal Results
             </div>
             <div class="abs instructionsTextLayout">
+                <br class="onlyForMobile"/><br />
                 <div style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
                     &nbsp;&nbsp;&nbsp;
                     <span style="font-family: 'Merriweather', serif; font-size: 22px;">Optimize lighting</span>
                 </div>
-                <br /><br class="hideForMobile"/><br class="hideForMobile"/>
+                <br /><br class="hideForMobile"/>
                 <div style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
                     &nbsp;&nbsp;&nbsp;
                     <span style="font-family: 'Merriweather', serif; font-size: 22px;">Remove makeup</span>
                 </div>
-                <br /><br class="hideForMobile"/><br class="hideForMobile"/>
+                <br /><br class="hideForMobile"/>
                 <div style="display : flex; flex-direction: row; align-items : center;">
                     <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
                     &nbsp;&nbsp;&nbsp;
                     <span style="font-family: 'Merriweather', serif; font-size: 22px;">Remove glasses</span>
-                </div>
-                <br /><br class="hideForMobile"/><br class="hideForMobile" />
-                <div style="display : flex; flex-direction: row; align-items : center;">
-                    <img alt="vsign" src="/img/vsign.png" style="width:36px; height: auto;" />
-                    &nbsp;&nbsp;&nbsp;
-                    <span style="font-family: 'Merriweather', serif; font-size: 22px;">Smile big :)</span>
                 </div>
             </div>
 
@@ -766,12 +758,6 @@
                     else 
                         disable_forward_mobile();
                     break;
-                // case 3: 
-                //     if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked)
-                //         enable_forward_mobile (false);
-                //     else 
-                //         disable_forward_mobile();
-                //     break;
                 default: 
                     disable_forward_mobile();
                     break;
@@ -786,14 +772,6 @@
                     $$("accQuestionsMobile_2").style.display = "";
                     $$("accQuestionsMobile_3").style.display = "";
                     break;
-                // case 2:
-                //     if ($$("radio_mobile_surg_yes").checked) {
-                //         showResults (100);
-                //     } else {
-                //         $$("accQuestionsMobile_2").style.display = "none";
-                //         $$("accQuestionsMobile_3").style.display = "";
-                //     }
-                //     break;
                 case 2:
                     if ($$("radio_mobile_surg_yes").checked || $$("radio_mobile_month_no").checked ||  
                         $$("age_mobile").value > 52 || $$("age_mobile").value < 38) {
@@ -817,24 +795,26 @@
                     $$("accQuestionsMobile_2").style.display = "none";
                     $$("accQuestionsMobile_1").style.display = "";
                     break;
-                // case 3:
-                //     $$("accQuestionsMobile_3").style.display = "none";
-                //     $$("accQuestionsMobile_2").style.display = "";
-                //     break;
             }
 
             enable_forward_mobile_stage ();
         }
 
         const radio_mobile_month_yes_click = check => {
-            enable_forward_mobile (false);
+            if ($$("radio_mobile_surg_yes").checked ||  $$("radio_mobile_surg_no").checked) {
+                enable_forward_mobile (true);
+            }
+
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_month_no");
             }
         };
 
         const radio_mobile_month_no_click = check => {
-            enable_forward_mobile (false);
+            if ($$("radio_mobile_surg_yes").checked ||  $$("radio_mobile_surg_no").checked) {
+                enable_forward_mobile (true);
+            }
+
             if (check.checked) {
                 mark_turnOffRemotely ("radio_mobile_month_yes");
             }
@@ -843,9 +823,6 @@
         const radio_mobile_surg_yes_click = check => {
             if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked) {
                 enable_forward_mobile (true);
-            }
-            else {
-                enable_forward_mobile (false);
             }
             
             if (check.checked) {
@@ -856,9 +833,6 @@
         const radio_mobile_surg_no_click = check => {
             if ($$("radio_mobile_month_yes").checked ||  $$("radio_mobile_month_no").checked) {
                 enable_forward_mobile (true);
-            }
-            else {
-                enable_forward_mobile (false);
             }
 
             if (check.checked) {
@@ -933,7 +907,7 @@
 
         const enable_forward_web_stage = () => {
             if ($$("age_web").value > 0 &&
-            ($$("radio_web_surg_yes").checked || $$("radio_web_month_yes").checked || $$("radio_web_month_no").checked)) {
+            (($$("radio_web_surg_yes").checked || $$("radio_web_surg_no").checked) && ($$("radio_web_month_yes").checked || $$("radio_web_month_no").checked))) {
                 $$("disableContinueToAnalysis").style.display = "none";
             } else {
                 $$("disableContinueToAnalysis").style.display = "";
@@ -943,10 +917,6 @@
         const radio_web_surg_yes_click = check => {
             if (check.checked) {
                 mark_turnOffRemotely ("radio_web_surg_no");
-                mark_turnOffRemotely ("radio_web_month_yes");
-                mark_turnOffRemotely ("radio_web_month_no");
-
-                $$("monthQuestionShadow").style.display = "";
                 enable_forward_web_stage ();
             }
         };
@@ -954,8 +924,6 @@
         const radio_web_surg_no_click = check => {
             if (check.checked) {
                 mark_turnOffRemotely ("radio_web_surg_yes");
-
-                $$("monthQuestionShadow").style.display = "none";
                 enable_forward_web_stage ();
             }
         };
@@ -963,7 +931,6 @@
         const radio_web_month_yes_click = check => {
             if (check.checked) {
                 mark_turnOffRemotely ("radio_web_month_no");
-
                 enable_forward_web_stage ();
             }
         };
@@ -971,8 +938,7 @@
         const radio_web_month_no_click = check => {
             if (check.checked) {
                 mark_turnOffRemotely ("radio_web_month_yes");
-                
-                $$("disableContinueToAnalysis").style.display = "none";
+                enable_forward_web_stage ();
             }
         };
 
@@ -998,16 +964,6 @@
         <%- include('../partials/mark_numeric_combo', {id: "age_web", start: 18, end: 65, selected: -1, nonval:45, width:200, onchange: "enable_forward_web_stage()"}); %>
         <br />
         <br />
-        <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
-            Have you undergone a surgical procedure to have your ovaries removed?
-        </div>
-        <br />
-        <div style="display : flex; flex-direction: row; align-items : center;">
-            <%- include('../partials/mark_checkbox', {cb: "radio_web_surg_yes", onclick: "radio_web_surg_yes_click", width:100, label: "Yes"}); %>
-            <%- include('../partials/mark_checkbox', {cb: "radio_web_surg_no", onclick: "radio_web_surg_no_click", width:100, label: "No"}); %>
-        </div>
-        <br />
-        <br />
         <div id="monthQuesion" style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
             Have you experienced menstrual bleeding within the last 12 months?
         </div>
@@ -1016,8 +972,16 @@
             <%- include('../partials/mark_checkbox', {cb: "radio_web_month_yes", onclick: "radio_web_month_yes_click", width:100, label: "Yes"}); %>
             <%- include('../partials/mark_checkbox', {cb: "radio_web_month_no", onclick: "radio_web_month_no_click", width:100, label: "No"}); %>
         </div>
-
-        <div id="monthQuestionShadow" class="fxd" style="background-color: rgba(255, 255, 255, 0.5); width:900px; height: 200px;" ></div>
+        <br />
+        <br />
+        <div style="font-family: 'Merriweather', serif; font-size: 22px; text-align: left; width: 100%; color:#333333; border: 1px solid #ffffff;">
+            Have you undergone a surgical procedure to have your ovaries removed?
+        </div>
+        <br />
+        <div style="display : flex; flex-direction: row; align-items : center;">
+            <%- include('../partials/mark_checkbox', {cb: "radio_web_surg_yes", onclick: "radio_web_surg_yes_click", width:100, label: "Yes"}); %>
+            <%- include('../partials/mark_checkbox', {cb: "radio_web_surg_no", onclick: "radio_web_surg_no_click", width:100, label: "No"}); %>
+        </div>
 
         <button class="continueToAnalyzeLayout" id="continueToAnalysis" onclick="forward_web()">CONTINUE TO ANALYSIS</button>
         <button class="continueToAnalyzeLayout" id="disableContinueToAnalysis" style="z-index: 100; background-color: #e7e7e7; cursor: default;">CONTINUE TO ANALYSIS</button>
@@ -1300,7 +1264,7 @@
                     body: formdata,
                     redirect: 'follow',
                     headers: {
-                        'ailabapi-api-key': 'wEFOvZzJTmSCCfMG57Seb165iK3DhhjdmfuI2RRU2AgBBrbVqa6YkytXHit9ZM4W'
+                        'ailabapi-api-key': 'YUqRroWHfh78PJmzAfMOHmTIrw6wYeTv7UgI4FZXgdOu35Dl8eMA0Jus9LkayGCv'
                     }
                 };
 
@@ -1347,7 +1311,7 @@
                     body: formdata,
                     redirect: 'follow',
                     headers: {
-                        'ailabapi-api-key': 'VDAp3sCkYwcqEyDES40SXl625sT6QFpc3efjGoHmBTf9QKKhtRvjUVdrmZP8O7Lw'
+                        'ailabapi-api-key': 'YUqRroWHfh78PJmzAfMOHmTIrw6wYeTv7UgI4FZXgdOu35Dl8eMA0Jus9LkayGCv'
                     }
                 };
 
