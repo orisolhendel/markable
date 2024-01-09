@@ -1,19 +1,18 @@
 
-<div id="<%=hamb%>_hamb_wrapper" class="abs hand" style="background-color: #ffffff; width: 30px; height: 35px; right: 30px; top:5px" onclick="toggle_hamb(this)">
-    <div id="<%=hamb%>_hamb_upper" class="abs" style="background-color: #222222; width: 30px; height: 3px; border-radius: 20px; top:0px; right: 0px; z-index: 300;"></div>
-    <div id="<%=hamb%>_hamb_middle" class="abs" style="background-color: #222222; width: 30px; height: 3px; border-radius: 20px; top:12px; right: 0px; z-index: 300;"></div>
-    <div id="<%=hamb%>_hamb_lower" class="abs" style="background-color: #222222; width: 30px; height: 3px; border-radius: 20px; top:24px; right: 0px; z-index: 300;"></div>
+<div id="<%=hamb%>_hamb_wrapper" class="abs hand" style="background-color: #ffffff; width: 30px; height: 35px; right: 0px; top:5px" onclick="toggle_hamb(this)">
+    <div id="<%=hamb%>_hamb_upper" class="abs" style="background-color: #2B2B4A; width: 30px; height: 3px; border-radius: 20px; top:0px; right: 0px; z-index: 300;"></div>
+    <div id="<%=hamb%>_hamb_middle" class="abs" style="background-color: #2B2B4A; width: 30px; height: 3px; border-radius: 20px; top:12px; right: 0px; z-index: 300;"></div>
+    <div id="<%=hamb%>_hamb_lower" class="abs" style="background-color: #2B2B4A; width: 30px; height: 3px; border-radius: 20px; top:24px; right: 0px; z-index: 300;"></div>
 
     <div id="<%=hamb%>_hamb_menu" class="abs flex" style="top:-15px; left: 0px; width: 300px; height: 1000px; 
-                                                    border: 1px solid; z-index: 200; background-color: #ffffff; 
+                                                    border: none; z-index: 200; background-color: #ffffff; 
                                                     flex-flow: column nowrap; justify-content:start;
-                                                    display: none;">
+                                                    display: none; overflow: hidden;">
         <div style="height: 50px;"></div>
         <% for(let i=0; i<menu.length; i++) { %>
-            <div class="captionText" style="text-align: center; vertical-align: middle; height: 40px; padding-top: 23px;
-                        font-family: sans-serif; border-top: 1px solid;"><a class="captionText" href="<%=href[i]%>"><%=menu[i]%></a></div>
+            <div class="captionText" style="text-align: left; vertical-align: middle; height: 40px; padding-top: 23px;
+                        font-family: sans-serif;"><a class="captionText" href="<%=href[i]%>"><%=menu[i]%></a></div>
         <%}%>
-        <div style="border-top: 1px solid;"></div>
 
     </div>
 </div>
