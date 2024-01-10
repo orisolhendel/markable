@@ -58,7 +58,8 @@
                 <th style="width:150px;">results</th>
                 <th style="width:120px;">summary</th>
                 <th style="width:100px;">#symptoms</th>
-                <th style="width:70px;">score</th>
+                <th style="width:70px;">score - <br> before symptoms</th>
+                <th style="width:70px;">score - <br> after symptoms</th>
                 <th style="width:180px;">comments</th>
                 <th style="width:120px;">maks sense?</th>
             </tr>
@@ -138,6 +139,7 @@
                             <span id="scsp_${row.uid}">${row.score}</span>
                         </td>
                         <td>${JSON.parse (row.score).symptoms.length}</td>
+                        <td>${JSON.parse (row.score).total_score_empiric}</td>
                         <td>${JSON.parse (row.score).total_score_empiric_plus_symptoms}</td>
                         <td>
                             <textarea id="ta_${row.uid}" style="width:95%; height:200px; font-size:20px; font-family: 'Lato', sans-serif;" 
