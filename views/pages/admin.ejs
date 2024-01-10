@@ -56,7 +56,9 @@
                 <th style="width:180px;">device</th>
                 <th style="width:180px;">mobile / desktop</th>
                 <th style="width:150px;">results</th>
-                <th style="width:120px;">score</th>
+                <th style="width:120px;">summary</th>
+                <th style="width:100px;">#symptoms</th>
+                <th style="width:70px;">score</th>
                 <th style="width:180px;">comments</th>
                 <th style="width:120px;">maks sense?</th>
             </tr>
@@ -117,7 +119,7 @@
                         <td>${row.id}</td>
                         <!--td>${row.uid}</td-->
                         <td>${row.dt}</td>
-                        <td><a href="javascript:void(0);" onclick='showPic("${row.uid}", this.parentElement, ${row.results}, ${row.selfiesdim})'>show picture</a></td>
+                        <td><a style="color: blue" href="javascript:void(0);" onclick='showPic("${row.uid}", this.parentElement, ${row.results}, ${row.selfiesdim})'>show picture</a></td>
                         <td>${row.selfiesdim}</td>
                         <td>${row.device}</td>
                         <td>${getDeviceType(row.device)}</td>
@@ -135,6 +137,8 @@
                             <br /><br />
                             <span id="scsp_${row.uid}">${row.score}</span>
                         </td>
+                        <td>${JSON.parse (row.score).symptoms.length}</td>
+                        <td>${JSON.parse (row.score).total_score_empiric_plus_symptoms}</td>
                         <td>
                             <textarea id="ta_${row.uid}" style="width:95%; height:200px; font-size:20px; font-family: 'Lato', sans-serif;" 
                             placeholder="your input...">${comments.replaceAll("[QUOT]","'").replaceAll("[AMP]","&")}</textarea>
