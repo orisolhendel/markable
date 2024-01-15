@@ -1,4 +1,4 @@
-<div id="<%=cb%>_outer" class="checkDivWrapper" style="display: flex; flex-direction: row; border: 2px solid #ffffff; border-radius: 5px; background-color: #f7f7f7; width:<%=width%>px" onclick="toggleAnimCb(this)">
+<div id="<%=cb%>_outer" class="checkDivWrapper <%=aditionalClass%>" style="display: flex; flex-direction: row; border: 2px solid #ffffff; border-radius: 5px; background-color: #f7f7f7;" onclick="toggleAnimCb(this)">
     <div class="abs" style="width: 26px; height: 26px; border-radius: 26px; border: 2px solid #dfdfdf; background-color: #ffffff; cursor: pointer;">
         <div class="abs" id="<%=cb%>_inner" style="left:5px; top:5px; width: 1px; height: 1px; border-radius: 16px; background-color:  #ff0082; cursor: pointer; display: none;"></div>
     </div>
@@ -7,9 +7,9 @@
 
     <% if(cb.startsWith("__")){ %>
         &nbsp;&nbsp;
-        <input id="<%=cb%>_text" type="text" style="    border-top: none; border-left: none; 
-                                                        border-right: none; border-bottom: 1px solid gray;
-                                                        background-color: #f7f7f7; font-family: 'Lato', sans-serif;
-                                                        font-size: 18px; width: <%=width%>px;" maxlength="72" size="36">
+        <input id="<%=cb%>_text" type="text" class="<%=aditionalClass%>"    style="     border-top: none; border-left: none; 
+                                                                                        border-right: none; border-bottom: 1px solid gray;
+                                                                                        background-color: #f7f7f7; font-family: 'Lato', sans-serif;
+                                                                                        font-size: 18px; " maxlength="72" size="36">
     <% } %>
 </div>
