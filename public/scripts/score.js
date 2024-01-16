@@ -50,6 +50,20 @@ const calcScore = (res, userInfo) => {
 
     scoreJson = "{";
 
+    // if (userInfo.googleData != null) {
+    //     updateScoreJson (`google: ${JSON.stringify(userInfo.googleData)}`);
+    // }
+    // if (userInfo.facebookData != null) {
+    //     updateScoreJson (`facebook: ${JSON.stringify(userInfo.facebookData)}`);
+    // }
+
+    if (userInfo.googleData != null) {
+        scoreJson += `"google": ${JSON.stringify(userInfo.googleData)}, `;
+    }
+    if (userInfo.facebookData != null) {
+        scoreJson +=  `"facebook": ${JSON.stringify(userInfo.facebookData)}, `;
+    }
+
     let classification = "";
 
     const surg = userInfo.surg;
@@ -89,12 +103,17 @@ const calcScore = (res, userInfo) => {
     updateScoreJson (`age: ${userInfo.age}`);
     updateScoreJson (`other: "${userInfo.other}"`);
 
+
+    console.log (scoreJson)
+
     let jres_wrapper = null;
+
     try {
         jres_wrapper = (JSON.parse (res));
     } catch (e) {
         console.log('res: ' + res);
         console.log('error: ' + e);
+        alert ('error: ' + e)
     }
     const jres = jres_wrapper.result;
 
@@ -225,7 +244,11 @@ const calcScore = (res, userInfo) => {
     updateScoreJson (`total_score_empiric_plus_symptoms: ${total_score_empiric_plus_symptoms}`);
 
     updateScoreJson (`class: "${classification}"`, "no_delim");
+
     updateScoreJson ("}", "no_delim");
+
+
+    console.log (scoreJson)
 
     return scoreJson;
 }
