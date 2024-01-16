@@ -50,13 +50,6 @@ const calcScore = (res, userInfo) => {
 
     scoreJson = "{";
 
-    // if (userInfo.googleData != null) {
-    //     updateScoreJson (`google: ${JSON.stringify(userInfo.googleData)}`);
-    // }
-    // if (userInfo.facebookData != null) {
-    //     updateScoreJson (`facebook: ${JSON.stringify(userInfo.facebookData)}`);
-    // }
-
     if (userInfo.googleData != null) {
         scoreJson += `"google": ${JSON.stringify(userInfo.googleData)}, `;
     }
@@ -70,41 +63,40 @@ const calcScore = (res, userInfo) => {
     const no_month = userInfo.no_month;
     const age = Number(userInfo.age);
 
-    if (surg || no_month) {
-        classification = "Old";
-        updateScoreJson (`age: ${age}`);
-        updateScoreJson (`surg: ${surg}`);
-        updateScoreJson (`no_month: ${no_month}`);
-        updateScoreJson (`class: "${classification}"`, "no_delim");
-        updateScoreJson ("}", "no_delim");
 
-        console.log (scoreJson);
+    updateScoreJson (`surg: ${surg}`);
+    updateScoreJson (`no_month: ${no_month}`);
 
-        return scoreJson;
-    }
+    // if (surg || no_month) {
+    //     classification = "Old";
+    //     updateScoreJson (`age: ${age}`);
+    //     updateScoreJson (`surg: ${surg}`);
+    //     updateScoreJson (`no_month: ${no_month}`);
+    //     updateScoreJson (`class: "${classification}"`, "no_delim");
+    //     updateScoreJson ("}", "no_delim");
 
-    if (age < 38) {
-        classification = "Young";
-        updateScoreJson (`age: ${age}`);
-        updateScoreJson (`class: "${classification}"`, "no_delim");
-        updateScoreJson ("}", "no_delim");
-        return scoreJson;
-    } else if (age > 52) {
-        classification = "Old";
-        updateScoreJson (`age: ${age}`);
-        updateScoreJson (`class: "${classification}"`, "no_delim");
-        updateScoreJson ("}", "no_delim");
-        return scoreJson;
-    }
+    //     return scoreJson;
+    // }
+
+    // if (age < 38) {
+    //     classification = "Young";
+    //     updateScoreJson (`age: ${age}`);
+    //     updateScoreJson (`class: "${classification}"`, "no_delim");
+    //     updateScoreJson ("}", "no_delim");
+    //     return scoreJson;
+    // } else if (age > 52) {
+    //     classification = "Old";
+    //     updateScoreJson (`age: ${age}`);
+    //     updateScoreJson (`class: "${classification}"`, "no_delim");
+    //     updateScoreJson ("}", "no_delim");
+    //     return scoreJson;
+    // }
 
     const symptoms = userInfo.symptoms.length;
 
     updateScoreJson (`symptoms: ${buildSymptomListForJson(userInfo.symptoms)}`);
     updateScoreJson (`age: ${userInfo.age}`);
     updateScoreJson (`other: "${userInfo.other}"`);
-
-
-    console.log (scoreJson)
 
     let jres_wrapper = null;
 
@@ -239,12 +231,19 @@ const calcScore = (res, userInfo) => {
             break;
     }
 
+    if (surg || no_month) {
+        classification = "Old";
+    }
+    else if (age < 38) {
+        classification = "Young";
+    } else if (age > 52) {
+        classification = "Old";
+    }
+
     total_score_empiric_plus_symptoms = Math.min (total_score_empiric_plus_symptoms, 96);
 
     updateScoreJson (`total_score_empiric_plus_symptoms: ${total_score_empiric_plus_symptoms}`);
-
     updateScoreJson (`class: "${classification}"`, "no_delim");
-
     updateScoreJson ("}", "no_delim");
 
 

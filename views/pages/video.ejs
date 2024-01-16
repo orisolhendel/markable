@@ -467,8 +467,6 @@
 
             moveUp();
 
-            console.log (getUserInfo())
-
             $$("scoreInput").value = calcScore (res, getUserInfo());
 
             $$("resDiv").style.display = "";
@@ -605,11 +603,6 @@
 
             info.googleData = googleData;
             info.facebookData = facebookData;
-
-            console.log (JSON.stringify (facebookData))
-
-            console.log (info)
-
 
             return info;
         };
@@ -826,7 +819,8 @@
                 case 2:
                     if ($$("radio_mobile_surg_yes").checked || $$("radio_mobile_month_no").checked ||  
                         $$("age_mobile").value > 52 || $$("age_mobile").value < 38) {
-                        showResults (100);
+                        // showResults (100);
+                        getStarted ();
                     } else {
                         getStarted ();
                     }
@@ -995,7 +989,8 @@
 
         const forward_web = () => {
             if ($$("age_web").value > 52 || $$("age_web").value < 38 || $$("radio_web_surg_yes").checked || $$("radio_web_month_no").checked) {
-                showResults (100);
+                // showResults (100);
+                getStarted ();
             }  else {
                 getStarted ()
             }
@@ -1587,10 +1582,5 @@
 
 </body>
 </html>
-
-
-
-
-
 
 
