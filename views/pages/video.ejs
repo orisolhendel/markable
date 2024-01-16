@@ -118,6 +118,10 @@
                 width:100%
             }
 
+            div.leftOrBottomLayoutResults { /* left side on web, bottom side on mobile */
+                width:90%
+            }
+
             div.mainCaption {
                 font-size: 52px;
             }
@@ -285,6 +289,10 @@
             }
 
             div.leftOrBottomLayoutNarrow { /* left side on web, bottom side on mobile */
+                width:45%
+            }
+
+            div.leftOrBottomLayoutResults { /* left side on web, bottom side on mobile */
                 width:45%
             }
 
@@ -459,6 +467,8 @@
 
             moveUp();
 
+            console.log (getUserInfo())
+
             $$("scoreInput").value = calcScore (res, getUserInfo());
 
             $$("resDiv").style.display = "";
@@ -592,6 +602,9 @@
             info.no_month = (markable_device === MARKABLE_DEVICES.web)  ? $$("radio_web_month_no").checked :  $$("radio_mobile_month_no").checked;
             info.symptoms = getSymptomList ();
             info.other = ($$("__other").checked) ? $$("__other_text").value : "";
+
+            info.googleData = googleData;
+            info.facebookData = facebookData;
 
             return info;
         };
@@ -1088,7 +1101,7 @@
             </div>
         </div>
         
-        <div id="classA" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classA" class="leftOrBottomLayoutResults" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
 
             It appears that you have entered the perimenopause stage, a natural phase in a woman's life marked by a series of
@@ -1102,7 +1115,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classB" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classB" class="leftOrBottomLayoutResults" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
             
             According to our analysis, you may be experiencing the beginning stages of Perimenopause which is the transition phase
@@ -1118,7 +1131,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classC" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classC" class="leftOrBottomLayoutResults" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
             
             According to our analysis, you may be experiencing the beginning stages of Perimenopause which is the transition phase
@@ -1134,7 +1147,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classD" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classD" class="leftOrBottomLayoutResults" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
             What does it mean? <br /><br />
             
             According to our analysis, you have yet to begin your perimenopause transition.
@@ -1153,7 +1166,7 @@
             <br /><br /><br /><br />
         </div>
 
-        <div id="classYoung" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
+        <div id="classYoung" class="leftOrBottomLayoutResults" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; display: none;">
         
         </div>
 
@@ -1161,7 +1174,7 @@
             $$("classYoung").innerHTML = $$("classD").innerHTML
         </script>
 
-        <div id="classOld" class="leftOrBottomLayoutNarrow" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; top:-720px; display: none;">
+        <div id="classOld" class="leftOrBottomLayoutResults" style="font-size: 24px; font-weight: 100; font-family: 'Lato', sans-serif; top:-720px; display: none;">
             Based on our analysis, it's likely that you are entering or have already entered the menopause stage. This is a
             significant and natural transition in a woman's life, signaling the end of your reproductive years.
             <br /><br />
@@ -1492,6 +1505,8 @@
     <!-- facebook and google: -->
     <!--=========================================-->
 
+    socialInfo = {}
+
     <!-- facebook -->
     <script>
         window.fbAsyncInit = function () {
@@ -1506,15 +1521,17 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 
     <script>
+        let facebookData = null;
         const fblogin = () => {
             FB.login(function (response) {
                 if (response.authResponse) {
                     console.log ('Welcome! Fetching your information.... ');
-                    console.log (response)
                     FB.api('/me?fields=name,email', function (response) {
                         console.log('Good to see you, ' + response.name + '.');
-                        console.log(`/${response.id}?fields=id,name,email`);
-                        //FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
+                        console.log (response)
+                        FB.api (`/${response.id}?fields=id,name,email`,'GET',{}, response => console.log (response));
+
+                        facebookData = response;
 
                         sendPicAction();
                     });
@@ -1535,6 +1552,7 @@
     </div>
 
     <script>
+        let googleData = null;
         function handleCredentialResponse(response) {
             
             function decodeJwtResponse(token) {
@@ -1555,6 +1573,8 @@
             console.log('Family Name: ' + responsePayload.family_name);
             console.log("Image URL: " + responsePayload.picture);
             console.log("Email: " + responsePayload.email);
+
+            googleData = responsePayload;
             
             sendPicAction();
         }
