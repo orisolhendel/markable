@@ -104,6 +104,12 @@ a:hover {
     top: 0px;
     left: 10px;
   }
+
+  div.betaLayout {
+    padding: 0px;
+    top: 43px;
+    left: 200px;
+  }
 }
 
 @media only screen and (min-width: 1000px) { /* web */
@@ -123,6 +129,11 @@ a:hover {
     top: 0px;
     left:  <%- logoLocation === "left" ? 30 : 75 -%>px;
   }
+
+  div.betaLayout {
+    top: 12px;
+    right: 56px;
+  }
 }
 </style>
 
@@ -131,7 +142,11 @@ a:hover {
 
 <!-- top caption -->
 <div class="abs logoLayout" style="z-index: 200;">
-    <img src="/../img/logo.png" class="hand" width="210px" height="auto" onclick="location.href = '/'">
+  <img src="/../img/logo.png" class="hand" width="210px" height="auto" onclick="location.href = '/'">
+</div>
+
+<div class="abs betaLayout" style="z-index: 200; font-size: 22px; color:#ff0083; font-style: italic ;">
+    beta
 </div>
 
 <div class="abs captionLayout" style="width:100%; right: 0px; top:0px; background-color: #ffffff; margin: 0%;">
