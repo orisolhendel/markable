@@ -155,7 +155,6 @@ const calcScore = (res, userInfo) => {
 
     let right_mouth_wrinkle = jres.right_mouth_wrinkle_info.wrinkle_severity_level;
     updateScoreJson(`right_mouth_wrinkle: ${right_mouth_wrinkle}`);
-
     
     let eye_pouch_val = jres.eye_pouch.value;
     let eye_pouch_conf = jres.eye_pouch.confidence;
@@ -166,6 +165,27 @@ const calcScore = (res, userInfo) => {
     let skin_type_conf = jres.skin_type.details[1].confidence;
     updateScoreJson (`skin_type_val: ${skin_type_val}`);
     updateScoreJson (`skin_type_conf: ${skin_type_conf}`);
+    
+    let forehead_wrinkle_val = jres.forehead_wrinkle.value;
+    let forehead_wrinkle_conf = jres.forehead_wrinkle.confidence;
+    updateScoreJson (`forehead_wrinkle_val: ${forehead_wrinkle_val}`);
+    updateScoreJson (`forehead_wrinkle_conf: ${forehead_wrinkle_conf}`);
+
+    let eye_finelines_val = jres.eye_finelines.value;
+    let eye_finelines_conf = jres.eye_finelines.confidence;
+    let eye_finelines_sev = jres.eye_finelines_severity.value;
+    updateScoreJson (`eye_fineline_val: ${eye_finelines_val}`);
+    updateScoreJson (`eye_fineline_conf: ${eye_finelines_conf}`);
+    updateScoreJson (`eye_fineline_sev: ${eye_finelines_sev}`);
+
+    let fineline_count =    jres.fine_line.forhead_count +
+                            jres.fine_line.left_undereye_count + 
+                            jres.fine_line.right_undereye_count + 
+                            jres.fine_line.left_cheek_count + 
+                            jres.fine_line.right_cheek_count + 
+                            jres.fine_line.left_crowsfeet_count + 
+                            jres.fine_line.right_crowsfeet_count + 
+                            jres.fine_line.glabella_count;
 
     const water_score = gradeScore(water, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
     const pore_score = gradeScore(pores, [30, 50, 70, Infinity], ['error', 10, 5, 0]);
@@ -184,6 +204,9 @@ const calcScore = (res, userInfo) => {
     const right_mouth_wrinkle_score = gradeScore(right_mouth_wrinkle, [1, 2, Infinity], [0, 5, 10]);
     const eye_pouch_score = eye_pouch_val == 1 && eye_pouch_conf > 0.1 ? 10 : 0;
     const skin_type_score = skin_type_val == 1 && skin_type_conf > 0.2 ? 10 : 0;
+    const forehead_wrinkle_score = forehead_wrinkle_val == 1 && forehead_wrinkle_conf > 0.8 ? 10 : 0;
+    const eye_finelines_score = eye_finelines_val == 1 && eye_finelines_val > 0.8  && eye_finelines_sev >= 1 ? 10 : 0;
+    const fineline_count_score = fineline_count > 2 ? 10 : 0;
 
     const factors = [water_score, pore_score, melanin_score, dark_circle_score, sensitivity_score, wrinkle_score, 
                     glabella_wrinkle_score,  
@@ -191,14 +214,16 @@ const calcScore = (res, userInfo) => {
                     left_nasolabial_wrinkle_score, right_nasolabial_wrinkle_score,
                     left_crowsfeet_wrinkle_score, right_crowsfeet_wrinkle_score,
                     left_mouth_wrinkle_score, right_mouth_wrinkle_score,
-                    eye_pouch_score, skin_type_score];
+                    eye_pouch_score, skin_type_score, forehead_wrinkle_score, eye_finelines_score,
+                    fineline_count_score];
     const factors_names = ["water_score", "pore_score", "melanin_score", "dark_circle_score", "sensitivity_score", "wrinkle_score", 
                             "glabella_wrinkle_score", 
                             "left_cheek_wrinkle_score", "right_cheek_wrinkle_score",
                             "left_nasolabial_wrinkle_score", "right_nasolabial_wrinkle_score",
                             "left_crowsfeet_wrinkle_score", "right_crowsfeet_wrinkle_score",
                             "left_mouth_wrinkle_score", "right_mouth_wrinkle_score",
-                            "eye_pouch_score", "skin_type_score"];
+                            "eye_pouch_score", "skin_type_score", "forehead_wrinkle_score", "eye_finelines_score",
+                            "fineline_count_score"];
 
     let total_score_relative =    factors.reduce((a, b) => a + b, 0)
     const total_score_empiric = Math.round (total_score_relative / factors.length * 10);
