@@ -57,6 +57,14 @@ app.get('/about', function(req, res) {
     goToPage (res, 'about', "left");
 });
 
+app.get('/privacy', function(req, res) {
+    goToPage (res, 'privacy', "left");
+});
+
+app.get('/terms', function(req, res) {
+    goToPage (res, 'terms', "left");
+});
+
 // add robots.txt for improved crawling to our site:
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
