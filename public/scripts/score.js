@@ -205,7 +205,7 @@ const calcScore = (res, userInfo) => {
     const eye_pouch_score = eye_pouch_val == 1 && eye_pouch_conf > 0.1 ? 10 : 0;
     const skin_type_score = skin_type_val == 1 && skin_type_conf > 0.2 ? 10 : 0;
     const forehead_wrinkle_score = forehead_wrinkle_val == 1 && forehead_wrinkle_conf > 0.8 ? 10 : 0;
-    const eye_finelines_score = eye_finelines_val == 1 && eye_finelines_val > 0.8  && eye_finelines_sev >= 1 ? 10 : 0;
+    const eye_finelines_score = eye_finelines_val == 1 && eye_finelines_conf > 0.8  && eye_finelines_sev >= 1 ? 10 : 0;
     const fineline_count_score = fineline_count > 2 ? 10 : 0;
 
     const factors = [water_score, pore_score, melanin_score, dark_circle_score, sensitivity_score, wrinkle_score, 
