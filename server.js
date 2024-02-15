@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
 const getPostgresClient = () => {
     const { Client } = require('pg');
     return new Client({
-        connectionString: "postgres://hrdqkjutlzxtmz:ff4b0a7d5e00ee748c50a6ce93a662e9ea727d9f9abb11e13055b9a4c2a77ded@ec2-35-169-11-108.compute-1.amazonaws.com:5432/dc8f13lp2d9518",
+        connectionString: "postgres://pftggkxtaovfgi:93bd385efecc98e73151ce2a385e389a7446ea7e177df7113b7ec180f8018bc1@ec2-107-21-67-46.compute-1.amazonaws.com:5432/dbqg705jn5jfjm",
 
         ssl: {
             rejectUnauthorized: false
